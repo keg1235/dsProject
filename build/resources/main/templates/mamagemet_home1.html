@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/layout}">
+
+<div layout:fragment="content">
+		 <section class="features-area section-bg"   style="padding-top:50px;">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-3 col-md-6 col-12">
+					Gateway 목록
+					</div>
+				</div>
+			</div>
+		</section>
+		 <div class="container" style="padding-top:10px;">
+        <table class="table table-bordered table-hover text-center" style="color: #FFF;  ">
+            <tr style="vertical-align:middle">
+                <th>번호</th>
+                <th>설치위치</th>
+                <th>IP Address</th>
+                <th>특이사항</th> 
+                <th>관리</th>
+                
+            </tr>
+            <tr  style="vertical-align:text-bottom">
+                <td>3</td>
+                <td>공덕자이</td>
+                <td>192.168.0.11</td>
+                <td>CH, Network OD</td>
+                <td>
+                    <a href="#" class="btn btn-danger">삭제</a> <a href="#" class="btn btn-danger">수정</a>
+                </td>
+            </tr>
+              <tr  style="vertical-align:text-bottom">
+                <td>3</td>
+                <td>공덕자이</td>
+                <td>192.168.0.11</td>
+                <td>CH, Network OD</td>
+                <td>
+                    <a href="#" class="btn btn-danger">삭제</a> <a href="#" class="btn btn-danger">수정</a>
+                </td>
+            </tr>
+             
+             
+       			 </table>
+               
+           <section class="features-area section-bg"   style="padding-top:50px;">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-3 col-md-6 col-12">
+					DDC 목록
+					</div>
+				</div>
+			</div>
+		</section>
+		 <table class="table table-bordered table-hover text-center" style="color: #FFF;  ">
+            <tr style="vertical-align:middle">
+                <th>번호</th>
+                <th>명칭</th>
+                <th>위치</th>
+                <th>종류</th> 
+                <th>Device ID</th>
+                <th>Gateway IP</th>
+                <th>특이사항</th>
+                <th>관리</th>
+                
+            </tr>
+            <tr  style="vertical-align:text-bottom">
+                <td>3</td>
+                <td>DDC #1</td>
+                <td>안방</td>
+                <td>DO08</td>
+                <td>1</td>
+                <td>192.168.0.1</td>
+                <td>CH, Network ID</td>
+                <td>
+                    <a href="#" class="btn btn-danger">삭제</a> <a href="#" class="btn btn-danger">수정</a>
+                </td>
+            </tr>
+              <tr  style="vertical-align:text-bottom">
+                <td>3</td>
+                <td>DDC #1</td>
+                <td>안방</td>
+                <td>DO08</td>
+                <td>1</td>
+                <td>192.168.0.1</td>
+                <td>CH, Network ID</td>
+                <td>
+                    <a href="#" class="btn btn-danger">삭제</a> <a href="#" class="btn btn-danger">수정</a>
+                </td>
+            </tr> 
+        </table>
+               
+                 <section class="features-area section-bg"   style="padding-top:50px;">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-3 col-md-6 col-12">
+					DCP목록
+					</div>
+				</div>
+			</div>
+		</section>
+		 <table class="table table-bordered table-hover text-center" style="color: #FFF;  ">
+            <tr style="vertical-align:middle">
+                <th>번호</th>
+                <th>명칭</th>
+                <th>설명</th>
+                <th>DDC</th> 
+                <th>종류</th>
+                <th>Port</th>
+                <th>상태정보</th>
+                <th>관리</th>
+                
+            </tr>
+            <tr  style="vertical-align:text-bottom">
+                <td>3</td>
+                <td>에어컨</td>
+                <td>거실 에어컨</td>
+                <td>DDC #1</td>
+                <td>온도</td>
+                <td>Port</td>
+                 <td>
+                  
+					<input type="checkbox" checked data-toggle="toggle" data-onstyle="info">
+				
+                </td>
+                <td>
+                    <a href="#" class="btn btn-danger">삭제</a> <a href="#" class="btn btn-danger">수정</a>
+                </td>
+            </tr>
+            <tr  style="vertical-align:text-bottom">
+                <td>3</td>
+                <td>에어컨</td>
+                <td>거실 에어컨</td>
+                <td>DDC #1</td>
+                <td>온도</td>
+                <td>Port</td>
+                 <td>
+                  
+					<input type="checkbox" checked data-toggle="toggle" data-onstyle="info">
+				
+                </td>
+                <td>
+                    <a href="#" class="btn btn-danger">삭제</a> <a href="#" class="btn btn-danger">수정</a>
+                </td>
+            </tr>
+        </table>
+        
+                 
+                <nav class="text-center">
+                <ul class="pagination ">
+                    <li>
+                    <a href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                    </li>
+                    <li><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                    <li>
+                    <a href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                    </li>
+                </ul>
+            </nav>
+        <br />
+    </div>
+		<div class="container">
+					<div class="row"> 
+						<div class="col-lg-4 col-md-6 col-12">	
+							<!-- Footer Contact -->		
+							<div class="single-widget footer_contact widget" >	
+								<button class="btn btn-success" type="button" style="font-size: 1em">최근알람 +더보기</button>
+								<ul class="address-widget-list" style="background-color: #eee;padding: 5px;border: 1px solid #999;border-radius: 5px;">
+									<li class="footer-mobile-number">+온수온도 이상</li>
+									<li class="footer-mobile-number">+난방전원 오프</li>
+									<li class="footer-mobile-number">+온수부족</li>
+                                    <li class="footer-mobile-number">+온수부족</li>
+                                    <li class="footer-mobile-number">+온수부족</li>
+								</ul>
+							</div>		
+						 					
+						</div> 
+						<div class="col-lg-4 col-md-6 col-12">	
+							<!-- Footer Contact -->		
+							<div class="single-widget footer_contact widget">	 
+                                <button class="btn btn-info" type="button" style="font-size: 1em">공지사항 +더보기</button>
+								<ul class="address-widget-list" style="background-color: #eee;padding: 5px;border: 1px solid #999;border-radius: 5px;"> 
+									<li class="footer-mobile-number">+겨울철 동파대비</li>
+									<li class="footer-mobile-number">+온도 조절방법 안내</li>
+									<li class="footer-mobile-number">+정전시간 안내</li> 
+                                    <li class="footer-mobile-number">+정전시간 안내</li> 
+                                    <li class="footer-mobile-number">+정전시간 안내</li> 
+								</ul>
+							</div>		
+						 					
+						</div>
+                        <div class="col-lg-4 col-md-6 col-12">	
+							<!-- Footer Contact -->		
+							<div class="single-widget footer_contact widget">	 
+								<button class="btn btn-warning" type="button" style="font-size: 1em">Q & A +더보기</button>
+								<ul class="address-widget-list" style="background-color: #eee;padding: 5px;border: 1px solid #999;border-radius: 5px;"> 
+									<li class="footer-mobile-number">+보일러 전원 안켜질때</li>
+									<li class="footer-mobile-number">+난방기 고장문의 어디로</li>
+									<li class="footer-mobile-number">+실내등 교체 회사</li> 
+                                    <li class="footer-mobile-number">+정전시간 안내</li> 
+                                    <li class="footer-mobile-number">+정전시간 안내</li> 
+								</ul>
+							</div>		
+						 					
+						</div>
+					</div>
+				 
+				</div>
+	</div>
+
+</html>

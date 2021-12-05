@@ -1,0 +1,6 @@
+[debug] Full compilation, no sources in previous analysis.
+[debug] All sources are invalidated.
+[debug] Recompiling all 11 sources: invalidated sources (11) exceeded 50.0% of all sources
+[info] Compiling 11 Java sources to D:\project\project\target\scala-2.12\sbt-1.0\classes ...
+[debug] Attempting to call com.sun.tools.javac.api.JavacTool@469382ae directly...
+[error] (Compile / compileIncremental) javac returned non-zero exit code

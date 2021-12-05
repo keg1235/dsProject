@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<div class="container" style="padding-top:10px;">
+
+    <section class="features-area section-bg" style="padding-top:50px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-12">
+                    기기목록
+                </div>
+            </div>
+        </div>
+    </section>
+    <table class="table table-bordered table-hover text-center" style="color: #FFF;  ">
+        <tr style="vertical-align:middle">
+
+            <th>기기</th>
+            <th>운전</th>
+            <th>상태</th>
+            <th>문자발송여부</th>
+
+        </tr>
+        <tr  style="vertical-align:middle">
+
+            <td style="vertical-align:middle">보일러</td>
+            <td><input type="checkbox" checked data-toggle="toggle" data-on="자동" data-off="수동"></td>
+            <td>
+                <input type="checkbox" checked data-toggle="toggle" data-onstyle="success">
+            </td>
+            <td>
+                <label class="checkbox-inline"><input type="checkbox" value="">예</label>
+            </td>
+        </tr>
+        <tr  style="vertical-align:text-bottom">
+
+            <td style="vertical-align:middle">습도기</td>
+            <td><input type="checkbox" checked data-toggle="toggle" data-on="자동" data-off="수동"></td>
+            <td>
+                <input type="checkbox" checked data-toggle="toggle" data-onstyle="success">
+            </td>
+            <td>
+                <label class="checkbox-inline"><input type="checkbox" value="">예</label>
+            </td>
+        </tr>
+        <tr  style="vertical-align:text-bottom">
+
+            <td style="vertical-align:middle">환풍기</td>
+            <td><input type="checkbox" checked data-toggle="toggle" data-on="자동" data-off="수동"></td>
+            <td>
+                <input type="checkbox" checked data-toggle="toggle" data-onstyle="success">
+            </td>
+            <td>
+                <label class="checkbox-inline"><input type="checkbox" value="">예</label>
+            </td>
+        </tr>
+        <tr  style="vertical-align:text-bottom">
+
+            <td style="vertical-align:middle">펌프</td>
+            <td><input type="checkbox" checked data-toggle="toggle" data-on="자동" data-off="수동"></td>
+            <td>
+                <input type="checkbox" checked data-toggle="toggle" data-onstyle="success">
+            </td>
+            <td>
+                <label class="checkbox-inline"><input type="checkbox" value="">예</label>
+            </td>
+        </tr>
+
+
+    </table>
+    <nav class="text-center">
+        <ul class="pagination ">
+            <li>
+                <a href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li>an aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <br />
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4 col-md-6 col-12">
+
+        </div>
+        <div class="col-lg-4 col-md-6 col-12">
+            <!-- Footer Contact -->
+            <div class="single-widget footer_contact widget">
+                <button class="btn btn-info" type="button" style="font-size: 1em">공지사항 +더보기</button>
+                <ul class="address-widget-list" style="background-color: #eee;padding: 5px;border: 1px solid #999;border-radius: 5px;">
+                    <li class="footer-mobile-number">+겨울철 동파대비</li>
+                    <li class="footer-mobile-number">+온도 조절방법 안내</li>
+                    <li class="footer-mobile-number">+정전시간 안내</li>
+                    <li class="footer-mobile-number">+정전시간 안내</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+</html>

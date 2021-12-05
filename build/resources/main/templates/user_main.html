@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/layout}">
+
+<div layout:fragment="content">
+    <div class="container" style="padding-top:10px;">
+
+        <section class="features-area section-bg"   style="padding-top:50px;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 col-12">
+                        기기목록
+                    </div>
+                </div>
+            </div>
+        </section>
+        <table id="userTable" class="table table-bordered table-hover text-center" style="color: #FFF;  ">
+            <thead>
+            <tr style="vertical-align:middle">
+                <th>기기순서</th>
+                <th>명칭</th>
+                <th>위치</th>
+                <th>전원 ON</th>
+                <th>전원 OFF</th>
+                <th>DDC상태</th>
+                <th>DI상태</th>
+                <th>문자발송여부</th>
+            </tr>
+            </thead>
+            <tbody id="ddc-tb">
+
+            </tbody>
+        </table>
+<!--        <nav class="text-center">-->
+<!--            <ul class="pagination ">-->
+<!--                <li>-->
+<!--                    <a href="#" aria-label="Previous">-->
+<!--                        <span aria-hidden="true">&laquo;</span>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--                <li><a href="#">1</a></li>-->
+<!--                <li><a href="#">2</a></li>-->
+<!--                <li><a href="#">3</a></li>-->
+<!--                <li><a href="#">4</a></li>-->
+<!--                <li><a href="#">5</a></li>-->
+<!--                <li>-->
+<!--                    <a href="#" aria-label="Next">-->
+<!--                        <span aria-hidden="true">&raquo;</span>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </nav>-->
+        <br />
+        <div class="col-12">
+            <div class="form-group button float-right">
+                <button type="button" onclick="save()" class="bizwheel-btn primary effect">전원상태변경&nbsp;&nbsp; <i class="fa fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-6 col-12">
+                <!-- Footer Contact -->
+                <div class="single-widget footer_contact widget" >
+                    <button class="btn btn-success" type="button" style="font-size: 1em">최근알람 +더보기</button>
+                    <ul class="address-widget-list" style="background-color: #eee;padding: 5px;border: 1px solid #999;border-radius: 5px;">
+                        <li class="footer-mobile-number">자료없음</li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="col-lg-4 col-md-6 col-12">
+                <!-- Footer Contact -->
+                <div class="single-widget footer_contact widget">
+                    <button class="btn btn-info" type="button" style="font-size: 1em">공지사항 +더보기</button>
+                    <ul class="address-widget-list" style="background-color: #eee;padding: 5px;border: 1px solid #999;border-radius: 5px;">
+                        <li class="footer-mobile-number">자료없음</li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="col-lg-4 col-md-6 col-12">
+                <!-- Footer Contact -->
+                <div class="single-widget footer_contact widget">
+                    <button class="btn btn-warning" type="button" style="font-size: 1em">Q & A +더보기</button>
+                    <ul class="address-widget-list" style="background-color: #eee;padding: 5px;border: 1px solid #999;border-radius: 5px;">
+                        <li class="footer-mobile-number">자료없음</li>
+                    </ul>
+                </div>
+
+            </div>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+            <script type="text/javascript">
+
+                var page = 1;
+                var btnclick = 0;
+                var id = "[[${id}]]";
+                var filterData =null;
+                var message =null;
+                var nowdata =null;
+                let formData = new FormData();
+                var socket = null;
+                var stompClient = null;
+                let gInterval = null;
+
+                function calllist (num){
+
+                    $.ajax({
+                        url: '/datagroup/'+num,
+                        type: 'get', // 메소드(get, post, put 등)
+                        headers: {'Content-Type': 'application/json'},
+                        success: function (data) {
+                            //console.log(data.data);
+                            filterData = data.data;
+                        },
+                        error: function (err) {
+
+                        }
+                    });
+                }
+
+
+                function initddc(){
+                    $.ajax({
+                        url: '/ddc', //request 보낼 서버의 경로
+                        type: 'get', // 메소드(get, post, put 등)
+                        headers: {'Content-Type': 'application/json'},
+                        success: function (data) {
+                            const ddclist = data.data;
+
+                            for ( i in ddclist){
+                                var my_tbody = document.getElementById('ddc-tb');
+                                var row = my_tbody.insertRow(my_tbody.rows.length);
+                                row.insertCell(0).innerHTML = ddclist[i].id;
+                                row.insertCell(1).innerHTML = ddclist[i].name;
+                                row.insertCell(2).innerHTML = ddclist[i].location;
+                                row.insertCell(3).innerHTML = ddclist[i].di;
+                                row.insertCell(4).innerHTML = ddclist[i].ddc;
+                                row.insertCell(5).innerHTML = '<input type="checkbox" data-toggle="toggle" onchange="statusSave('+ddclist[i].id+')" data-onstyle="'+ddclist[i].color+'">'
+                                row.insertCell(6).innerHTML = '<input type="checkbox" data-toggle="toggle" onchange="save('+ddclist[i].id+')" data-on="예" data-off="아니오" data-onstyle="success">'
+                                //row.insertCell(7).innerHTML = '<a onclick="ddcDel(' + ddclist[i].id + ')" class="btn btn-danger">삭제</a> <a href="/ddc_registration/'+ddclist[i].id +'" class="btn btn-danger">수정</a>'
+                            }
+
+                        },
+                        error: function (err) {
+                            //서버로부터 응답이 정상적으로 처리되지 못햇을 때 실행
+                        }
+                    });
+                }
+                $(document).ready(function() {
+
+                    setInterval(checktime, 1000);
+
+                   // initddc();
+                    calllist([[id]]);
+                    let table1 = $('#userTable').dataTable({
+                        pageLength: 10,
+                        bPaginate: true,
+                        bLengthChange: true,
+                        responsive: true,
+                        language: {
+                            "emptyTable": "데이터 로딩중...",
+                            "lengthMenu": "페이지당 _MENU_ 개씩 보기",
+                            "info": "현재 _START_ - _END_ / _TOTAL_건",
+                            "infoEmpty": "데이터 없음",
+                            "infoFiltered": "( _MAX_건의 데이터에서 필터링됨 )",
+                            "search": "에서 검색: ",
+                            "zeroRecords": "일치하는 데이터가 없어요.",
+                            "loadingRecords": "로딩중...",
+                            "processing": "잠시만 기다려 주세요...",
+                            "paginate": {
+                                "next": "다음",
+                                "previous": "이전"
+                            }
+                        },
+                        bAutoWidth: false,
+                        processing: true,
+                        ordering: true,
+                        serverSide: false,
+                        searching: true,
+                        columns: [
+                            {data: "seq"},
+                            {data: "name"},
+                            {data: "location"},
+                            {
+                                "mData": null,
+                                "bSortable": false,
+                                "mRender": function (o) {
+                                    var btn;
+                                    if(o.onoffstatus ==1 && o.doUse == "YES"){
+                                        btn = '<input type="button" onclick="btnOn('+o.id+')" id="'+o.id+'"  class="btn-success btn-font" value="ON">'
+                                        //btn = '<input type="button" onclick="btnOn(this)" id="'+o.id+'"  class="btn-success btn-font" value="ON">'
+                                    }else if(o.onoffstatus == 0 && o.doUse == "YES"){
+
+                                        btn = '<input type="button" onclick="btnOn('+o.id+')" id="'+o.id+'" class="btn-secondary btn-font" value="ON">'
+                                       // btn = '<input type="button" onclick="btnOn(this)" id="'+o.id+'"  class="btn-secondary btn-font" value="ON">'
+                                    }else if(o.doStatus == null && o.doUse == "YES"){
+                                        btn = '<input type="button" class="btn-dark btn-font" value="통신불가">'
+                                    }else{
+                                      btn = "";
+                                    }
+
+                                    return btn;
+
+                                }
+                            },
+                            {
+                                "mData": null,
+                                "bSortable": false,
+                                "mRender": function (o) {
+                                    var btn;
+                                    if(o.onoffstatus == 1 && o.doUse == "YES"){
+                                        btn = '<input type="button" onclick="btnOff('+o.id+')" class="btn-secondary btn-font" value="OFF">'
+                                      //  btn = '<input type="button" onclick="btnOff(this)" class="btn-secondary btn-font" value="OFF">'
+                                    }else if(o.onoffstatus == 0 && o.doUse == "YES"){
+
+                                        btn = '<input type="button" onclick="btnOff('+o.id+')" class="btn-success btn-font" value="OFF">'
+                                       // btn = '<input type="button" onclick="btnOff(this)" class="btn-success btn-font" value="OFF">'
+                                    }else if(o.doStatus == null && o.doUse == "YES"){
+                                        btn = '<input type="button" class="btn-dark btn-font" value="통신불가">'
+                                    }else{
+                                        btn = "";
+                                    }
+                                    return btn;
+
+                                }
+                            },
+                            {
+                                "mData": null,
+                                "bSortable": false,
+                                "mRender": function (o) {
+                                    var btn;
+                                    if(o.doStatus == 1 && o.doUse == "YES"){
+                                        btn = '<input type="button"  class="btn-success btn-font" value="켜짐">'
+                                    }else if(o.doStatus == 0 && o.doUse == "YES"){
+
+                                        btn = '<input type="button" class="btn-secondary btn-font" value="꺼짐">'
+
+                                    }else if(o.doStatus == null && o.doUse == "YES"){
+                                        btn = '<input type="button" class="btn-dark btn-font" value="통신불가">'
+                                    }else{
+                                        btn="";
+                                    }
+                                    return btn;
+
+                                }
+                            },
+                            {
+                                "mData": null,
+                                "bSortable": false,
+                                "mRender": function (o) {
+                                    var btn;
+                                    if(o.status == 1 && o.diUse == "YES"){
+                                        btn = '<input type="button"  class="'+o.color+' btn-font" value="켜짐">'
+                                    }else if(o.status == 0 && o.diUse == "YES"){
+
+                                        btn = '<input type="button" class="btn-secondary btn-font" value="꺼짐">'
+
+                                    }else if(o.status == null && o.diUse == "YES"){
+                                        btn = '<input type="button" class="btn-dark btn-font" value="통신불가">'
+                                    }else{
+                                        btn = "";
+                                    }
+                                    return btn;
+
+                                }
+                            },
+                            {
+                                "mData": null,
+                                "bSortable": false,
+                                "mRender": function (o) {
+                                    var btn;
+                                    if(o.use == "YES"){
+                                        btn = '<input type="button"  class="btn-success btn-font" value="ON">';
+                                    }else{
+
+                                        btn = '<input type="button" class="btn-secondary btn-font" value="OFF">';
+
+                                    }
+                                    return  btn;
+
+                                }
+                            }
+
+
+                        ], columnDefs: [
+                            {
+                                "targets": [0, 1, 2 ],
+                                "className": "text-left",
+                                "width": "10%"
+                            },
+                            {
+                                "targets": [ 3,4,5, 6, 7],
+                                "className": "text-center",
+                                "width": "10%"
+                            }
+                        ]
+
+
+                    });
+
+                    var table = $('#userTable').DataTable();
+                    $('#userTable_filter').prepend('<select id="searchSelect"></select>');
+                    $('#userTable > thead > tr').children().each(function (indexInArray, valueOfElement) {
+                        $('#searchSelect').append('<option>' + valueOfElement.innerHTML + '</option>');
+                    });
+                    $('.dataTables_filter input').unbind().bind('keyup', function () {
+                        var colIndex = document.querySelector('#searchSelect').selectedIndex;
+                        table.search('').columns().search('').draw();
+                        table.column(colIndex).search(this.value).draw();
+                    });
+
+                    callSocket();
+                    //callSocket2()
+
+                });
+
+                function callSocket(){
+
+                    socket = new SockJS('/websocket');
+                    stompClient = Stomp.over(socket);
+
+                    stompClient.connect({},onConnected , onError2);
+
+                }
+
+                function callSocket2() {
+                     setInterval(() => {
+                         $.ajax({
+                             url: '/ddc', //request 보낼 서버의 경로
+                             type: 'get', // 메소드(get, post, put 등)
+                             headers: {'Content-Type': 'application/json'},
+                             success: function (data) {
+                                 onMessageReceived2(data.data)
+                                 /*
+                                 for ( i in ddclist){
+                                     var my_tbody = document.getElementById('ddc-tb');
+                                     var row = my_tbody.insertRow(my_tbody.rows.length);
+                                     row.insertCell(0).innerHTML = ddclist[i].id;
+                                     row.insertCell(1).innerHTML = ddclist[i].name;
+                                     row.insertCell(2).innerHTML = ddclist[i].location;
+                                     row.insertCell(3).innerHTML = ddclist[i].di;
+                                     row.insertCell(4).innerHTML = ddclist[i].ddc;
+                                     row.insertCell(5).innerHTML = '<input type="checkbox" data-toggle="toggle" onchange="statusSave('+ddclist[i].id+')" data-onstyle="'+ddclist[i].color+'">'
+                                     row.insertCell(6).innerHTML = '<input type="checkbox" data-toggle="toggle" onchange="save('+ddclist[i].id+')" data-on="예" data-off="아니오" data-onstyle="success">'
+                                     //row.insertCell(7).innerHTML = '<a onclick="ddcDel(' + ddclist[i].id + ')" class="btn btn-danger">삭제</a> <a href="/ddc_registration/'+ddclist[i].id +'" class="btn btn-danger">수정</a>'
+                                 }*/
+
+                             },
+                             error: function (err) {
+                                 //서버로부터 응답이 정상적으로 처리되지 못햇을 때 실행
+                             }
+                         });
+
+
+                    }, 1000)
+                }
+
+                function onConnected() {
+                    // Subscribe to the Public Topic
+                    stompClient.subscribe('/topic/info', onMessageReceived);
+                }
+
+                function onMessageReceived2(payload) {
+
+
+                    var table = $('#userTable').DataTable();
+                    var info = table.page.info();
+                    page = info.page;
+                    message = payload.filter(isApple);
+
+                    console.log(nowdata);
+                    if (btnclick == 0){
+                        for(var i= 0 ; i <message.length ;i++){
+                            message[i].onoffstatus =message[i].doStatus;
+                        }
+                    }else{
+                        for(var i= 0 ; i <message.length ;i++){
+                            message[i].onoffstatus =nowdata[i].onoffstatus
+
+                        }
+                        btnclick++;
+                        if(btnclick > 14){
+                            btnclick=0;
+                        }
+
+                    }
+                    //  console.log(message);
+                    if (message.length > 0) {
+                        $('#userTable').dataTable().fnClearTable();
+                        $('#userTable').dataTable().fnAddData(message);
+                        table.page(page).draw(false);
+                    }
+                }
+
+                function onMessageReceived(payload) {
+
+
+                        var table = $('#userTable').DataTable();
+                        var info = table.page.info();
+                        page = info.page;
+                        message = JSON.parse(payload.body).filter(isApple);
+
+                        console.log(nowdata);
+                        if (btnclick == 0){
+                            for(var i= 0 ; i <message.length ;i++){
+                                message[i].onoffstatus =message[i].doStatus;
+                            }
+                        }else{
+                            for(var i= 0 ; i <message.length ;i++){
+                                if(nowdata[i].click){
+                                    message[i].onoffstatus =nowdata[i].onoffstatus
+                                    message[i].click =nowdata[i].click
+                                }else{
+                                    message[i].onoffstatus =message[i].doStatus;
+                                }
+
+
+                            }
+                            btnclick++;
+                            if(btnclick > 14){
+                                btnclick=0;
+                            }
+
+                        }
+                      //  console.log(message);
+                        if (message.length > 0) {
+                            $('#userTable').dataTable().fnClearTable();
+                            $('#userTable').dataTable().fnAddData(message);
+                            table.page(page).draw(false);
+                        }
+                }
+
+                function isApple(element)  {
+
+                    var count=0;
+                    for (var pp in filterData) {
+                        if (filterData[pp].ddcId ==element.id) {
+                            count++;
+                        }
+                    }
+                    if (count > 0 ){
+                        return true;
+                    }
+                }
+
+                function isLinkcheck(element)  {
+
+                    if (element.doStatus != null && element.click) {
+                        return true;
+                    }
+                }
+
+                function onError(error) {
+
+                    $.ajax({
+                        url:'/ddc', //request 보낼 서버의 경로
+                        type:'get', // 메소드(get, post, put 등)
+                        headers: {'Content-Type': 'application/json'},
+                        success: function(data) {
+                            //alert("");
+                            $('#userTable').dataTable().fnClearTable();
+                            $('#userTable').dataTable().fnAddData(data.data);
+                        },
+                        error: function(err) {
+
+                            //서버로부터 응답이 정상적으로 처리되지 못햇을 때 실행
+                        }
+                    });
+                }
+                function onError2(error) {
+                    if (gInterval){
+                        clearInterval(gInterval);
+                    }
+                    gInterval= setInterval(() => {
+                        console.error('소켓 연결 끊어짐 -> 재연결 요청 중...')
+                        if (stompClient){
+                            console.warn('@@@@@@@ 웹 소켓 CONNECT 해제 @@@@@@@')
+                            stompClient.disconnect();
+                            callSocket();
+                        }
+                    }, 1000)
+                }
+                function checktime(){
+                    if (btnclick > 14 ){
+                        btnclick = 0;
+                    }
+                }
+/*
+                $(document).on('click', '#userTable tbody tr td', function(event) {
+
+                    if ($(this).is('td')){
+                        if ($(this).attr("class")=='text-right sorting_1'){
+
+                        }else{
+                            var table = $('#userTable').DataTable().rows(this).data();
+                            detailview(table[0].id);
+
+                        }
+                    }
+
+
+                });
+                function detailview(idNum){
+                    location.href="member_registration/"+idNum;
+                }
+*/
+
+
+
+
+                function btnOff(num){
+                    nowdata = $('#userTable').dataTable().fnGetData();
+                    btnclick = 1;
+                    for(var i= 0 ; i <nowdata.length ;i++){
+                        console.log(nowdata[i].status);
+                        if (nowdata[i].id == num){
+                            nowdata[i].onoffstatus = 0;
+                            nowdata[i].click = true;
+                            console.log(nowdata[i])
+                        }
+                    }
+                    var table = $('#userTable').DataTable();
+                    $('#userTable').dataTable().fnClearTable();
+                    $('#userTable').dataTable().fnAddData(nowdata);
+                    table.page(page).draw(false);
+                }
+
+                function btnOn(num){
+                    nowdata = $('#userTable').dataTable().fnGetData();
+                    btnclick = 1;
+                    for(var i= 0 ; i <nowdata.length ;i++){
+                        console.log(nowdata[i].status);
+                        if (nowdata[i].id == num){
+                            nowdata[i].onoffstatus = 1;
+                            nowdata[i].click = true;
+                            console.log(nowdata[i])
+                        }
+                    }
+                    console.log(nowdata);
+                    var table = $('#userTable').DataTable();
+                    $('#userTable').dataTable().fnClearTable();
+                    $('#userTable').dataTable().fnAddData(nowdata);
+                    table.page(page).draw(false);
+
+                }
+
+                function save(){
+                    //initInput();
+                    if (nowdata != null ){
+                        console.log('*************************');
+                        console.log(nowdata);
+                        var data = nowdata.filter(isLinkcheck);
+                        console.log(data);
+                        if (data.length > 0 ) {
+
+                            axios({
+                                url: '/datacall', //request 보낼 서버의 경로
+                                method: 'post', // 메소드(get, post, put 등)
+                                data: data, //보낼 데이터
+                                headers: {'Content-Type': 'application/json'},
+                            }).then(function (response) {
+                                //성공
+
+                                alert("전송완료");
+
+                            }).catch(function (response) {
+                                alert("전송실패");
+                            });
+
+                        }else{
+                            alert("통신불가 내역만 있어 전송하실수 없습니다.");
+                        }
+                    }
+
+                }
+
+                function init(id) {
+                    $.ajax({
+                        url:'/messageList',
+                        type:'get', // 메소드(get, post, put 등)
+                        headers: {'Content-Type': 'application/json'},
+                        success: function(data) {
+                            const userinfo = data.data;
+
+                            /*
+                            seq : document.getElementById('my-tbody').children[i].children[0].innerText,
+                            di : $('#di_'+num).val(),
+                            name : $('#name_'+num).val(),
+                            use : $('input:radio[name=use_'+num+']').val(),
+                            color
+                            ddc : $('#ddc').val(),
+                            location : $('#location').val()
+*/
+                            $('#email').val(userinfo.email);
+                            //$(":input:radio[name=adminYn]").val(userinfo.adminYn);
+                            $(":input:radio[name=adminYn]:radio[value='"+userinfo.adminYn+"']").prop('checked', true);
+                            $('#name').val(userinfo.name);
+                            $('#poneNum').val(userinfo.poneNum);
+                            //$(":input:radio[name=idUseYn]").val(userinfo.idUseYn);
+                            $(":input:radio[name=idUseYn]:radio[value='"+userinfo.idUseYn+"']").prop('checked', true);
+                        },
+                        error: function(err) {
+                            //서버로부터 응답이 정상적으로 처리되지 못햇을 때 실행
+                        }
+                    });
+                }
+
+            </script>
+            <style>
+                .btn-font{
+                    color : white !important;
+                }
+
+            </style>
+        </div>
+
+    </div>
+
+</div>
+
+</html>

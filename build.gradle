@@ -1,0 +1,65 @@
+plugins {
+	id 'org.springframework.boot' version '2.2.5.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'maven'
+	id 'maven-publish'
+	id 'java'
+	id "org.sonarqube" version "2.7"
+}
+
+group = 'com.sara.project'
+version = ''
+sourceCompatibility = JavaVersion.VERSION_1_8
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	maven { url "https://repo1.maven.org/maven2/" }
+	maven { url "https://repo.maven.apache.org/maven2/" }
+	jcenter()
+	mavenLocal()
+	mavenCentral()
+}
+
+configurations {
+	compile.exclude module: "spring-boot-starter-tomcat"
+}
+
+dependencies {
+
+
+	//swagger2
+	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.8.0'
+	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.8.0'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	implementation 'org.springframework.boot:spring-boot-starter-jetty:1.5.7.RELEASE'
+	compile('org.apache.tomcat.embed:tomcat-embed-jasper')
+	//implementation 'org.springframework.boot:spring-boot-starter-security'
+	//compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity5', version: '3.0.4.RELEASE'
+
+	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+	runtimeOnly 'com.h2database:h2'
+	implementation group: 'nz.net.ultraq.thymeleaf', name: 'thymeleaf-layout-dialect', version: '2.4.1'
+	compile group: 'org.apache.httpcomponents', name: 'httpmime', version: '4.3.1'
+	implementation group: 'commons-io', name: 'commons-io', version: '2.6'
+	compileOnly 'org.projectlombok:lombok'
+	compile group: 'io.netty', name: 'netty-all', version: '5.0.0.Alpha1'
+	//compile group: 'io.netty', name: 'netty-all', version: "4.1.50.Final"
+	compile files('libs/jnetpcap-1.4.r1425-1g.jar')
+	//developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+}
+
+test {
+	//useJUnitPlatform()
+}

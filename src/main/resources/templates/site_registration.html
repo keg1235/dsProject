@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/layout}">
+
+<div layout:fragment="content">
+			  <section class="features-area section-bg"   style="padding-top:50px;">
+			<div class="container">
+				<div class="row"> 
+                    <div class="col-lg-4 col-md-6 col-12"  > 
+					 <button class="btn btn-primary" id="companyName" type="button" style="font-size: 1em">현장명 : 한국 알프스</button>
+					</div>
+                    <div class="col-lg-4 col-md-6 col-12"  >
+					 <div  >  </div>
+					</div> 
+                   
+              
+				</div>
+			</div>
+		</section>
+		 
+        <div id="layoutAuthentication">
+            <div id="layoutAuthentication_content">
+                <main>
+                    <div class="container">
+                        <div class="row">
+							<div class="col-12">
+								<div class="blog-comments-form">
+									<div class="con-4 bottom-title">
+										<h2>사이트 등록</h2>
+										 
+									</div>
+									<!-- Comment Form -->
+									<form class="form" method="post" action="setup/dcp.php">
+										<div class="row">
+											<div class="col-12">
+												<div class="form-group">
+													<label>사이트명</label>
+													<input type="text" name="name" required="required" placeholder="사이트명을 입력해주세요">
+												</div>
+											</div>
+											<div class="col-12">
+												<div class="form-group">
+													<label>설치위치</label>
+													<input type="text" name="comment" required="required" placeholder="설치위치를 입력해주세요">
+												</div>
+											</div>
+												<div class="col-12">
+												<div class="form-group">
+													<label>특이사항</label>
+													<input type="text" name="comment" required="required" placeholder="특이사항을 입력해주세요">
+												</div>
+											</div> 
+											 
+											<div class="col-6">
+												<div class="form-group">
+													<label>로그인이미지</label>
+													<input type="file" name="name" required="required" placeholder="로그인 이미지파일을 선택해주세요">
+												</div>
+											</div>
+											<div class="col-6">
+												<div class="form-group">
+													<label>메인이미지</label>
+													<input type="file" name="name" required="required" placeholder="메인 이미지파일을 선택해주세요">
+												</div>
+											</div>
+											<p style="padding: 10px;"></p>
+											<div class="col-6">
+												<div class="form-group button">	
+													<button type="submit" class="bizwheel-btn primary effect">저장&nbsp;&nbsp; <i class="fa fa-paper-plane"></i></button>
+												</div>
+											</div>
+										 
+										</div>
+									</form>
+									<!--/ End Comment Form -->
+								</div>
+							</div>							
+						</div>	
+                    </div>
+                </main>
+            </div>
+          
+        </div>
+
+		</div>
+
+</html>

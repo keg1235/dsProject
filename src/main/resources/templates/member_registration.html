@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/layout}">
+
+<div layout:fragment="content">
+		<section class="features-area section-bg">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-3 col-md-6 col-12">
+					
+					</div>
+				</div>
+				<br /><br />
+			</div>
+		</section>
+		 
+        <div id="layoutAuthentication">
+            <div id="layoutAuthentication_content">
+                <main>
+                    <div class="container">
+                        <div class="row">
+							<div class="col-12">
+								<div class="blog-comments-form">
+									<div class="con-4 bottom-title">
+										<h2>회원 등록</h2>
+										 
+									</div>
+									<!-- Comment Form -->
+									<form class="form">
+										<div class="row">
+											<div class="col-12">
+												<div class="form-group">
+													<label>이메일</label>
+													<input type="email" name="email" id="email"  required="required" placeholder="예)abc@naver.com">
+												</div>
+											</div>
+											<div class="col-12">
+												<div class="form-group">
+													<label>성명</label>
+													<input type="text" id="name" required="required" placeholder="성명을 입력해주세요">
+												</div>
+											</div>
+											 <div class="col-6">
+												<div class="form-group">
+													<label>비밀번호</label>
+													<input type="password" name="password" id="password" required="required" placeholder="비밀번호를 입력해주세요">
+												</div>
+											</div>
+										   <div class="col-6">
+												<div class="form-group">
+													<label>비밀번호확인</label>
+													<input type="password" name="passwordYn" id="passwordYn" required="required" placeholder="한번 더 비밀번호를 입력해주세요">
+												</div>
+											</div>
+											 <div class="col-12">
+												<div class="form-group">
+													<label>휴대폰번호</label>
+													<input type="text" name="poneNum" id="poneNum" required="required" placeholder="예)010-5224-5800">
+												</div>
+											</div>
+											    <div class="col-6">
+											    <div class="form-group">
+										 
+													<label>관리자여부</label>
+													<input type="radio" id="adminYn1" name="adminYn"  placeholder="radio" style="width: 16px; vertical-align: middle;padding-left: 3px;" value="YES"> YES
+													<input type="radio" id="adminYn2" name="adminYn"  placeholder="radio" style="width: 16px; vertical-align: middle;padding-left: 3px;" value="NO"> NO
+											  </div> 
+											</div> 
+										    <div class="col-6">
+											    <div class="form-group">
+										 
+													<label>사용여부</label>
+													<input type="radio"  id="useYn1" name="idUseYn"  placeholder="radio" style="width: 16px; vertical-align: middle;padding-left: 3px;" value="YES"> YES
+													<input type="radio"  id="useYn2" name="idUseYn"  placeholder="radio" style="width: 16px; vertical-align: middle;padding-left: 3px;" value="NO"> NO
+											  </div> 
+											</div>
+										 
+											<p style="padding: 10px;"></p>
+											<div class="col-12">
+												<div class="form-group button">	
+													<button type="button" id="saveBtn" onclick="save()" class="bizwheel-btn primary effect">저장&nbsp;&nbsp; <i class="fa fa-paper-plane"></i></button>
+													<button type="button" id="updateBtn" onclick="update()" class="bizwheel-btn primary effect">저장&nbsp;&nbsp; <i class="fa fa-paper-plane"></i></button>
+													<button type="button" id="delBtn" onclick="deleteUser()"  style="background-color: darkred" class="bizwheel-btn effect opblock-delete">삭제&nbsp;&nbsp; <i class="fa fa-paper-plane"></i></button>
+												</div>
+											</div>
+										</div>
+									</form>
+									<!--/ End Comment Form -->
+								</div>
+							</div>							
+						</div>	
+                    </div>
+                </main>
+            </div>
+          
+        </div>
+	<script type="text/javascript">
+		let formData = new FormData();
+		$(document).ready(function() {
+
+			var id = "[[${id}]]";
+
+			if(id == ""){
+				console.log(1);
+				$('#delBtn').hide();
+				$('#updateBtn').hide();
+			}else{
+				$('#saveBtn').hide();
+				init(id);
+			}
+		});
+
+		function update(){
+			var jObject = new Object();
+			jObject.email = $('#email').val();
+			jObject.name = $('#name').val();
+			jObject.password = $('#password').val();
+			jObject.passwordYn = $('#passwordYn').val();
+			jObject.poneNum = $('#poneNum').val();
+			jObject.adminYn = $(":input[name=adminYn]:checked").val();
+			jObject.idUseYn = $(":input[name=idUseYn]:checked").val();
+
+			//initInput();
+			var data = JSON.stringify(jObject);
+			console.log(jObject);
+			axios({
+				url:'/user/[[${id}]]', //request 보낼 서버의 경로
+				data: data, //보낼 데이터
+				method:'put', // 메소드(get, post, put 등)
+				headers: {'Content-Type': 'application/json'}
+			}).then(function (response) {
+				//성공
+
+				if (response.data){
+					alert("저장완료");
+					location.href='/member_list';
+				}else{
+					alert("비밀번호가 일치하지 않거나 이메일이 중복입니다.");
+				}
+
+			}).catch(function (response) {
+				console.log(response);
+				alert("저장실패");
+			});
+
+
+		}
+
+		function save(){
+			var jObject = new Object();
+			jObject.email = $('#email').val();
+			jObject.name = $('#name').val();
+			jObject.password = $('#password').val();
+			jObject.passwordYn = $('#passwordYn').val();
+			jObject.poneNum = $('#poneNum').val();
+			jObject.adminYn = $(":input[name=adminYn]:checked").val();
+			jObject.idUseYn = $(":input[name=idUseYn]:checked").val();
+
+			//initInput();
+			var data = JSON.stringify(jObject);
+			console.log(jObject);
+			$.ajax({
+				url:'/user', //request 보낼 서버의 경로
+				type:'post', // 메소드(get, post, put 등)
+				data: data, //보낼 데이터
+				headers: {'Content-Type': 'application/json'},
+				success: function(response) {
+					alert(response.message);
+					if (response.data){
+						location.href='/member_list';
+					}
+				},
+				error: function(err) {
+					alert(err.message);
+					//서버로부터 응답이 정상적으로 처리되지 못햇을 때 실행
+				}
+			});
+
+		}
+		function deleteUser(){
+
+			axios({
+				url:'/user/[[${id}]]', //request 보낼 서버의 경로
+				method:'delete', // 메소드(get, post, put 등)
+				headers: {'Content-Type': 'application/json'}
+			}).then(function (response) {
+				//성공
+				console.log(response);
+				alert('삭제완료');
+				location.href='/member_list';
+			}).catch(function (response) {
+				console.log(response);
+				alert("메세지에 매칭되어 있는 내역을 먼저 삭제해주시기 바랍니다.");
+			});
+
+		}
+
+		function init(id) {
+			$.ajax({
+				url:'/user/'+id, //request 보낼 서버의 경로
+				type:'get', // 메소드(get, post, put 등)
+				headers: {'Content-Type': 'application/json'},
+				success: function(data) {
+					const userinfo = data.data;
+					console.log(userinfo);
+					$('#email').val(userinfo.email);
+					if(userinfo.adminYn == "YES"){
+						$("#adminYn1").prop('checked', true);
+					}else{
+						$("#adminYn2").prop('checked', true);
+					}
+					$('#name').val(userinfo.name);
+					$('#poneNum').val(userinfo.poneNum);
+					if(userinfo.idUseYn == "YES"){
+						$("#useYn1").prop('checked', true);
+					}else{
+						$("#useYn2").prop('checked', true);
+					}
+
+				},
+				error: function(err) {
+					//서버로부터 응답이 정상적으로 처리되지 못햇을 때 실행
+				}
+			});
+		}
+
+	</script>
+	</div>
+</html>

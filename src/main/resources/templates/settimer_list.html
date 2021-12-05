@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/layout}">
+
+<div layout:fragment="content">
+		 <section class="features-area section-bg"   style="padding-top:50px;">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-3 col-md-6 col-12">
+					DCP 목록
+					</div>
+				</div>
+			</div>
+		</section>
+		 <div class="container" style="padding-top:10px;">
+        <table  class="table table-bordered table-hover text-center" style="color: #FFF;  ">
+            <thead>
+            <tr style="vertical-align:middle">
+                <th>번호</th>
+                <th>이름</th>
+                <th>Gateway</th>
+                <th>기기번호</th>
+                <th>메인여부</th>
+                <th>관리</th>
+            </tr>
+            </thead>
+            <tbody id="dcp-tb">
+            </tbody>
+       		</table>
+
+             <section class="features-area section-bg"   style="padding-top:50px;">
+                 <div class="container">
+                     <div class="row">
+                         <div class="col-lg-3 col-md-6 col-12">
+                             스케쥴 목록
+                         </div>
+                     </div>
+                 </div>
+             </section>
+             <div class="container" style="padding-top:10px;">
+                 <table  class="table table-bordered table-hover text-center" style="color: #FFF;  ">
+                     <thead>
+                     <tr style="vertical-align:middle">
+                         <th>명칭</th>
+                         <th>설명</th>
+                         <th>기간</th>
+                         <th>시간</th>
+                         <th>관리</th>
+                     </tr>
+                     </thead>
+                     <tbody id="scheduling-tb">
+                     </tbody>
+                 </table>
+
+        <br />
+    </div>
+    <script>
+        $(document).ready(function(){
+            initdcp();
+            initschedul();
+        });
+
+        function initdcp() {
+            $.ajax({
+                url: '/dcp', //request 보낼 서버의 경로
+                type: 'get', // 메소드(get, post, put 등)
+                headers: {'Content-Type': 'application/json'},
+                success: function (data) {
+                    const dcplist = data.data;
+                    for ( i in dcplist){
+                    var my_tbody = document.getElementById('dcp-tb');
+                    var row = my_tbody.insertRow(my_tbody.rows.length);
+                    row.insertCell(0).innerHTML = dcplist[i].id;
+                    row.insertCell(1).innerHTML = dcplist[i].name;
+                    row.insertCell(2).innerHTML = dcplist[i].gatewayadress;
+                    row.insertCell(3).innerHTML = dcplist[i].ddc;
+                    row.insertCell(4).innerHTML = dcplist[i].mainYn;
+                        var useTag ="";
+                        var No="NO";
+                        var yes="YES";
+                        if(dcplist[i].useYn == "YES"){
+                            useTag = '<a onclick="dcpUpdate(' + dcplist[i].id + ',0)" class="btn btn-success">사용</a>';
+                        }else{
+                            useTag = '<a onclick="dcpUpdate(' + dcplist[i].id + ',1)" class="btn btn-danger">사용안함</a>';
+                        }
+                    row.insertCell(5).innerHTML = '<a onclick="dcpDel(' + dcplist[i].id + ')" class="btn btn-danger">삭제</a> <a href="/dcp_registration/'+dcplist[i].id +'" class="btn btn-danger">수정</a> '+useTag
+                    }
+                },
+                error: function (err) {
+                    //서버로부터 응답이 정상적으로 처리되지 못햇을 때 실행
+                }
+            });
+        }
+
+        function initschedul(){
+            $.ajax({
+                url: '/scData', //request 보낼 서버의 경로
+                type: 'get', // 메소드(get, post, put 등)
+                headers: {'Content-Type': 'application/json'},
+                success: function (data) {
+                    const schedullist = data.data;
+                    console.log(schedullist);
+                    for ( i in schedullist){
+
+
+                        var my_tbody = document.getElementById('scheduling-tb');
+                        var row = my_tbody.insertRow(my_tbody.rows.length);
+                        row.insertCell(0).innerHTML = schedullist[i].name;
+                        row.insertCell(1).innerHTML = schedullist[i].memo;
+                        row.insertCell(2).innerHTML = schedullist[i].startDate + "~" +schedullist[i].endDate ;
+                        row.insertCell(3).innerHTML = schedullist[i].time;
+                        var useTag ="";
+                        var No="NO";
+                        var yes="YES";
+                        if(schedullist[i].useYn == "YES"){
+                            useTag = '<a onclick="scdataUpdate(' + schedullist[i].id + ',0)" class="btn btn-success">사용</a>';
+                        }else{
+                            useTag = '<a onclick="scdataUpdate(' + schedullist[i].id + ',1)" class="btn btn-danger">사용안함</a>';
+                        }
+                        row.insertCell(4).innerHTML = '<a onclick="scdataDel(' + schedullist[i].id + ')" class="btn btn-danger">삭제</a> <a href="/scheduling_registration/'+schedullist[i].id +'" class="btn btn-danger">수정</a> ' + useTag;
+
+
+                    }
+
+                },
+                error: function (err) {
+                    //서버로부터 응답이 정상적으로 처리되지 못햇을 때 실행
+                }
+            });
+        }
+        function update() {
+
+            var data = {
+                id : $('#id').val(),
+                name : $('#name').val(),
+                location : $('#location').val(),
+                gateway_id :  $("#gateway_id option:selected").val(),
+                memo : $('#memo').val(),
+                delayTimer : $('#delayTimer').val(),
+                useYn : $('input[name="useYn"]:checked').val(),
+                type : $("#type option:selected").val(),
+                ddc : $('#ddc').val(),
+                onSuggest : $('#onSuggest').val(),
+                offSuggest : $('#offSuggest').val(),
+                onType : $("#onType option:selected").val(),
+                offType : $("#offType option:selected").val()
+            }
+
+            console.log(data);
+
+
+        }
+
+        function dcpUpdate(num,state) {
+            console.log(state);
+            $.ajax({
+                url:'/dcp/'+num, //request 보낼 서버의 경로
+                type:'get', // 메소드(get, post, put 등)
+                headers: {'Content-Type': 'application/json'},
+                success: function(data) {
+
+                    const dcplist = data.data;
+                    dcplist.useYn = state == 1 ? "YES" : "NO"
+                    axios({
+                        url: '/dcp/' + num, //request 보낼 서버의 경로
+                        method: 'put', // 메소드(get, post, put 등)
+                        data: dcplist, //보낼 데이터
+                        headers: {'Content-Type': 'application/json'}
+                    }).then(function (response) {
+                        //성공
+                        console.log(response);
+                        alert('변경완료');
+                        location.reload();
+                    }).catch(function (response) {
+                        console.log(response);
+                        alert(response.message);
+                    });
+                },
+                error: function(err) {
+                    //서버로부터 응답이 정상적으로 처리되지 못햇을 때 실행
+                }
+            });
+        }
+
+        function scdataUpdate(num,state) {
+            console.log(state);
+            $.ajax({
+                url:'/scData/'+num, //request 보낼 서버의 경로
+                type:'get', // 메소드(get, post, put 등)
+                headers: {'Content-Type': 'application/json'},
+                success: function(data) {
+
+                    const sclist = data.data;
+                    sclist.useYn = state == 1 ? "YES" : "NO"
+                    console.log(sclist);
+                    axios({
+                        url: '/scData/' + num, //request 보낼 서버의 경로
+                        method: 'put', // 메소드(get, post, put 등)
+                        data: sclist, //보낼 데이터
+                        headers: {'Content-Type': 'application/json'}
+                    }).then(function (response) {
+                        //성공
+                        console.log(response);
+                        alert('변경완료');
+                        location.reload();
+                    }).catch(function (response) {
+                        console.log(response);
+                        alert(response.message);
+                    });
+                },
+                error: function(err) {
+                    //서버로부터 응답이 정상적으로 처리되지 못햇을 때 실행
+                }
+            });
+        }
+
+
+        function dcpDel(id){
+            axios({
+                url:'/dcp/'+id, //request 보낼 서버의 경로
+                method:'delete', // 메소드(get, post, put 등)
+                headers: {'Content-Type': 'application/json'}
+            }).then(function (response) {
+                //성공
+                console.log(response);
+                alert('삭제완료');
+                location.reload();
+            }).catch(function (response) {
+                console.log(response);
+                alert("삭제불가 group의 연결 내역 부터 삭제 해주세요");
+            });
+
+        }
+
+
+        function scdataDel(id){
+            axios({
+                url:'/scData/'+id, //request 보낼 서버의 경로
+                method:'delete', // 메소드(get, post, put 등)
+                headers: {'Content-Type': 'application/json'}
+            }).then(function (response) {
+                //성공
+                console.log(response);
+                alert('삭제완료');
+                location.reload();
+            }).catch(function (response) {
+                console.log(response);
+                alert("삭제불가 group의 연결 내역 부터 삭제 해주세요.");
+            });
+
+        }
+
+    </script>
+</div>
+</html>

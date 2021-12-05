@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<header th:fragment="headerFragment" class="header">
+
+    <!-- Middle Header -->
+    <div class="middle-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="middle-inner">
+                        <div class="row">
+                            <div class="col-lg-2 col-md-3 col-12">
+                                <!-- Logo -->
+                                <div class="logo">
+                                    <!-- Image Logo -->
+                                    <div class="img-logo">
+                                        <a href="/user_main">
+                                            <img th:src="@{/assets/vendor/img/logo.png}" alt="#">
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="mobile-nav"></div>
+                            </div>
+                            <div class="col-lg-10 col-md-9 col-12">
+                                <div class="menu-area">
+                                    <!-- Main Menu -->
+                                    <nav class="navbar navbar-expand-lg">
+                                        <div class="navbar-collapse">
+                                            <div class="nav-inner">
+                                                <div class="menu-home-menu-container">
+                                                    <!-- Naviagiton -->
+                                                    <ul id="nav" class="nav main-menu menu navbar-nav">
+                                                        <li><a href="/main">홈</a>
+<!--                                                            <ul class="sub-menu">-->
+<!--                                                                <li><a href="index-admin">관리자</a></li>-->
+<!--                                                                <li><a href="index-member">멤버</a></li>-->
+<!--                                                                <li><a href="index-user">유저</a></li>-->
+<!--                                                            </ul>-->
+                                                        </li>
+<!--                                                        <li><a href="#">업체관리</a>-->
+<!--                                                            <ul class="sub-menu">-->
+<!--                                                                <li><a href="member_registration">업체등록</a></li>-->
+<!--                                                                <li><a href="member_list">업체 내역</a></li>-->
+<!--                                                            </ul>-->
+<!--                                                        </li>-->
+                                                        <li><a href="#">모니터링</a>
+                                                            <ul class="sub-menu">
+                                                                <li th:if="${user.getAdminYn().equals('YES')}" ><a href="/monitoring/draw">화면그리기</a></li>
+                                                                <li><a href="/monitoring">모니터링</a></li>
+                                                                <li th:if="${user.getAdminYn().equals('YES')}"><a href="/drawgroup_registration">모니터링 정보 입력</a></li>
+                                                                <li th:if="${user.getAdminYn().equals('YES')}"><a href="/drawgroup_list">모니터링 관리 리스트</a></li>
+                                                                <li><a href="/report">DCP 내역</a></li>
+                                                            </ul>
+                                                        </li>
+                                                        <li><a href="#">장비관리</a>
+                                                            <ul class="sub-menu">
+                                                                <li><a href="/gateway_registration">Gateway등록</a></li>
+                                                                <li><a href="/ddc_registration">DIO 등록</a></li>
+                                                                <li><a href="/dcu_registration">DCU 등록</a></li>
+                                                                <li><a href="/equipment_list">장비내역</a></li>
+                                                                <li><a href="/dcp_registration">DCP 등록</a></li>
+                                                                <li><a href="/scheduling_registration">예약 등록</a></li>
+                                                                <li><a href="/settimer_list">DCP&예약 관리</a></li>
+                                                                <li><a href="/dcpset_registration">DCP_SET 등록</a></li>
+                                                                <li><a href="/dcpset_list">DCP_SET 관리</a></li>
+                                                                <li><a href="/group_list">Group 관리</a></li>
+                                                                <li><a href="/groupsetting">Group 등록</a></li>
+
+
+                                                            </ul>
+                                                        </li>
+<!--                                                        <li><a href="#">메세지관리</a>-->
+<!--                                                            <ul class="sub-menu">-->
+<!--                                                                <li><a href="message_registration">메세지등록</a></li>-->
+<!--                                                                <li><a href="message_list">메세지 내역</a></li>-->
+
+<!--                                                            </ul>-->
+<!--                                                        </li>-->
+                                                        <li><a href="#">회원관리</a>
+                                                            <ul class="sub-menu">
+                                                                <li><a href="/member_registration">회원등록</a></li>
+                                                                <li><a href="/member_list">회원 내역</a></li>
+                                                                <li><a href="/setting">설정</a></li>
+
+                                                            </ul>
+                                                        </li>
+                                                        <li><a href="#">메세지알림</a>
+                                                            <ul class="sub-menu">
+                                                                <li><a href="/message_send_member">회원 메세지 관리</a></li>
+                                                                <li><a href="/message_alram_list">메세지 발생내역</a></li>
+
+                                                            </ul>
+                                                        </li>
+                                                        <li class="icon-active"><a href="#">공지사항</a></li>
+                                                        <li class="icon-active"><a href="#">Q&A</a></li>
+
+                                                    </ul>
+                                                    <!--/ End Naviagiton -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="log" style="float:right; color:#fff">
+                                            로그인
+                                        </div>
+                                    </nav>
+                                    <!--/ End Main Menu -->
+
+                                    <!-- Right Bar -->
+                                    <div class="right-bar">
+                                        <!-- Search Bar -->
+                                        <ul class="right-nav">
+<!--                                            <li class="top-search"><a href="#0"><i class="fa fa-search"></i></a></li>-->
+                                            <li class="bar"><a class="fa fa-bars"></a></li>
+                                        </ul>
+                                        <!--/ End Search Bar -->
+                                        <!-- Search Form -->
+<!--                                        <div class="search-top">-->
+<!--                                            <form action="#" class="search-form" method="get">-->
+<!--                                                <input type="text" name="s" value="" placeholder="Search here"/>-->
+<!--                                                <button type="submit" id="searchsubmit"><i class="fa fa-search"></i></button>-->
+<!--                                            </form>-->
+<!--                                        </div>-->
+                                        <!--/ End Search Form -->
+                                    </div>
+                                    <!--/ End Right Bar -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/ End Middle Header -->
+    <!--/ End Header -->
+    <!-- Sidebar Popup -->
+    <div class="sidebar-popup">
+        <div class="cross">
+            <a class="btn"><i class="fa fa-close"></i></a>
+        </div>
+        <div class="single-content">
+            <h4>About 디에스이엔</h4>
+            <p>디에스이엔 시스템관리시스템</p>
+
+        </div>
+        <div class="single-content">
+            <h4>바로가기</h4>
+            <ul class="links">
+                <li><a href="/main">홈</a></li>
+<!--                <li><a href="#">업체관리</a>-->
+<!--                    <ul class="sub-menu">-->
+<!--                        <li><a href="member_registration">업체등록</a></li>-->
+<!--                        <li><a href="member_list">업체 내역</a></li>-->
+<!--                    </ul>-->
+<!--                </li>-->
+                <li><a href="#">모니터링</a>
+                    <ul class="sub-menu">
+                        <li th:if="${user.getAdminYn().equals('YES')}"><a href="/monitoring/draw">화면그리기</a></li>
+                        <li><a href="/monitoring">모니터링</a></li>
+                        <li th:if="${user.getAdminYn().equals('YES')}"><a href="/drawgroup_registration">모니터링 정보 입력</a></li>
+                        <li th:if="${user.getAdminYn().equals('YES')}"><a href="/drawgroup_list">모니터링 관리 리스트</a></li>
+                        <li><a href="/report">DCP내역</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">장비관리</a>
+                    <ul class="sub-menu">
+                        <li><a href="/gateway_registration">Gateway등록</a></li>
+                        <li><a href="/ddc_registration">DIO 등록</a></li>
+                        <li><a href="/dcu_registration">DCU 등록</a></li>
+                        <li><a href="/equipment_list">장비내역</a></li>
+                         <li><a href="/dcp_registration">DCP 등록</a></li>
+                        <li><a href="/scheduling_registration">예약 등록</a></li>
+                        <li><a href="/settimer_list">DCP&예약 관리</a></li>
+                        <li><a href="/dcpset_registration">DCP_SET 등록</a></li>
+                        <li><a href="/dcpset_list">DCP_SET 관리</a></li>
+                        <li><a href="/group_list">Group 관리</a></li>
+                        <li><a href="/groupsetting">Group 등록</a></li>
+                    </ul>
+                </li>
+<!--                <li><a href="#">메세지관리</a>-->
+<!--                    <ul class="sub-menu">-->
+<!--                        <li><a href="member_registration">메세지등록</a></li>-->
+<!--                        <li><a href="member_list">메세지 내역</a></li>-->
+<!--                    </ul>-->
+<!--                </li>-->
+
+                <li><a href="#">회원관리</a>
+                    <ul class="sub-menu">
+                        <li><a href="/member_registration">회원등록</a></li>
+                        <li><a href="/member_list">회원 내역</a></li>
+                        <li><a href="/setting">설정</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="#">메세지알림</a>
+                    <ul class="sub-menu">
+                        <li><a href="/message_registration">메세지알림</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">공지사항</a></li>
+                <li><a href="#">Q & A</a></li>
+
+            </ul>
+        </div>
+    </div>
+    <!--/ Sidebar Popup -->
+</header>
+
+<body>
+
+</body>
+</html>

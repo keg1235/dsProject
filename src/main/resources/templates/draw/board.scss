@@ -1,0 +1,44 @@
+$notecolor: rgb(245, 255, 165);
+$noteborder: darken($notecolor, 50%);
+$notetext: rgb(135, 106, 106);
+$shadow: darken($noteborder, 100%);
+
+$boardcolor: rgb(87, 192, 114);
+
+$note-height: 1.5in;
+$note-aspect-ratio: 1.6;
+
+header {
+    font-family: "Raleway", sans;
+}
+
+footer {
+    font-size: 0.8em;
+}
+
+#board {
+    height: 20em;
+    border: solid black 3px;
+    border-radius: 1em;
+    background-color: $boardcolor;
+}
+
+.note {
+    font-family: "Coming Soon", cursive;
+    font-size: 0.85em;
+
+    border: solid $noteborder 1px;
+    color: $notetext;
+    border-radius: 0.35em;
+    height: $note-height;
+    width: $note-height * $note-aspect-ratio;
+    position: absolute;
+    background-color: $notecolor;
+    padding: 1em;
+    box-shadow: 0.05em 0.05em 0.1em $shadow;
+
+    &.raised {
+        box-shadow: 0.2em 0.2em 0.5em $shadow;
+    }
+}
+

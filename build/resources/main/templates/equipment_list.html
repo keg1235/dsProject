@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/layout}">
+
+<div layout:fragment="content">
+		 <section class="features-area section-bg"   style="padding-top:50px;">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-3 col-md-6 col-12">
+					Gateway 목록
+					</div>
+				</div>
+			</div>
+		</section>
+		 <div class="container" style="padding-top:10px;">
+        <table  class="table table-bordered table-hover text-center" style="color: #FFF;  ">
+            <thead>
+            <tr style="vertical-align:middle">
+                <th>번호</th>
+                <th>설치위치</th>
+                <th>IP Address</th>
+                <th>특이사항</th> 
+                <th>관리</th>
+            </tr>
+            </thead>
+            <tbody id="gateway-tb">
+            </tbody>
+       		</table>
+               
+           <section class="features-area section-bg"   style="padding-top:50px;">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-3 col-md-6 col-12">
+					DDC 목록
+					</div>
+				</div>
+			</div>
+		</section>
+		 <table class="table table-bordered table-hover text-center" style="color: #FFF;  ">
+            <thead>
+                <tr style="vertical-align:middle">
+                    <th>번호</th>
+                    <th>명칭</th>
+                    <th>위치</th>
+                    <th>종류</th>
+                    <th>Device ID</th>
+                    <th>메세지사용 여부</th>
+                    <th>관리</th>
+                </tr>
+            </thead>
+             <tbody id="ddc-tb">
+
+             </tbody>
+        </table>
+
+        <br />
+    </div>
+    <script>
+        $(document).ready(function(){
+            initgateway();
+            initddc();
+        });
+
+        function initgateway() {
+            $.ajax({
+                url: '/gateway', //request 보낼 서버의 경로
+                type: 'get', // 메소드(get, post, put 등)
+                headers: {'Content-Type': 'application/json'},
+                success: function (data) {
+                    const gateway = data.data;
+                    console.log(gateway);
+                    for ( i in gateway){
+                    var my_tbody = document.getElementById('gateway-tb');
+                    var row = my_tbody.insertRow(my_tbody.rows.length);
+                    row.insertCell(0).innerHTML = gateway[i].id;
+                    row.insertCell(1).innerHTML = gateway[i].location;
+                    row.insertCell(2).innerHTML = gateway[i].ipAddress;
+                    row.insertCell(3).innerHTML = gateway[i].memo;
+                    row.insertCell(4).innerHTML = '<a onclick="gatewayDel(' + gateway[i].id + ')" class="btn btn-danger">삭제</a> <a href="/gateway_registration/'+gateway[i].id +'" class="btn btn-danger">수정</a>'
+                    }
+                },
+                error: function (err) {
+                    //서버로부터 응답이 정상적으로 처리되지 못햇을 때 실행
+                }
+            });
+        }
+
+
+        function initddc(){
+            $.ajax({
+                url: '/ddc', //request 보낼 서버의 경로
+                type: 'get', // 메소드(get, post, put 등)
+                headers: {'Content-Type': 'application/json'},
+                success: function (data) {
+                    const ddclist = data.data;
+                    console.log(ddclist);
+                    for ( i in ddclist){
+                        var my_tbody = document.getElementById('ddc-tb');
+                        var row = my_tbody.insertRow(my_tbody.rows.length);
+                        row.insertCell(0).innerHTML = ddclist[i].seq;
+                        row.insertCell(1).innerHTML = ddclist[i].name;
+                        row.insertCell(2).innerHTML = ddclist[i].location;
+                        row.insertCell(3).innerHTML = "Di"+ddclist[i].di+"#";
+                        row.insertCell(4).innerHTML = ddclist[i].ddc;
+                        row.insertCell(5).innerHTML = ddclist[i].use;
+                        if (ddclist[i].dcu == null){
+                            row.insertCell(6).innerHTML = '<a onclick="ddcDel(' + ddclist[i].id + ')" class="btn btn-danger">삭제</a> <a href="/ddc_registration/'+ddclist[i].id +'" class="btn btn-danger">수정</a>'
+                        }else{
+                            row.insertCell(6).innerHTML = '<a onclick="ddcDel(' + ddclist[i].id + ')" class="btn btn-danger">삭제</a> <a href="/dcu_registration/'+ddclist[i].id +'" class="btn btn-danger">수정</a>'
+                        }
+
+                    }
+
+                },
+                error: function (err) {
+                    //서버로부터 응답이 정상적으로 처리되지 못햇을 때 실행
+                }
+            });
+        }
+
+
+        function ddcDel(id){
+            axios({
+                url:'/ddc/'+id, //request 보낼 서버의 경로
+                method:'delete', // 메소드(get, post, put 등)
+                headers: {'Content-Type': 'application/json'}
+            }).then(function (response) {
+                //성공
+                console.log(response);
+                alert('삭제완료');
+                location.reload();
+            }).catch(function (response) {
+                console.log(response);
+                alert("삭제불가 group관리 부터 삭제 해주세요");
+            });
+
+        }
+
+
+        function gatewayDel(id){
+            axios({
+                url:'/gateway/'+id, //request 보낼 서버의 경로
+                method:'delete', // 메소드(get, post, put 등)
+                headers: {'Content-Type': 'application/json'}
+            }).then(function (response) {
+                //성공
+                console.log(response);
+                alert('삭제완료');
+                location.reload();
+            }).catch(function (response) {
+                console.log(response);
+                alert("삭제불가 DDC또는 DCP부터 삭제 해주세요");
+            });
+
+        }
+
+    </script>
+</div>
+</html>

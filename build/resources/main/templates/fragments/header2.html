@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<header th:fragment="headerFragment">
+
+    <!-- Middle Header -->
+    <div class="middle-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="middle-inner">
+                        <div class="row">
+                            <div class="col-lg-2 col-md-3 col-12">
+                                <!-- Logo -->
+                                <div class="logo">
+                                    <!-- Image Logo -->
+                                    <div class="img-logo">
+                                        <a href="index.html">
+                                            <img th:src="@{/assets/vendor/img/logo.png}" alt="#">
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="mobile-nav"></div>
+                            </div>
+                            <div class="col-lg-10 col-md-9 col-12">
+                                <div class="menu-area">
+                                    <nav class="navbar navbar-expand-lg">
+                                        <div class="navbar-collapse">
+                                            <div class="nav-inner">
+                                                <div class="menu-home-menu-container">
+                                                    <!-- Naviagiton -->
+                                                    <ul id="nav" class="nav main-menu menu navbar-nav">
+                                                        <li><a href="index.html">홈</a></li>
+
+                                                        <li><a href="message_management.html">메세지관리</a>
+                                                            <ul class="sub-menu">
+                                                                <li><a href="message_registration.html">메세지등록</a></li>
+                                                                <li><a href="message_list.html">메세지 내역</a></li>
+
+                                                            </ul>
+                                                        </li>
+                                                        <li><a href="services.html">회원관리</a>
+                                                            <ul class="sub-menu">
+                                                                <li><a href="member_registration.html">회원등록</a></li>
+                                                                <li><a href="member_list.html">회원 내역</a></li>
+
+                                                            </ul>
+                                                        </li>
+                                                        <li><a href="message_alram_list.html">메세지알림</a>
+                                                            <ul class="sub-menu">
+
+                                                                <li><a href="message_alram_list.html">메세지 발생내역</a></li>
+
+                                                            </ul>
+                                                        </li>
+                                                        <li class="icon-active"><a href="#">공지사항</a></li>
+                                                        <li class="icon-active"><a href="#">Q&A</a></li>
+
+                                                    </ul>
+                                                    <!--/ End Naviagiton -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="log" style="float:right; color:#fff">
+                                            로그인
+                                        </div>
+                                    </nav>
+                                    <!--/ End Main Menu -->
+
+                                    <!-- Right Bar -->
+                                    <div class="right-bar">
+                                        <!-- Search Bar -->
+                                        <ul class="right-nav">
+                                            <li class="top-search"><a href="#0"><i class="fa fa-search"></i></a></li>
+                                            <li class="bar"><a class="fa fa-bars"></a></li>
+                                        </ul>
+                                        <!--/ End Search Bar -->
+                                        <!-- Search Form -->
+                                        <div class="search-top">
+                                            <form action="#" class="search-form" method="get">
+                                                <input type="text" name="s" value="" placeholder="Search here"/>
+                                                <button type="submit" id="searchsubmit"><i class="fa fa-search"></i></button>
+                                            </form>
+                                        </div>
+                                        <!--/ End Search Form -->
+                                    </div>
+                                    <!--/ End Right Bar -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>								<!-- Main Menu -->
+
+    <!--/ End Middle Header -->
+    <!--/ End Header -->
+    <!-- Sidebar Popup -->
+    <div class="sidebar-popup">
+        <div class="cross">
+            <a class="btn"><i class="fa fa-close"></i></a>
+        </div>
+        <div class="single-content">
+            <h4>About 디에스이엔</h4>
+            <p>디에스이엔 시스템관리시스템</p>
+
+        </div>
+        <div class="single-content">
+            <h4>바로가기</h4>
+            <ul class="links">
+                <li><a href="#">홈</a></li>
+
+                <li><a href="#">메세지관리</a>
+                    <ul class="sub-menu">
+                        <li><a href="member_registration.html">메세지등록</a></li>
+                        <li><a href="member_list.html">메세지 내역</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">회원관리</a>
+                    <ul class="sub-menu">
+                        <li><a href="member_registration.html">회원등록</a></li>
+                        <li><a href="member_list.html">회원 내역</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="#">메세지알림</a>
+                    <ul class="sub-menu">
+                        <li><a href="message_registration.html">메세지알림</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">공지사항</a></li>
+                <li><a href="#">Q & A</a></li>
+
+            </ul>
+        </div>
+    </div>
+    <!--/ Sidebar Popup -->
+</header>
+<body>
+
+</body>
+</html>

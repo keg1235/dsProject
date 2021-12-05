@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/layout}" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<style>
+	.container-custom{
+		width: 2000px !important;
+	}
+
+</style>
+<div layout:fragment="content" id="app">
+	<section class="features-area section-bg">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-3 col-md-6 col-12">
+
+				</div>
+			</div>
+			<br /><br />
+		</div>
+	</section>
+
+	<div id="layoutAuthentication">
+		<div id="layoutAuthentication_content">
+			<main>
+				<div class="container" style="max-width: 2000px !important;">
+					<div class="row">
+						<div class="col-12">
+							<div class="blog-comments-form">
+								<div class="con-4 bottom-title">
+									<h2>DCP SET 등록</h2>
+
+								</div>
+								<!-- Comment Form -->
+								<form class="form" method="post">
+									<div class="row">
+										<div class="col-4">
+												<div class="form-group">
+													<input v-if="!pageInit" type="button" id="addBtn" name="name" required="required" v-on:click="add_row" value="추가">
+												</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-12">
+											<table class="table table-bordered table-hover text-center" style="color: #FFF; border-top: 1px solid #ddd">
+												<thead>
+												<tr style="color: black; vertical-align:middle;">
+													<th v-if="pageInit" >ID</th>
+													<th>게이트웨이</th>
+													<th>장치 번호</th>
+													<th>명칭</th>
+													<th>메모리 주소</th>
+													<th>디지털 온도/DI DO </th>
+													<th>Bit 번호</th>
+													<th>읽기 or 쓰기</th>
+													<th>DCP SEND 여부</th>
+													<th>Data Type </th>
+													<th>주소 index</th>
+													<th>volume Min </th>
+													<th>volume Max </th>
+													<th>display Min </th>
+													<th>display Max </th>
+													<th>부호 </th>
+													<th v-if="!pageInit">삭제</th>
+												</tr>
+												</thead>
+												<tbody id="my-tbody" style="color:black">
+												<tr style="vertical-align:text-bottom" v-for="(item) in dcpSetList" :key="item.id">
+													<td v-if="pageInit">{{item.id}}</td>
+													<td><select  v-model="item.gatewayId" name="gateway_name">
+														<option
+																v-for="(selectItem) in gatewayList"
+																:value="selectItem.id"
+														>{{selectItem.ipAddress}}</option>
+													</select></td>
+													<td><input v-model="item.dcp" type="number"></td>
+													<td><input v-model="item.name" type="text"></td>
+													<td><input v-model="item.address" type="number"></td>
+													<td><select  v-model="item.type" >
+														<option
+																v-for="(selectItem) in typeList"
+																:value="selectItem.id"
+														>{{selectItem.name}}</option>
+													</select></td>
+													<td><input :disabled="item.type == 'digital'" v-model="item.num" type="number"></td>
+													<td><select  v-model="item.readWriteType">
+														<option
+																v-for="(selectItem) in readWriteTypeList"
+																:value="selectItem.id"
+														>{{selectItem.name}}</option>
+													</select></td>
+													<td><select  v-model="item.dcpSend">
+														<option
+																v-for="(selectItem) in useList"
+																:value="selectItem.id"
+														>{{selectItem.name}}</option>
+													</select></td>
+													<td><select  v-model="item.dataType" >
+														<option
+																v-for="(selectItem) in dataTypeList"
+																:value="selectItem.id"
+														>{{selectItem.name}}</option>
+													</select></td>
+													<td><input v-model="item.indexNum" type="number"></td>
+													<td><input :disabled="item.type == 'normal'" v-model="item.volumeMin" type="text"></td>
+													<td><input :disabled="item.type == 'normal'" v-model="item.volumeMax" type="text"></td>
+													<td><input :disabled="item.type == 'normal'" v-model="item.displayMin" type="text"></td>
+													<td><input :disabled="item.type == 'normal'" v-model="item.displayMax" type="text"></td>
+													<td><input :disabled="item.type == 'normal'" v-model="item.unit" list="unit" type="text">
+													<datalist id="unit">
+														<option
+																v-for="(selectItem) in unitList"
+																:value="selectItem.id"
+														>
+													</datalist>
+													</td>
+													<td v-if="!pageInit"><a v-on:click="deleteRow(item.id)"><i class="fa fa-2x fa-times"></i></a></td>
+												</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+<!--										<div class="col-12">-->
+<!--											<div class="form-group">-->
+<!--												<button type="button" class="btn btn-primary">Primary</button>-->
+<!--												<button type="button" class="btn btn-secondary">Secondary</button>-->
+<!--												<button type="button" class="btn btn-success">Success</button>-->
+<!--												<button type="button" class="btn btn-danger">Danger</button>-->
+<!--												<button type="button" class="btn btn-warning">Warning</button>-->
+<!--												<button type="button" class="btn btn-info">ON</button>-->
+<!--												<button type="button" class="btn btn-dark">OFF</button>-->
+<!--											</div>-->
+<!--										</div>-->
+									<div class="row">
+										<div class="col-6">
+											<div class="form-group button">
+												<button v-on:click="save" id="saveBtn" type="button" class="bizwheel-btn primary effect">저장&nbsp;&nbsp; <i class="fa fa-paper-plane"></i></button>
+											</div>
+										</div>
+									</div>
+								<!--/ End Comment Form -->
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</main>
+		</div>
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+
+		<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+		<script>
+			var rootid = "[[${id}]]";
+     //vue 관련
+     var vueObj = new Vue({
+			el: "#app",
+			data: {
+				pageInit: false,
+				dcpSetList:[{id : 1, gatewayId : "",dcp : "", name : "", address : "", num: null, type : "",  readWriteType : "",  dataType : "", volumeMin : "",  volumeMax : "", displayMin : "", displayMax : "", unit  : "",dcpSend : ""}],
+				gatewayList:[],
+				typeList : [{id : "digital" ,name:"디지털(AO/AI)" },{id : "normal" ,name: "일반(DI,DO)"}],
+				readWriteTypeList :  [{id : "DCP" ,name:"DCP" },{id : "DI" ,name: "DI"},{id : "DO" ,name: "DO"}],
+				dataTypeList :  [{id : "Double" ,name:"Double" },{id : "Long" ,name: "Long"},{id : "Word" ,name: "Word"}],
+				unitList:[{ id:"℃",code:1, name: "℃"},{ id:"ppm",code:2, name: "ppm"}],
+				useList:[{ id:"YES",code:1, name: "YES"},{ id:"NO",code:2, name: "NO"}]
+						/*
+				unitList:[{ id:"Meter per second squared[m/s2]",code:166, name: "Meter per second squared[m/s2]"},
+					{ id:"Generic Analog Input",code:201, name: "Generic Analog Input"},
+					{ id:"Generic Analog Output",code:202, name: "Generic Analog Output"},
+					{ id:"Square Meters",code:0, name: "Square Meters"},
+					{ id:"Square Feet",code:1, name: "Square Feet"},
+					{ id:"Square Inches",code:115, name: "Square Inches"},
+					{ id:"Square Centimeters",code:116, name: "Square Centimeters"},
+					{ id:"",code:200, name: ""},
+					{ id:"Currency1",code:105, name: "Currency1"},
+					{ id:"Currency2",code:106, name: "Currency2"},
+					{ id:"Currency3",code:107, name: "Currency3"},
+					{ id:"Currency4",code:108, name: "Currency4"},
+					{ id:"Currency5",code:109, name: "Currency5"},
+					{ id:"Currency6",code:110, name: "Currency6"},
+					{ id:"Currency7",code:111, name: "Currency7"},
+					{ id:"Currency8",code:112, name: "Currency8"},
+					{ id:"Currency9",code:113, name: "Currency9"},
+					{ id:"Currency10",code:114, name: "Currency10"},
+					{ id:"Generic Digitial Input",code:203, name: "Generic Digitial Input"},
+					{ id:"Generic Digital Output",code:204, name: "Generic Digital Output"},
+					{ id:"Milliamperes",code:2, name: "Milliamperes"},
+					{ id:"Ampers",code:3, name: "Ampers"},
+					{ id:"Amperes per Meter",code:167, name: "Amperes per Meter"},
+					{ id:"Amperes per Square Meter",code:168, name: "Amperes per Square Meter"},
+					{ id:"Ampere Square Meters",code:169, name: "Ampere Square Meters"},
+					{ id:"Farads",code:170, name: "Farads"},
+					{ id:"Henrys",code:171, name: "Henrys"},
+					{ id:"Ohms",code:4, name: "Ohms"},
+					{ id:"Ohm Meters",code:172, name: "Ohm Meters"},
+					{ id:"Milliohms",code:145, name: "Milliohms"},
+					{ id:"Killiohms",code:122, name: "Killiohms"},
+					{ id:"Megohms",code:123, name: "Megohms"},
+					{ id:"Siemens",code:173, name: "Siemens"},
+					{ id:"Siemens per meter",code:174, name: "Siemens per meter"},
+					{ id:"Teslas",code:175, name: "Teslas"},
+					{ id:"Volts",code:5, name: "Volts"},
+					{ id:"Millivolts",code:124, name: "Millivolts"},
+					{ id:"Kilovolts",code:6, name: "Kilovolts"},
+					{ id:"Megavolts",code:7, name: "Megavolts"},
+					{ id:"Volt Amperes",code:8, name: "Volt Amperes"},
+					{ id:"Kilovolt Amperes",code:9, name: "Kilovolt Amperes"},
+					{ id:"Megavolt Amperes",code:10, name: "Megavolt Amperes"},
+					{ id:"Volt Amperes Reactive",code:11, name: "Volt Amperes Reactive"},
+					{ id:"Kilovolt Amperes Reactive",code:12, name: "Kilovolt Amperes Reactive"},
+					{ id:"Megavolt Amperes Reactive",code:13, name: "Megavolt Amperes Reactive"},
+					{ id:"Volts per Degree Kelvin",code:176, name: "Volts per Degree Kelvin"},
+					{ id:"Volts per Meter",code:177, name: "Volts per Meter"},
+					{ id:"Degrees Phase",code:14, name: "Degrees Phase"},
+					{ id:"Power Factor",code:15, name: "Power Factor"},
+					{ id:"Webers",code:178, name: "Webers"},
+					{ id:"Joules",code:16, name: "Joules"},
+					{ id:"Kilojoules",code:17, name: "Kilojoules"},
+					{ id:"Kilojoules per Kilogram",code:125, name: "Kilojoules per Kilogram"},
+					{ id:"Megajoules",code:126, name: "Megajoules"},
+					{ id:"Watt Hours",code:18, name: "Watt Hours"},
+					{ id:"Kilowatt Hours",code:19, name: "Kilowatt Hours"},
+					{ id:"Megawatt Hours",code:146, name: "Megawatt Hours"},
+					{ id:"Btus",code:20, name: "Btus"},
+					{ id:"Kilo Btus",code:147, name: "Kilo Btus"},
+					{ id:"Mega Btus",code:148, name: "Mega Btus"},
+					{ id:"Therms",code:21, name: "Therms"},
+					{ id:"Ton Hours",code:22, name: "Ton Hours"},
+					{ id:"Joules per Kilogram dry air",code:23, name: "Joules per Kilogram dry air"},
+					{ id:"Kilojoules per Kilogram dry air",code:149, name: "Kilojoules per Kilogram dry air"},
+					{ id:"Megajoules per Kilogram dry air",code:150, name: "Megajoules per Kilogram dry air"},
+					{ id:"Btus per Pound dry air",code:24, name: "Btus per Pound dry air"},
+					{ id:"Btus per Pound",code:117, name: "Btus per Pound"},
+					{ id:"Joules per Degree Kelvin",code:127, name: "Joules per Degree Kelvin"},
+					{ id:"Kilojoules per Degree Kelvin",code:151, name: "Kilojoules per Degree Kelvin"},
+					{ id:"Megajoules per Degree Kelvin",code:152, name: "Megajoules per Degree Kelvin"},
+					{ id:"Joules per Kilogram Degree Kelvin",code:128, name: "Joules per Kilogram Degree Kelvin"},
+					{ id:"Newton",code:153, name: "Newton"},
+					{ id:"Cycles per Hour",code:25, name: "Cycles per Hour"},
+					{ id:"Cycles per Minute",code:26, name: "Cycles per Minute"},
+					{ id:"Hertz",code:27, name: "Hertz"},
+					{ id:"Kilohertz",code:129, name: "Kilohertz"},
+					{ id:"Megahertz",code:130, name: "Megahertz"},
+					{ id:"Per Hour",code:131, name: "Per Hour"},
+					{ id:"Grams of Water per Kilogram dry air",code:28, name: "Grams of Water per Kilogram dry air"},
+					{ id:"Percent Relative Humidity",code:29, name: "Percent Relative Humidity"},
+					{ id:"Milimeters",code:30, name: "Milimeters"},
+					{ id:"Centimeters",code:118, name: "Centimeters"},
+					{ id:"Meters",code:31, name: "Meters"},
+					{ id:"Inches",code:32, name: "Inches"},
+					{ id:"Feet",code:33, name: "Feet"},
+					{ id:"Candelas",code:179, name: "Candelas"},
+					{ id:"Candelas per Square Meter",code:180, name: "Candelas per Square Meter"},
+					{ id:"Watts per Square Foot",code:34, name: "Watts per Square Foot"},
+					{ id:"Watts per Square Meter",code:35, name: "Watts per Square Meter"},
+					{ id:"Lumens",code:36, name: "Lumens"},
+					{ id:"Luxes",code:37, name: "Luxes"},
+					{ id:"Foot Candles",code:38, name: "Foot Candles"},
+					{ id:"Kilograms",code:39, name: "Kilograms"},
+					{ id:"Pounds Mass",code:40, name: "Pounds Mass"},
+					{ id:"Tons",code:41, name: "Tons"},
+					{ id:"Grams per Second",code:154, name: "Grams per Second"},
+					{ id:"Grams per Minute",code:155, name: "Grams per Minute"},
+					{ id:"Kilograms per Second",code:42, name: "Kilograms per Second"},
+					{ id:"Kilograms per Minute",code:43, name: "Kilograms per Minute"},
+					{ id:"Kilograms per Hour",code:44, name: "Kilograms per Hour"},
+					{ id:"Pounds Mass per Second",code:119, name: "Pounds Mass per Second"},
+					{ id:"Pounds Mass per Minute",code:45, name: "Pounds Mass per Minute"},
+					{ id:"Pounds Mass per Hour",code:46, name: "Pounds Mass per Hour"},
+					{ id:"Tons per Hour",code:156, name: "Tons per Hour"},
+					{ id:"Milliwatts",code:132, name: "Milliwatts"},
+					{ id:"Watts",code:47, name: "Watts"},
+					{ id:"Kilowatts",code:48, name: "Kilowatts"},
+					{ id:"Megawatts",code:49, name: "Megawatts"},
+					{ id:"Btus per Hour",code:50, name: "Btus per Hour"},
+					{ id:"Kilo Btus per Hour",code:157, name: "Kilo Btus per Hour"},
+					{ id:"Horsepower",code:51, name: "Horsepower"},
+					{ id:"Tons Refrigeration",code:52, name: "Tons Refrigeration"},
+					{ id:"Pascals",code:53, name: "Pascals"},
+					{ id:"Hectopascals",code:133, name: "Hectopascals"},
+					{ id:"Kilopascals",code:54, name: "Kilopascals"},
+					{ id:"Millibars",code:134, name: "Millibars"},
+					{ id:"Bars",code:55, name: "Bars"},
+					{ id:"Pounds Force per Square Inch",code:56, name: "Pounds Force per Square Inch"},
+					{ id:"Centimeters of Water",code:57, name: "Centimeters of Water"},
+					{ id:"Inches of Water",code:58, name: "Inches of Water"},
+					{ id:"Millimeters of Mercury",code:59, name: "Millimeters of Mercury"},
+					{ id:"Centimeters of Mercury",code:60, name: "Centimeters of Mercury"},
+					{ id:"Inches of Mercury",code:61, name: "Inches of Mercury"},
+					{ id:"Degrees Celsius",code:62, name: "Degrees Celsius"},
+					{ id:"Degrees Kelvin",code:63, name: "Degrees Kelvin"},
+					{ id:"Degrees Kelvin per Hour",code:181, name: "Degrees Kelvin per Hour"},
+					{ id:"Degrees Kelvin per Minute",code:182, name: "Degrees Kelvin per Minute"},
+					{ id:"Degrees Fahrenheit",code:64, name: "Degrees Fahrenheit"},
+					{ id:"Degree Days Celsius",code:65, name: "Degree Days Celsius"},
+					{ id:"Degree Days Fahrenheit",code:66, name: "Degree Days Fahrenheit"},
+					{ id:"Delta Degrees Fahrenheit",code:120, name: "Delta Degrees Fahrenheit"},
+					{ id:"Delta Degrees Kelvin",code:121, name: "Delta Degrees Kelvin"},
+					{ id:"Years",code:67, name: "Years"},
+					{ id:"Months",code:68, name: "Months"},
+					{ id:"Weeks",code:69, name: "Weeks"},
+					{ id:"Days",code:70, name: "Days"},
+					{ id:"Hours",code:71, name: "Hours"},
+					{ id:"Minutes",code:72, name: "Minutes"},
+					{ id:"Seconds",code:73, name: "Seconds"},
+					{ id:"Hundredths Seconds",code:158, name: "Hundredths Seconds"},
+					{ id:"Milliseconds",code:159, name: "Milliseconds"},
+					{ id:"Unix Time, seconds since January 1, 1970",code:210, name: "Unix Time, seconds since January 1, 1970"},
+					{ id:"J2000.0, seconds since January 1, 2000",code:211, name: "J2000.0, seconds since January 1, 2000"},
+					{ id:"Newton Meters",code:160, name: "Newton Meters"},
+					{ id:"Millimeters per Second",code:161, name: "Millimeters per Second"},
+					{ id:"Millimeters per Minute",code:162, name: "Millimeters per Minute"},
+					{ id:"Meters per Second",code:74, name: "Meters per Second"},
+					{ id:"Meters per Minute",code:163, name: "Meters per Minute"},
+					{ id:"Meters per Hour",code:164, name: "Meters per Hour"},
+					{ id:"Kilometers per Hour",code:75, name: "Kilometers per Hour"},
+					{ id:"Feet per Second",code:76, name: "Feet per Second"},
+					{ id:"Feet per Minute",code:77, name: "Feet per Minute"},
+					{ id:"Miles per Hour",code:78, name: "Miles per Hour"},
+					{ id:"Cubic Feet",code:79, name: "Cubic Feet"},
+					{ id:"Cubic Meters",code:80, name: "Cubic Meters"},
+					{ id:"Imperial Gallons",code:81, name: "Imperial Gallons"},
+					{ id:"Liters",code:82, name: "Liters"},
+					{ id:"US Gallons",code:83, name: "US Gallons"},
+					{ id:"Cubic Feet per Second",code:142, name: "Cubic Feet per Second"},
+					{ id:"Cubic Feet per Minute",code:84, name: "Cubic Feet per Minute"},
+					{ id:"Cubic Meters per Second",code:85, name: "Cubic Meters per Second"},
+					{ id:"Cubic Meters per Minute",code:165, name: "Cubic Meters per Minute"},
+					{ id:"Cubic Meters per Hour",code:135, name: "Cubic Meters per Hour"},
+					{ id:"Imperial Gallons per Minute",code:86, name: "Imperial Gallons per Minute"},
+					{ id:"Liters per Second",code:87, name: "Liters per Second"},
+					{ id:"Liters per Minute",code:88, name: "Liters per Minute"},
+					{ id:"Liters per Hour",code:136, name: "Liters per Hour"},
+					{ id:"US Gallons per Minute",code:89, name: "US Gallons per Minute"},
+					{ id:"Degrees Angular",code:90, name: "Degrees Angular"},
+					{ id:"Degrees Celsius per Hour",code:91, name: "Degrees Celsius per Hour"},
+					{ id:"Degrees Celsius per Minute",code:92, name: "Degrees Celsius per Minute"},
+					{ id:"Degrees Fahrenheit per Hour",code:93, name: "Degrees Fahrenheit per Hour"},
+					{ id:"Degrees Fahrenheit per Minute",code:94, name: "Degrees Fahrenheit per Minute"},
+					{ id:"Joule Seconds",code:183, name: "Joule Seconds"},
+					{ id:"Kilograms per Cubic Meter",code:186, name: "Kilograms per Cubic Meter"},
+					{ id:"KW Hours per Square Meter",code:137, name: "KW Hours per Square Meter"},
+					{ id:"KW Hours per Square Foot",code:138, name: "KW Hours per Square Foot"},
+					{ id:"Megajoules per Square Meter",code:139, name: "Megajoules per Square Meter"},
+					{ id:"Megajoules per Square Foot",code:140, name: "Megajoules per Square Foot"},
+					{ id:"No Units",code:95, name: "No Units"},
+					{ id:"Newton Seconds",code:187, name: "Newton Seconds"},
+					{ id:"Newtons per Meter",code:188, name: "Newtons per Meter"},
+					{ id:"Parts per Million",code:96, name: "Parts per Million"},
+					{ id:"Parts per Billion",code:97, name: "Parts per Billion"},
+					{ id:"Percent",code:98, name: "Percent"},
+					{ id:"Percent Obscuration per Foot",code:143, name: "Percent Obscuration per Foot"},
+					{ id:"Percent Obscuration per Meter",code:144, name: "Percent Obscuration per Meter"},
+					{ id:"Percent per Second",code:99, name: "Percent per Second"},
+					{ id:"Per Minute",code:100, name: "Per Minute"},
+					{ id:"Per Second",code:101, name: "Per Second"},
+					{ id:"PSI per Degree Fahrenheit",code:102, name: "PSI per Degree Fahrenheit"},
+					{ id:"Radians",code:103, name: "Radians"},
+					{ id:"Radians per Second",code:184, name: "Radians per Second"},
+					{ id:"Revolutions per Minute",code:104, name: "Revolutions per Minute"},
+					{ id:"Square Meters per Newton",code:185, name: "Square Meters per Newton"},
+					{ id:"Watts per Meter per Degree Kelvin",code:189, name: "Watts per Meter per Degree Kelvin"},
+					{ id:"Watts per Square Meter Degree Kelvin",code:141, name: "Watts per Square Meter Degree Kelvin"}]
+					*/
+			},
+			methods: {
+				commoncode : function(){
+					axios.get('/gateway').then(res => {
+
+						this.gatewayList= res.data.data
+						console.log(this.gatewayList)
+					})
+				},
+				init : function (){
+					axios.get('/dcpSet/'+rootid).then(res => {
+						this.dcpSetList = []
+						console.log(res.data.data)
+						this.dcpSetList.push(res.data.data);
+						console.log(this.dcpSetList)
+					})
+
+			  	},
+				save : function () {
+					console.log(this.dcpSetList)
+					if (this.pageInit){
+						axios({
+							method: 'put',
+							url: '/dcpSet/'+rootid,
+							data: this.dcpSetList[0],
+							headers: {'Content-Type': 'application/json'},
+						})
+								.then(function (response) {
+									//FunLoadingBarEnd();
+									alert("Save complete.")
+									console.log(response);
+								})
+								.catch(function (response) {
+									//FunLoadingBarEnd();
+									alert("Save fail");
+									console.log(response);
+								});
+					}else{
+						axios({
+							method: 'post',
+							url: '/dcpSet',
+							data: this.dcpSetList,
+							headers: {'Content-Type': 'application/json'},
+						})
+								.then(function (response) {
+									//FunLoadingBarEnd();
+									alert("Save complete.")
+									console.log(response);
+								})
+								.catch(function (response) {
+									//FunLoadingBarEnd();
+									alert("Save fail");
+									console.log(response);
+								});
+					}
+
+			  	},
+				deleteRow : function(id){
+					this.dcpSetList =  this.dcpSetList.filter(dcpSet => dcpSet.id !== id);
+					console.log(this.dcpSetList)
+				},
+				add_row : function(){
+
+					var data = {
+						id : this.dcpSetList.length+1,
+						gatewayId : null,
+						dcp : null,
+						name : null,
+						address : null,
+						num : null,
+						type : null,
+						readWriteType : null,
+						volumeMin : null,
+						volumeMax : null,
+						displayMin : null,
+						displayMax : null,
+						unit : null,
+						indexNum : null
+					}
+					this.dcpSetList.push(data);
+					console.log(this.dcpSetList)
+
+				}
+				/*
+			  upload: function(){
+
+				var form = $('#uploadForm')[0];
+				var formData = new FormData(form);
+
+				for (const [key, value] of Object.entries(this.files)) {
+					console.log(value);
+					formData.append('files',value);
+				}
+
+				console.log(formData);
+			  axios({
+				  method: 'post',
+				  // url: `http://localhost:8080/fileUpload/updateFiles?targetDirectory=${$('.file-path-input').val()}`,
+				  url: 'http://localhost:9999/fileUpload',
+				  data: formData,
+				  headers: {'Content-Type': 'multipart/form-data' }
+			  })
+				  .then(function (response) {
+					  //FunLoadingBarEnd();
+					  alert("Save complete.")
+					  console.log(response);
+				  })
+				  .catch(function (response) {
+					  //FunLoadingBarEnd();
+					  alert("Save fail");
+					  console.log(response);
+				  });
+			  },
+			  btn_delete: function(){
+				axios({
+				  method: 'delete',
+				  url: 'http://localhost:9999/drawData/'+this.drawId,
+				  }).then(function (response) {
+					  //FunLoadingBarEnd();
+					  alert("Delete complete.")
+					  console.log(response);
+				  })
+				  .catch(function (response) {
+					  //FunLoadingBarEnd();
+					  alert("Delete fail");
+					  console.log(response);
+				  });
+			  },
+			  btn_edit: function(){
+				  var canvas_ = new fabric.Canvas('canvas');
+				  var ObjectData = canvas.toDatalessJSON();
+				  ObjectData.groupId = this.drawId;
+				  console.log(ObjectData)
+				  //JSON DATA
+				  axios({
+				  method: 'post',
+				  // url: `http://localhost:8080/fileUpload/updateFiles?targetDirectory=${$('.file-path-input').val()}`,
+				  url: 'http://localhost:9999/drawData',
+				  data: ObjectData
+				  }).then(function (response) {
+					  //FunLoadingBarEnd();
+					  alert("Save complete.")
+					  console.log(response);
+				  })
+				  .catch(function (response) {
+					  //FunLoadingBarEnd();
+					  alert("Save fail");
+					  console.log(response);
+				  });
+
+				},
+				*/
+			  },
+			  created() {
+				this.commoncode();
+				console.log(rootid)
+				  if (rootid != "" ){
+					  this.pageInit = true;
+					  this.init();
+				  }
+				console.log("Parent created")
+			  }
+
+		  })
+
+		</script>
+
+	</div>
+
+	<!--        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>-->
+<!--        <script src="../static/assets/vendor/js/scripts.js"></script>-->
+</div>
+</html>

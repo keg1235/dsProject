@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/layout}">
+
+<div layout:fragment="content">
+		<!--/ End Header -->
+		<section class="features-area section-bg">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-3 col-md-6 col-12">
+
+					</div>
+				</div>
+				<br /><br />
+			</div>
+		</section>
+		 
+        <div id="layoutAuthentication">
+            <div id="layoutAuthentication_content">
+                <main>
+                    <div class="container">
+                        <div class="row">
+							<div class="col-12">
+								<div class="blog-comments-form">
+									<div class="con-4 bottom-title">
+										<h2>업체 등록</h2>
+										 
+									</div>
+									<!-- Comment Form -->
+									<form class="form" >
+										<div class="row">
+											<div class="col-12">
+												<div class="form-group">
+													<label>업체명</label>
+													<input type="text" id="name" name="name" required="required" placeholder="업체명를 입력해주세요">
+												</div>
+											</div>
+											<div class="col-12">
+												<div class="form-group">
+													<label>주소입력</label>
+													<input type="text" id="addr" name="comment" required="required" placeholder="예)서울시 중구 을지로 2가 ">
+												</div>
+											</div>
+										    <div class="col-12">
+												<div class="form-group">
+													<label>전화번호</label>
+													<input type="text" id="tel" name="comment" required="required" placeholder="예)010-5224-5800">
+												</div>
+											</div>
+										  <div class="col-6">
+											    <div class="form-group">
+										 
+													<label>사용여부</label>
+													<input type="radio" name="use"  placeholder="radio" style="width: 16px; vertical-align: middle;padding-left: 3px;" value="YES"> YES
+													<input type="radio" name="use"  placeholder="radio" style="width: 16px; vertical-align: middle;padding-left: 3px;" value="NO"> NO
+											  </div> 
+											</div>
+											<p style="padding: 10px;"></p>
+											<div class="col-12">
+												<div class="form-group button">	
+													<button type="button" onclick="save()" class="bizwheel-btn primary effect">저장&nbsp;&nbsp; <i class="fa fa-paper-plane"></i></button>
+												</div>
+											</div>
+										</div>
+									</form>
+									<!--/ End Comment Form -->
+								</div>
+							</div>							
+						</div>	
+                    </div>
+                </main>
+            </div>
+			<script>
+				$(document).ready(function(){
+
+
+				});
+
+
+				$(document).ready(function(){
+
+					commoncode();
+					init();
+				});
+				function init(){
+
+				}
+
+				function commoncode(){
+					$.ajax({
+						url:'/ddc', //request 보낼 서버의 경로
+						type:'get', // 메소드(get, post, put 등)
+						headers: {'Content-Type': 'application/json'},
+						success: function(data) {
+							console.log(data);
+							console.log(data.data);
+							for (var prop in data.data){
+								$('#ddcId').append("<option value='"+data.data[prop].id+"'>DDC:"+data.data[prop].ddc+" , DI:"+data.data[prop].di+ "</option>");
+							}
+
+						},
+						error: function(err) {
+
+						}
+					});
+
+				}
+
+				function save() {
+
+					const data = {
+						name : $('#name').val(),
+						addr : $('#addr').val(),
+						tel : $('#tel').val(),
+						useYn : $('input:radio[name=use]').val(),
+					};
+
+					console.log(data);
+					axios({
+						url:'/message', //request 보낼 서버의 경로
+						method:'post', // 메소드(get, post, put 등)
+						data: data, //보낼 데이터
+						headers: {'Content-Type': 'application/json'},
+						success: function(data) {
+							console.log(data);
+							alert("저장완료");
+						},
+						error: function(err) {
+							alert("저장실패");
+							//서버로부터 응답이 정상적으로 처리되지 못햇을 때 실행
+						}
+					});
+				}
+
+			</script>
+        </div>
+</div>
+</html>

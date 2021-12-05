@@ -1,0 +1,1606 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+	<!-- TextDiv 관련 start-->
+	<!-- <script src="Notes.js"></script> -->
+	<link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+	<!-- <script src="board.js"></script> -->
+	<!-- <script src="table_drag.js"></script> -->
+
+	<script src="../assets/vendor/js/fabric/fabric.js?version=0.1" ></script>
+	<script src="../assets/vendor/js/fabric/gif.min.js?version=0.1" ></script>
+	<script src="../assets/vendor/js/fabric/script.js?version=0.1" ></script>
+	<link rel="stylesheet" href="../assets/vendor/css/draw/board.css">
+	<link rel="stylesheet" href="../assets/vendor/css/draw/common/TabMenuSelectTransform.css">
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+	<!-- TextDiv 관련 end-->
+
+	<!-- <script type="text/javascript" src="./common/jquery.TabMenuSelectTransform-0.1.js"></script> -->
+	<script type="text/javascript">
+
+	</script>
+
+	<style>
+
+
+		.myDiv{
+			background: #f1f1f1;
+			text-align: center;
+			border: 1px solid #d3d3d3;
+			position: absolute;
+			z-index: 9;
+		}
+		.myDivHeader{
+			padding: 10px;
+			cursor: move;
+			z-index: 10px;
+			background: #2396F3;
+			color: #fff;
+		}
+
+		body {
+			margin: 0;
+			font-family: Arial, Helvetica, sans-serif;
+		}
+
+		.topnav {
+			overflow: hidden;
+			background-color: #333;
+		}
+
+		.topnav a {
+			float: left;
+			color: #f2f2f2;
+			text-align: center;
+			padding: 14px 16px;
+			text-decoration: none;
+			font-size: 15px;
+		}
+
+		.topnav a:hover {
+			background-color: #ddd;
+			color: black;
+		}
+
+		.topnav a.active {
+			background-color: #4CAF50;
+			color: white;
+		}
+
+		#dropHere, #dropHere1, #dropHere2, #dropHere3, #dropHere4, #dropHere5 {
+			width:80%;
+			height: 568px;
+			/* border: dotted 1px red;  */
+		}
+		.draggable
+		{
+			width: 100px;
+			height: 30px;
+			/*  border: dotted 1px black;  */
+			padding: 0% 1% 1% 0% ;
+			cursor: move;
+		}
+		.tool
+		{
+			width: 95%;
+			height: 95%;
+		}
+
+
+		/*우측 tool css */
+		.tabs {
+			margin-top: 50px;
+			padding-bottom: 40px;
+			background-color: #ffffff;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+			width: 100%;
+			margin: 0 auto;}
+
+		/* 탭 스타일 */
+		.tab_item {
+			width: calc(100%/3);
+			height: 50px;
+			border-bottom: 3px solid #333333;
+			background-color: #f8f8f8;
+			line-height: 50px;
+			font-size: 16px;
+			text-align: center;
+			color: #333333;
+			display: block;
+			float: left;
+			text-align: center;
+			font-weight: bold;
+			transition: all 0.2s ease;
+		}
+		.tab_item:hover {
+			opacity: 0.75;
+		}
+
+		input[name="tab_item"] {
+			display: none;
+		}
+
+		/* 탭 컨텐츠 스타일 */
+		.tab_content {
+			padding: 10px 10px 10px 10px;
+			height: 570px;
+			clear: both;
+			overflow: hidden;
+			border: 1px solid;
+			overflow:auto;
+		}
+
+
+		.tabs input:checked + .tab_item {
+			background-color: #333333;
+			color: #fff;
+		}
+		/*탭 종료 */
+
+		/* 모달  */
+		.modal__background{
+			position: fixed;
+			top:0; left: 0; bottom: 0; right: 0;
+			background: rgba(0, 0, 0, 0.8);
+			z-index: 1050;
+		}
+		.modal_close{
+			right:0px;
+			position: absolute;
+		}
+		.modalLabel{
+			font-weight: bold;
+			color: #fff;
+			margin: 10px;
+		}
+		.modalSelect{
+			height: 35px;
+			width: 200px;
+			font-size: 20px;
+		}
+		.col.three {
+			display: inline-grid; }
+		.btn {
+			font-size: 18px;
+			white-space: nowrap;
+			width: 100px;
+			padding: .8em 1.5em;
+			font-family: Open Sans, Helvetica,Arial,sans-serif;
+			line-height: 6px;
+			display: inline-block;
+			zoom: 1;
+			color: #fff;
+			text-align: center;
+			position: relative;
+			-webkit-transition: border .25s linear, color .25s linear, background-color .25s linear;
+			transition: border .25s linear, color .25s linear, background-color .25s linear;
+		}
+		a {
+			text-decoration: none;
+		}
+		.btn.btn-dark-blue {
+			background-color: #237fbc;
+			border-color: #237fbc;
+			-webkit-box-shadow: 0 3px 0 #1a5c87;
+			box-shadow: 0 3px 0 #1a5c87;
+		}
+		.btn.btn-dark-blue:hover{background-color:#166ea8;}
+		.btn.btn-dark-blue:active{ top: 3px; outline: none; -webkit-box-shadow: none; box-shadow: none;}
+
+		.modal-title {
+			text-align:left;
+			display:table;
+			width:100%;
+			height:100%;
+		}
+
+		.modal-cell-div {
+			display:table-row;
+			vertical-align:middle;
+			height: 10%;
+		}
+		.modal-cell-img {
+			display:table-row;
+			vertical-align:middle;
+			height: 70%;
+		}
+
+		.modalImg {
+			border:3px solid #ff0000;
+		}
+
+		/* 모달 종료 */
+
+
+		/*이미지 박스*/
+		.product-title {
+			text-align:center;
+			display:table;
+			border:1px solid #cecece;
+			width:100%;
+			height:calc(100%/6);
+		}
+
+		.product-img-div {
+			display:table-cell;
+			vertical-align:middle;
+		}
+
+		.product-img {
+			max-width:50px;
+			max-height:50px;
+		}
+
+		.active {
+			background: #000 !important;
+		}
+
+	</style>
+
+
+	<!-- <script type="text/javascript" src="EventUtil.js"></script>
+    <script type="text/javascript" src="21_EventTarget.js"></script> -->
+
+</head>
+<body>
+
+
+<div style="padding-left:16px; background-color: darkslateblue">
+	<image src="../assets/vendor/css/draw/image/logo.png" />
+
+</div>
+<div class="topnav">  <a class="active" href="/main">Home</a>
+	<!-- <a href="#news">파일 저장</a>
+    <a href="#contact">이미지 불러오기</a>
+    <a href="#about">통신연결</a> -->
+</div>
+
+
+<!--추가  -->
+<div class="wrap"  layout:fragment="content" id="app">
+	<div class="wolfharu_tabmenu_select_transform">
+		<div class="wolfharu_tabmenu_menu">
+			<ul>
+				<li  v-for="(item) in listData"
+				>
+					<a v-bind:class="{ active: item.id == drawId}" @click="initcall(item.id)"><span>{{item.name }}</span></a>
+				</li>
+<!--				<li>-->
+<!--					<a @click="newTab()"><span>신규추가+</span></a>-->
+<!--				</li>-->
+			</ul>
+		</div>
+
+		<div>
+			<div class="modal__background" v-if="modalYn">
+				<div class="modal-title">
+					<div class="modal-cell-div">
+						<button class="modal_close" v-on:click="modalClose">X</button>
+						<label class="modalLabel">게이트웨이</label>
+						<select  class="modalSelect" v-model="gatewayId" >
+							<option
+									v-for="(item) in gateWayGroup"
+									:value="item.id"
+							>{{item.ipAddress}}</option>
+						</select>
+
+						<label class="modalLabel" v-if="gatewayId">기기 방식</label>
+						<select class="modalSelect" v-if="gatewayId" v-model="machineType" @Change="machineTypeChange" >
+							<option
+									v-for="(item) in machineList"
+									:value="item.id"
+							>{{item.name}}</option>
+						</select>
+						<label class="modalLabel" v-if="machineType">기기 주소</label>
+						<select  class="modalSelect" v-if="machineType" v-model="machineAddr" @Change="machineAddrChange">
+							<option
+									v-for="(item) in machineAddrList"
+									:value="item.id"
+							>{{item.name}}</option>
+						</select>
+						<label class="modalLabel" v-if="machineAddr" >타입</label>
+						<select  class="modalSelect" v-if="machineAddr" v-model="didoType" @Change="didoTypeChange">
+							<option
+									v-for="(item) in didoList"
+									:value="item.id"
+							>{{item.name}}</option>
+						</select>
+
+						<label class="modalLabel">값 선택</label>
+						<select class="modalSelect" v-if="didoType" v-model="inOutNum" @Change="inOutNumChange">
+							<option
+									v-for="(item) in inOutList"
+									:value="item.id"
+							>{{item.name}}</option>
+						</select>
+						<div class="col three">
+							<a href="#" v-on:click="doAdd" v-if="didoType =='DO'" class="btn btn-dark-blue">선택</a>
+							<a href="#" v-on:click="diAdd" v-if="didoType == 'DI'" class="btn btn-dark-blue">선택</a>
+							<a href="#" v-on:click="dcpAdd" v-if="didoType == 'DCP'" class="btn btn-dark-blue">선택</a>
+						</div>
+
+					</div>
+					<div class="modal-cell-div"  v-if="imgTextType == 'text' && inOutNum">
+						<label class="modalLabel">OFF 텍스트</label>
+						<input type="text" v-model="offMsg">
+						<label class="modalLabel" for="colorSource2">OFF 글자색</label>
+						<input type="color" id="colorSource2" v-model="offFill" value="#ffffff">
+						<label class="modalLabel"  for="colorDestination2">OFF 배경색</label>
+						<input type="color" id="colorDestination2" v-model="offBackColor">
+						<label class="modalLabel">연결안됨 텍스트</label>
+						<input type="text" v-model="notMsg">
+						<label class="modalLabel" for="colorSource3">연결안됨 글자색</label>
+						<input type="color" id="colorSource3" v-model="notFill" value="#ffffff">
+						<label class="modalLabel" for="colorDestination3">연결안됨 배경색</label>
+						<input type="color" id="colorDestination3" v-model="notBackColor">
+					</div>
+					<div class="modal-cell-div" v-if="imgTextType == 'img' && inOutNum">
+						<label class="modalLabel" style="margin-right: 200px;">OFF 이미지</label>
+						<label class="modalLabel">연결안됨 이미지</label>
+					</div>
+					<div class="modal-cell-img"  v-if="imgTextType == 'img' && inOutNum">
+
+						<div style="float: left; margin-right: 1%;border: 1px solid #000; width: 15%;  height: 50px;z-index: 2;top: 5%;">
+							<div class="tab_content tab_img">
+								<div class="product-title"
+									 v-for="(item) in imgList"
+								>
+									<div v-bind:class="{ modalImg : item.id == offImgList }" class="product-img-div">
+										<img class="product-img" :src="item.src" v-on:click="offImgSet(item.src, item.id)">
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div style="float: left; margin-right: 1%;border: 1px solid #000; width: 15%;  height: 50px;z-index: 2;top: 5%;">
+							<div class="tab_content tab_img">
+								<div class="product-title"
+									 v-for="(item) in imgList"
+								>
+									<div v-bind:class="{ modalImg : item.id == notImgList }" class="product-img-div">
+										<img class="product-img" :src="item.src" v-on:click="notImgSet(item.src, item.id)">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div v-if="!initflag">
+				<button v-on:click="btn_edit">화면 저장</button>
+				<button v-on:click="btn_delete">삭제</button>
+				<input type="file" id="backfile" value="배경등록" style ="float:left; margin-bottom: 1%; margin-right: 1%;" placeholder="배경등록"
+					   multiple  accept=".gif, .jpg, .png">  <br /><br />
+			</div>
+			<button v-if="initflag" v-on:click="save">상태 보내기</button>
+			<div class="wolfharu_tabmenu_content">
+
+				<div class="wolfharu_tabmenu_content_item" id="wolfharu_tabmenu_content_item_1">
+					<div id = "dropHere" style=" float: left;">
+						<canvas  id="canvas" width="1510" height="750" class="lower-canvas" style="position: absolute; width: 800px; height: 600px; left: 0px; top: 0px; touch-action: none; user-select: none;"></canvas>
+						<!-- <canvas class="upper-canvas " width="800" height="600" style="position: absolute; width: 800px; height: 600px; left: 0px; top: 0px; touch-action: none; user-select: none; cursor: default;"></canvas> -->
+
+					</div>
+				</div>
+
+			</div>
+
+
+			<!--추가  -->
+
+			<div v-if="!initflag" style="float: right; margin-right: 1%;border: 1px solid #000; width: 15%;  height: 50px;z-index: 2;top: 5%;">
+				<div class="tabs">
+					<input id="all" type="radio" name="tab_item" checked v-on:click="toolchecked('1')">
+					<label class="tab_item" for="all">이미지</label>
+					<input id="programming" type="radio" name="tab_item" v-on:click="toolchecked('2')">
+					<label class="tab_item" for="programming">도구</label>
+					<input id="design" type="radio" name="tab_item" v-on:click="toolchecked('3')">
+					<label class="tab_item" for="design">파일업로드</label>
+				</div>
+				<div v-if="toolFlag === '1'" class="tab_content tab_img">
+					<div class="product-title"
+						 v-for="(item) in imgList"
+						 :key="item.id"
+					>
+						<div class="product-img-div">
+							<img class="product-img" :src="item.src" @click="addImageDrow(item.src)">
+						</div>
+					</div>
+				</div>
+				<div v-if="toolFlag === '2'" class="tab_content">
+					<input type="color" id="colorSource" value="#ffffff">
+					<label for="colorSource">글자색</label>
+					<input type="color" id="colorDestination" value="#23278a">
+					<label for="colorDestination">배경색</label>
+					<button  onclick="rectDrow()">사각형</button>
+					<button  onclick="canvasClear()">전체 비우기</button>
+					<button  onclick="shadowify()">그림자 효과</button>
+					<button  onclick="addText()">글자</button>
+					<button  onclick="removeSelected()">선택 삭제하기</button>
+<!--					<button v-on:click="loadDrawData">저장된 데이터 불러오기</button>-->
+<!--					<button v-on:click="btn_sample">json 반환 샘플</button>-->
+<!--					<button v-on:click="init">초기화</button>-->
+
+					<!-- <button v-on:click="confrim">초기화</button> -->
+				</div>
+				<div v-if="toolFlag === '3'" class="tab_content">
+					<input class="file-upload-input" type='file' @change="readURL" id="img-type-input" multiple  accept=".gif, .jpg, .png"/>
+					<button v-on:click="upload">업로드</button>
+					<form id="uploadForm" style="display: none;" />
+				</div>
+
+			</div>
+
+
+
+			<script>
+				$(function(){
+					$('.draggable').draggable().resizable();
+				});
+			</script>
+
+
+
+
+			<!-- image copy routine start -->
+			<script>
+				var drawFlag =  "[[${draw}]]"== "true" ? false : true;
+				var globalPost = 0;
+				var globalTaget = null;
+
+				//vue 관련
+				var vueObj = new Vue({
+					el: "#app",
+					data: {
+						title: "안녕 VueJS!",
+						modalYn: false,
+						files : {},
+						offImgList : null,
+						notImgList : null,
+						offMsg :"",
+						offFill : "",
+						offBackColor : "",
+						notMsg :"",
+						notFill : "",
+						notBackColor : "",
+						notImg :"",
+						offImg :"",
+						drawId : 1,
+						initflag : drawFlag,
+						gatewayId : null,
+						inOutNum : null,
+						writeRead : null,
+						machineAddr : null,
+						machineType : null,
+						imgTextType : null,
+						didoType : null,
+						machineAddrList : [
+							{name : '225',id :'225'},
+							{name : '224' ,id :'224'},
+							{name : '1' ,id :'1'},
+						],
+						machineList : [
+							{name : 'DDC',id :'DDC'},
+							{name : 'DCU' ,id :'DCU'},
+							{name : 'DCP' ,id :'DCP'},
+						],
+						typeList : [
+							{name : 'DI',id :'DI'},
+							{name : 'DO' ,id :'DO'},
+							{name : 'DCP' ,id :'DCP'},
+						],
+						didoList : [
+
+						],
+						wrList : [
+							{name : '상태 표시',id :'read'},
+							{name : '상태값 변경' ,id :'write'},
+						],
+						inOutList : [
+
+						],
+						listData:[
+							{name : '1층' ,id :'1'},
+							{name : '2층' ,id :'2'},
+							{name : '3층' ,id :'3'},
+							{name : '4층' ,id :'4'}
+						],
+						gateWayGroup : [
+							{name : '172.16.18.53' ,id :'1'},
+							{name : '172.16.18.53' ,id :'2'},
+						],
+						ddcGroup:[],
+						dcuGroup:[],
+						dcpGroup:[],
+						ddcList:[],
+						dcpSetList:[],
+						sendList:[],
+						diList:[
+							{name : '3-2-환풍기1' ,id :'1'},
+							{name : '3-3-환풍기2' ,id :'2'},
+							{name : '3-2-환풍기3' ,id :'3'},
+							{name : '3-3-환풍기4' ,id :'4'}
+						],
+						doList:[
+							{name : '3-2-환풍기1' ,id :'5'},
+							{name : '3-3-환풍기2' ,id :'6'},
+							{name : '3-2-환풍기3' ,id :'7'},
+							{name : '3-3-환풍기4' ,id :'8'}
+						],
+						imgList:[
+							{id : 1 ,src: 'image/img1.gif'},
+							{id : 2 ,src: 'image/img2.gif'},
+							{id : 3 ,src: 'image/img3.gif'},
+							{id : 4 ,src: 'image/img3.gif'},
+							{id : 5 ,src: 'image/img3.gif'},
+							{id : 6 ,src: 'image/img3.gif'},
+							{id : 7 ,src: 'image/img3.gif'},
+							{id : 8 ,src: 'image/img3.gif'},
+							{id : 9 ,src: 'image/img3.gif'},
+							{id : 10 ,src: 'image/img3.gif'},
+							{id : 11 ,src: 'image/img3.gif'},
+							{id : 12 ,src: 'image/img3.gif'},
+						],
+						canlist : [],
+						scaleMultiplier : 0,
+						fiveTime : 0,
+						canvasDrawObject:{
+							"version":"4.6.0",
+							"objects" : []
+
+						},
+						toolFlag: '1',
+						sample_date :{"version":"4.6.0","objects":[{"type":"image","version":"4.6.0","originX":"left","originY":"top","left":497,"top":184,"width":51,"height":48,"fill":"rgb(0,0,0)","stroke":null,"strokeWidth":0,"strokeDashArray":null,"strokeLineCap":"butt","strokeDashOffset":0,"strokeLineJoin":"miter","strokeUniform":false,"strokeMiterLimit":4,"scaleX":2,"scaleY":2,"angle":-7,"flipX":false,"flipY":false,"opacity":1,"shadow":null,"visible":true,"backgroundColor":"","fillRule":"nonzero","paintFirst":"fill","globalCompositeOperation":"source-over","skewX":0,"skewY":0,"erasable":true,"cropX":0,"cropY":0,"src":"file:///C:/Users/Administrator/Desktop/4%EC%B0%A8%20%EA%B0%9C%EB%B0%9C%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20-/image/img1.gif","crossOrigin":null,"filters":[]},{"type":"image","version":"4.6.0","originX":"left","originY":"top","left":347,"top":247,"width":51,"height":48,"fill":"rgb(0,0,0)","stroke":null,"strokeWidth":0,"strokeDashArray":null,"strokeLineCap":"butt","strokeDashOffset":0,"strokeLineJoin":"miter","strokeUniform":false,"strokeMiterLimit":4,"scaleX":2,"scaleY":2,"angle":1,"flipX":false,"flipY":false,"opacity":1,"shadow":null,"visible":true,"backgroundColor":"","fillRule":"nonzero","paintFirst":"fill","globalCompositeOperation":"source-over","skewX":0,"skewY":0,"erasable":true,"cropX":0,"cropY":0,"src":"file:///C:/Users/Administrator/Desktop/4%EC%B0%A8%20%EA%B0%9C%EB%B0%9C%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20-/image/img1.gif","crossOrigin":null,"filters":[]}]}
+					},
+					methods: {
+						init : function (){
+							if(this.initflag){
+								setInterval(() => {
+
+									this.loadDrawData()
+								}, 1000)
+
+							}
+
+
+							/*기본 데이터 관련*/
+							axios.get('/dcpSet').then(res => {
+								this.dcpSetList= res.data.data
+							})
+							axios.get('/ddc').then(res => {
+								if(res.data.data.length > 0){
+									this.diList= res.data.data
+								}
+							})
+							axios.get('/dcp').then(res => {
+								if(res.data.data.length > 0){
+									this.diList= res.data.data
+								}
+							})
+							axios.get('/gateway').then(res => {
+								this.gateWayGroup= res.data.data
+							})
+
+							/*그룹 관련*/
+							axios.get('/ddc/group/ddc').then(res => {
+								console.log(res.data.data)
+								if(res.data.data.length > 0){
+									this.ddcGroup= res.data.data
+								}
+							})
+
+							axios.get('/ddc/group/dcu').then(res => {
+								console.log(res.data.data)
+								if(res.data.data.length > 0){
+									this.dcuGroup= res.data.data
+								}
+							})
+
+							axios.get('/dcpSet/group').then(res => {
+								console.log(res.data.data)
+								if(res.data.data.length > 0){
+
+									this.dcpGroup= res.data.data
+								}
+							})
+
+
+							/*ddc list*/
+							axios.get('/ddc').then(res => {
+								if(res.data.data.length > 0){
+									this.ddcList= res.data.data
+								}
+							})
+
+							axios.get('/dcpSet').then(res => {
+								if(res.data.data.length > 0){
+									this.dcpSetList= res.data.data
+								}
+							})
+
+                             axios.get('/drawData/drawGroup').then(res => {
+                               if(res.data.data.length > 0){
+                                 this.listData= res.data.data
+                               }
+                             })
+							/*
+                             axios.get('/ddc/dcudi').then(res => {
+                               if(res.data.data.length > 0){
+                                 this.diList= res.data.data
+                               }
+                             })
+                             axios.get('/ddc/ddcdo').then(res => {
+                               if(res.data.data.length > 0){
+                                 this.diList= res.data.data
+                               }
+                             })
+                             axios.get('/ddc/ddcdi').then(res => {
+                               if(res.data.data.length > 0){
+                                 this.diList= res.data.data
+                               }
+                             })
+                 */
+							/*dcp list*/
+							/*
+                            axios.get('/dcpSet/degital').then(res => {
+                              if(res.data.data.length > 0){
+                                this.dcpSetList= res.data.data
+                              }
+                            })
+                            axios.get('/ddcpSet/nomal').then(res => {
+                              if(res.data.data.length > 0){
+                                this.dcpSetList= res.data.data
+                              }
+                            })
+                            */
+							/*이미지 리스트*/
+							axios.get('/fileUpload').then(res => {
+								this.imgList= res.data.data
+							})
+							this.loadDrawData();
+						},
+						readURL(input){
+
+							if (input.target.files) {
+								//let reader = new FileReader();
+								for(let i = 0 ;  i< input.target.files.length; i++ ){
+									this.files[i] =  input.target.files[i];
+								}
+								console.log(this.files)
+							}else{
+								this.files = {};
+							}
+						},
+						newTab : function(){
+							/*
+							console.log(this.listData.length);
+							var data = {"id": this.listData.length , "name" : "신규"};
+							this.listData.push(data)
+
+							 */
+						},
+						save : function(){
+							globalPost = 1;
+							var objects = canvas.toDatalessJSON().objects;
+							var data = objects.filter(dataList => dataList.oNoffstate == true);
+
+							if (data.length > 0 ) {
+
+								axios({
+									url: '/datacall/draw', //request 보낼 서버의 경로
+									method: 'post', // 메소드(get, post, put 등)
+									data: data, //보낼 데이터
+									headers: {'Content-Type': 'application/json'},
+								}).then(function (response) {
+									//성공
+
+									alert("전송완료");
+
+								}).catch(function (response) {
+									alert("전송실패");
+								});
+
+							}
+
+
+						},
+						machineTypeChange: function(){
+							if (this.machineType == "DCP"){
+								this.machineAddrList = this.dcpGroup
+							}else if (this.machineType =="DCU"){
+								this.machineAddrList = this.dcuGroup
+							}else if (this.machineType =="DDC"){
+								this.machineAddrList = this.ddcGroup
+							}
+
+							this.machineAddr = null
+							this.didoType = null
+							this.inOutNum = null
+						},
+						machineAddrChange: function(){
+
+							//console.log( this.machineAddr);
+							if (this.machineType == "DCP"){
+								this.didoList  =  this.typeList.filter(dido => dido.id == 'DCP');
+							}else {
+								this.didoList  =  this.typeList.filter(dido => dido.id != 'DCP');
+							}
+
+
+							this.didoType = null
+							this.inOutNum = null
+						},
+						didoTypeChange : function(){
+							//console.log(this.machineAddr)
+							//console.log(this.dcpSetList)
+							//console.log(this.ddcList)
+							//[{"id":1,"di":1,"name":"늒네","use":"NO","color":"btn-primary","ddc":176,"seq":1,"location":"내방","gatewayId":1,"gatewayIp":null,"message":"message","status":null,"doStatus":null,"doId":1,"dcu":null,"diUse":"YES","doUse":"YES"}
+							if (this.machineType == "DCP"){
+								this.inOutList =  this.dcpSetList.filter(dcpSet => dcpSet.dcp == Number(this.machineAddr));
+							}else if (this.machineType =="DCU"){
+								if(this.didoType == 'DI'){
+									this.inOutList =  this.ddcList.filter(dcu => dcu.ddc+'-'+Number(dcu.dcu-699) == this.machineAddr  && dcu.di != null  && dcu.dcu != null);
+								}else{
+									this.inOutList =  this.ddcList.filter(dcu => dcu.ddc+'-'+Number(dcu.dcu-699) == this.machineAddr  && dcu.doId != null  && dcu.dcu != null);
+								}
+
+							}else if (this.machineType =="DDC"){
+								if(this.didoType == 'DI'){
+									this.inOutList =  this.ddcList.filter(ddc => ddc.ddc == this.machineAddr  && ddc.di != null && ddc.dcu == null);
+								}else{
+									this.inOutList =  this.ddcList.filter(ddc => ddc.ddc == this.machineAddr  && ddc.doId != null && ddc.dcu == null);
+								}
+							}
+
+							this.inOutNum = null
+							console.log(this.inOutList )
+						},
+						inOutNumChange : function (){
+							//this.didoType = 'DI'
+						},
+						upload: function(){
+							var form = $('#uploadForm')[0];
+							var formData = new FormData(form);
+
+							for (const [key, value] of Object.entries(this.files)) {
+								console.log(value);
+								formData.append('files',value);
+							}
+
+							console.log(formData);
+							//파일 전송
+							//FunLoadingBarStart();
+							axios({
+								method: 'post',
+								// url: `http://localhost:8080/fileUpload/updateFiles?targetDirectory=${$('.file-path-input').val()}`,
+								url: '/fileUpload',
+								data: formData,
+								headers: {'Content-Type': 'multipart/form-data' }
+							}).then(function (response) {
+										//FunLoadingBarEnd();
+										alert("Save complete.")
+
+										console.log(response);
+									})
+									.catch(function (response) {
+										//FunLoadingBarEnd();
+										alert("Save fail");
+										console.log(response);
+									});
+						},
+						confrim: function(){
+
+						},
+						modalClose: function () {
+							this.modalYn = false
+						},
+						initcall : function(id){
+							globalPost = 0;
+							this.drawId = id
+							canvasClear();
+							this.loadDrawData();
+						},
+						offImgSet : function(src,id){
+							this.offImgList = id
+							this.offImg = src
+						},
+						notImgSet : function(src,id){
+							this.notImgList = id
+							this.notImg = src
+						},
+						diAdd: function() {
+							if (this.inOutNum == null){
+								alert('잘못된 데이터가 있습니다. 다시 입력해주세요');
+								return
+							}
+							globalTaget.typeId = this.inOutNum
+							globalTaget.offImg = this.offImg
+							globalTaget.notImg = this.notImg
+							globalTaget.offMsg = this.offMsg
+							globalTaget.notMsg = this.notMsg
+							globalTaget.offFill = this.offFill
+							globalTaget.offBackColor = this.offBackColor
+							globalTaget.notFill = this.notFill
+							globalTaget.notBackColor = this.notBackColor
+							globalTaget.gatewayId = this.gatewayId
+							globalTaget.machineType = this.machineType
+							globalTaget.machineAddr = this.machineAddr
+							globalTaget.didoType = this.didoType
+							globalTaget.inOutNum = this.inOutNum
+
+							this.modalYn = false
+						},
+						dcpAdd: function() {
+							if (this.inOutNum == null){
+								alert('잘못된 데이터가 있습니다. 다시 입력해주세요');
+								return
+							}
+							globalTaget.typeId = this.inOutNum
+							globalTaget.offImg = this.offImg
+							globalTaget.notImg = this.notImg
+							globalTaget.offMsg = this.offMsg
+							globalTaget.notMsg = this.notMsg
+							globalTaget.offFill = this.offFill
+							globalTaget.offBackColor = this.offBackColor
+							globalTaget.notFill = this.notFill
+							globalTaget.notBackColor = this.notBackColor
+							globalTaget.gatewayId = this.gatewayId
+							globalTaget.machineType = this.machineType
+							globalTaget.machineAddr = this.machineAddr
+							globalTaget.didoType = this.didoType
+							globalTaget.inOutNum = this.inOutNum
+
+							this.modalYn = false
+						},
+						doAdd: function() {
+							if (this.inOutNum == null){
+								alert('잘못된 데이터가 있습니다. 다시 입력해주세요');
+								return
+							}
+							globalTaget.typeId =  this.inOutNum
+							globalTaget.offImg = this.offImg
+							globalTaget.notImg = this.notImg
+							globalTaget.offMsg = this.offMsg
+							globalTaget.notMsg = this.notMsg
+							globalTaget.offFill = this.offFill
+							globalTaget.offBackColor = this.offBackColor
+							globalTaget.notFill = this.notFill
+							globalTaget.notBackColor = this.notBackColor
+							globalTaget.gatewayId = this.gatewayId
+							globalTaget.machineType = this.machineType
+							globalTaget.machineAddr = this.machineAddr
+							globalTaget.didoType = this.didoType
+							globalTaget.inOutNum = this.inOutNum
+
+							this.modalYn = false
+						},
+						updateValue: function (value) {
+							console.log(value)
+							if(this.type === 'number') value = parseInt(value)    // type number 일때 parseInt 형변환
+							this.$emit('input', value)
+						},
+						toolchecked: function(value){
+							console.log(value)
+							this.toolFlag = value
+
+							axios.get('/fileUpload').then(res => {
+								console.log(res)
+								this.imgList= res.data.data
+
+								console.log(this.imgList);
+							})
+
+							console.log(this.toolFlag)
+						},
+						btn_sample: function(){
+							console.log(this.sample_date)
+							console.log('Click Edit');
+							canvas.loadFromJSON(this.sample_date), function(obj) {
+								canvas.renderAll();
+								console.log(' this is a callback. invoked when canvas is loaded!xxx ');
+
+								canvas.forEachObject(function(obj){
+									console.log(obj.name);
+
+									if(obj.name === 'recta'){
+										obj.set({
+											left: 100,
+											top:200,
+											height: 700,
+											width: 700,
+											scaleX: .35,
+											scaleY:.35,
+											lockScalingY: .35
+										});
+
+										canvas.add(obj);
+									}
+								});
+							}
+						},
+						dataSet: function(target,type){
+							console.log(target);
+
+							this.imgTextType = type
+							globalTaget = null;
+							globalTaget = target
+							if(target.typeId){
+								console.log(target);
+								this.gatewayId = target.gatewayId
+								this.machineType = target.machineType
+								this.machineTypeChange()
+								this.machineAddr = target.machineAddr
+								this.machineAddrChange()
+								this.didoType = target.didoType
+								this.didoTypeChange()
+								this.inOutNum = target.inOutNum
+								this.inOutNumChange()
+								this.typeId = target.inOutNum
+								this.offImg = target.offImg
+								this.notImg = target.notImg
+								this.offMsg = target.offMsg
+								this.notMsg = target.notMsg
+								this.offFill = target.offFill
+								this.offBackColor= target.offBackColor
+								this.notFill= target.notFill
+								this.notBackColor = target.notBackColor
+
+							}else{
+								this.typeId = null
+								this.offImg = null
+								this.notImg = null
+								this.offMsg = null
+								this.notMsg = null
+								this.gatewayId = null
+								this.machineType = null
+								this.machineAddr = null
+								this.didoType = null
+								this.inOutNum = null
+								this.offFill = null
+								this.offBackColor= null
+								this.notFill= null
+								this.notBackColor = null
+							}
+
+							this.modalYn = true
+						},
+						btn_delete: function(){
+							axios({
+								method: 'delete',
+								url: '/drawData/'+this.drawId,
+							}).then(function (response) {
+								//FunLoadingBarEnd();
+								alert("Delete complete.")
+								console.log(response);
+							})
+									.catch(function (response) {
+										//FunLoadingBarEnd();
+										alert("Delete fail");
+										console.log(response);
+									});
+						},
+						btn_edit: function(){
+							//var canvas_ = new fabric.Canvas('canvas');
+							var ObjectData = canvas.toDatalessJSON();
+							ObjectData.groupId = this.drawId;
+							console.log(ObjectData)
+							//JSON DATA
+							axios({
+								method: 'post',
+								// url: `http://localhost:8080/fileUpload/updateFiles?targetDirectory=${$('.file-path-input').val()}`,
+								url: '/drawData',
+								data: ObjectData
+							}).then(function (response) {
+								//FunLoadingBarEnd();
+								alert("Save complete.")
+								console.log(response);
+							})
+									.catch(function (response) {
+										//FunLoadingBarEnd();
+										alert("Save fail");
+										console.log(response);
+									});
+
+						},
+						loadDrawData :function()  {
+							console.log('들어옴?')
+							//var canvas_ = new fabric.Canvas('canvas');
+							if (this.drawId == 0){
+								alert("현재 불러올 데이터가 없습니다.");
+							}else{
+
+									axios.get('/drawData/' + this.drawId + '?type=' + this.initflag).then(res => {
+										if (this.initflag) {
+											//this.scaleMultiplier = Number($(window).width() - ($(window).width() * 0.2)) / canvas.width;
+											this.scaleMultiplier = Number($(window).width() - ($(window).width() * 0.25)) /1510
+											console.log(canvas)
+
+											//var objects = canvas.getObjects();
+
+											this.canlist = canvas.toDatalessJSON();
+											for (var i in res.data.data.objects) {
+												console.log(res.data.data.objects[i])
+												res.data.data.objects[i].scaleX =  res.data.data.objects[i].scaleX * this.scaleMultiplier
+												res.data.data.objects[i].scaleY =  res.data.data.objects[i].scaleY * this.scaleMultiplier
+												res.data.data.objects[i].left =  res.data.data.objects[i].left * this.scaleMultiplier
+												res.data.data.objects[i].top =  res.data.data.objects[i].top * this.scaleMultiplier
+												// res.data.data.objects[i].setCoords();
+												if (globalPost != 0) {
+													if (this.canlist.objects[i].oNoffstate == true) {
+														res.data.data.objects[i].oNoffstate = this.canlist.objects[i].oNoffstate
+														res.data.data.objects[i].state = this.canlist.objects[i].state
+														if (this.canlist.objects[i].type == "image") {
+															if (this.canlist.objects[i].state == 0) {
+																res.data.data.objects[i].src = this.canlist.objects[i].offImg
+
+															} else if (this.canlist.objects[i].state == 1) {
+																res.data.data.objects[i].src = this.canlist.objects[i].onImg
+															}
+														}else if (this.canlist.objects[i].type == "textbox"){
+															if (this.canlist.objects[i].state == 0) {
+																res.data.data.objects[i].text = this.canlist.objects[i].offMsg
+																res.data.data.objects[i].fill = this.canlist.objects[i].offFill
+																res.data.data.objects[i].backgroundColor = this.canlist.objects[i].offBackColor
+
+															} else if (this.canlist.objects[i].state == 1) {
+																res.data.data.objects[i].text = this.canlist.objects[i].onMsg
+																res.data.data.objects[i].fill = this.canlist.objects[i].onFill
+																res.data.data.objects[i].backgroundColor = this.canlist.objects[i].onBackColor
+															}
+														}
+
+													}
+
+												}
+
+											}
+
+
+											//console.log(objects)
+											canvas.setWidth(1510 * this.scaleMultiplier);
+											canvas.setHeight(750 * this.scaleMultiplier);
+											res.data.data.backgroundImage.scaleX = (1510* this.scaleMultiplier / Number(res.data.data.backgroundImage.width)).toFixed(2);
+											res.data.data.backgroundImage.scaleY = (750* this.scaleMultiplier / Number(res.data.data.backgroundImage.height)).toFixed(2);
+										}
+										//canvas.dispose()
+
+
+										canvas.loadFromJSON(res.data.data), function (obj) {
+
+
+											console.log(' this is a callback. invoked when canvas is loaded!xxx ');
+											/*
+                                        canvas.forEachObject(function(obj){
+                                          console.log(obj.name);
+
+                                          if(obj.name === 'recta'){
+                                            obj.set({
+                                                      left: 100,
+                                                      top:200,
+                                                      height: 700,
+                                                      width: 700,
+                                                      scaleX: .35,
+                                                      scaleY:.35,
+                                              lockScalingY: .35
+                                                  });
+
+                                            canvas.add(obj);
+                                          }
+                                        });*/
+										}
+
+										if (this.initflag) {
+											fabric.Object.prototype.selectable = false;
+										}
+										if (globalPost != 0) {
+
+											globalPost++;
+											if (globalPost > 14) {
+												globalPost = 0;
+											}
+										}
+										//canvas.renderAll();
+										//  // 끄기
+									}).catch(function (response) {
+										//alert(response);
+									})
+
+
+							}
+						},
+
+					},
+					created() {
+
+						this.init();
+						console.log("Parent created")
+					}
+
+				})
+
+
+				// fabric 관련
+				var canvas = new fabric.Canvas('canvas');
+				var getRandomInt = fabric.util.getRandomInt;
+				var imgTextType = null;
+				function getRandomNum(min, max) {
+					return Math.random() * (max - min) + min;
+				}
+				function AnimfFrame(){
+					fabric.util.requestAnimFrame(function render() {
+						canvas.renderAll();
+						fabric.util.requestAnimFrame(render);
+					});
+				}
+
+
+				$(document).on("change" , "#colorSource" , function(){ // 색 변경되었을때
+					canvas.getActiveObject().set("fill", $(this).val());
+					canvas.renderAll();
+				});
+
+				$(document).on("change" , "#colorDestination" , function(){ // 색 변경되었을때
+					canvas.getActiveObject().set("backgroundColor", $(this).val());
+					canvas.renderAll();
+				});
+
+				document.getElementById('backfile').addEventListener("change", function(e) {//backgroud 이미지 호출
+					var file = e.target.files[0];
+					var reader = new FileReader();
+					reader.onload = function(f) {
+						var data = f.target.result;
+						fabric.Image.fromURL(data, function(img) {
+							// add background image
+							canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas), {
+								scaleX: canvas.width / img.width,
+								scaleY: canvas.height / img.height
+							});
+						});
+					};
+					reader.readAsDataURL(file);
+				});
+
+				function addText(){
+					var textSample = new fabric.Textbox('입력해주세요', {
+						left: getRandomInt(350, 400),
+						top: getRandomInt(350, 400),
+						fontFamily: 'helvetica',
+						// angle: getRandomInt(-10, 10),
+						fill: $('#colorSource').val(),
+						scaleX: 0.5,
+						scaleY: 0.5,
+						fontWeight: '',
+						originX: 'left',
+						hasRotatingPoint: true,
+						centerTransform: true
+					});
+
+					canvas.add(textSample);
+					canvas.setActiveObject(textSample);
+				};
+				function addImage(imageName, minScale, maxScale) {
+					var coord = getRandomLeftTop();
+
+					fabric.Image.fromURL(imageName, function(image) {
+
+						image.set({
+							left: coord.left,
+							top: coord.top
+						})
+								.scale(getRandomNum(minScale, maxScale))
+								.setCoords();
+
+						canvas.add(image);
+						fabric.util.requestAnimFrame(function render() {
+							canvas.renderAll();
+							fabric.util.requestAnimFrame(render);
+						});
+
+						canvas.setActiveObject(image);
+
+					});
+					AnimfFrame();
+				};
+				function getRandomLeftTop() {
+					var offset = 50;
+					return {
+						left: fabric.util.getRandomInt(0 + offset, 700 - offset),
+						top: fabric.util.getRandomInt(0 + offset, 500 - offset)
+					};
+				}
+
+
+				function canvasClear(){
+					canvas.clear();
+					$('#backfile').val(null);
+				}
+
+				function shadowify() { //그림자 효과
+					var obj = canvas.getActiveObject();
+					if (!obj) return;
+
+					if (obj.shadow) {
+						obj.shadow = null;
+					}
+					else {
+						obj.set('shadow', new fabric.Shadow({
+							color: 'rgba(0,0,0,0.3)',
+							blur: 10,
+							offsetX: 10,
+							offsetY: 10
+						}));
+					}
+					canvas.renderAll();
+				};
+
+
+				function removeSelected() { // 선택된 내역 삭제
+					var activeObjects = canvas.getActiveObjects();
+					canvas.discardActiveObject()
+					if (activeObjects.length) {
+						canvas.remove.apply(canvas, activeObjects);
+					}
+				};
+
+				window.onkeydown = function() { //키보드로 딜리트
+					if( event.keyCode === 46) {
+						removeSelected();
+					}
+
+				}
+
+				function addImageDrow(name) {
+					addImage(name, 2, 2);
+				};
+
+
+				/* 삭제 아이콘 복사 아이콘 */
+				var deleteIcon = "data:image/svg+xml,%3C%3Fxml version='1.0' encoding='utf-8'%3F%3E%3C!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'%3E%3Csvg version='1.1' id='Ebene_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='595.275px' height='595.275px' viewBox='200 215 230 470' xml:space='preserve'%3E%3Ccircle style='fill:%23F44336;' cx='299.76' cy='439.067' r='218.516'/%3E%3Cg%3E%3Crect x='267.162' y='307.978' transform='matrix(0.7071 -0.7071 0.7071 0.7071 -222.6202 340.6915)' style='fill:white;' width='65.545' height='262.18'/%3E%3Crect x='266.988' y='308.153' transform='matrix(0.7071 0.7071 -0.7071 0.7071 398.3889 -83.3116)' style='fill:white;' width='65.544' height='262.179'/%3E%3C/g%3E%3C/svg%3E";
+
+				var cloneIcon = "data:image/svg+xml,%3C%3Fxml version='1.0' encoding='iso-8859-1'%3F%3E%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 55.699 55.699' width='100px' height='100px' xml:space='preserve'%3E%3Cpath style='fill:%23010002;' d='M51.51,18.001c-0.006-0.085-0.022-0.167-0.05-0.248c-0.012-0.034-0.02-0.067-0.035-0.1 c-0.049-0.106-0.109-0.206-0.194-0.291v-0.001l0,0c0,0-0.001-0.001-0.001-0.002L34.161,0.293c-0.086-0.087-0.188-0.148-0.295-0.197 c-0.027-0.013-0.057-0.02-0.086-0.03c-0.086-0.029-0.174-0.048-0.265-0.053C33.494,0.011,33.475,0,33.453,0H22.177 c-3.678,0-6.669,2.992-6.669,6.67v1.674h-4.663c-3.678,0-6.67,2.992-6.67,6.67V49.03c0,3.678,2.992,6.669,6.67,6.669h22.677 c3.677,0,6.669-2.991,6.669-6.669v-1.675h4.664c3.678,0,6.669-2.991,6.669-6.669V18.069C51.524,18.045,51.512,18.025,51.51,18.001z M34.454,3.414l13.655,13.655h-8.985c-2.575,0-4.67-2.095-4.67-4.67V3.414z M38.191,49.029c0,2.574-2.095,4.669-4.669,4.669H10.845 c-2.575,0-4.67-2.095-4.67-4.669V15.014c0-2.575,2.095-4.67,4.67-4.67h5.663h4.614v10.399c0,3.678,2.991,6.669,6.668,6.669h10.4 v18.942L38.191,49.029L38.191,49.029z M36.777,25.412h-8.986c-2.574,0-4.668-2.094-4.668-4.669v-8.985L36.777,25.412z M44.855,45.355h-4.664V26.412c0-0.023-0.012-0.044-0.014-0.067c-0.006-0.085-0.021-0.167-0.049-0.249 c-0.012-0.033-0.021-0.066-0.036-0.1c-0.048-0.105-0.109-0.205-0.194-0.29l0,0l0,0c0-0.001-0.001-0.002-0.001-0.002L22.829,8.637 c-0.087-0.086-0.188-0.147-0.295-0.196c-0.029-0.013-0.058-0.021-0.088-0.031c-0.086-0.03-0.172-0.048-0.263-0.053 c-0.021-0.002-0.04-0.013-0.062-0.013h-4.614V6.67c0-2.575,2.095-4.67,4.669-4.67h10.277v10.4c0,3.678,2.992,6.67,6.67,6.67h10.399 v21.616C49.524,43.26,47.429,45.355,44.855,45.355z'/%3E%3C/svg%3E%0A";
+
+				var deleteImg = document.createElement('img');
+				deleteImg.src =deleteIcon;
+
+				var cloneImg = document.createElement('img');
+				cloneImg.src = cloneIcon;
+
+				var dataSetImg = document.createElement('img');
+				dataSetImg.src = '../assets/vendor/css/draw/img/setting.png';
+
+				fabric.Object.prototype.transparentCorners = false;
+				fabric.Object.prototype.cornerColor = 'blue';
+				fabric.Object.prototype.cornerStyle = 'circle';
+
+				function rectDrow() {
+					var rect = new fabric.Rect({
+						left: 100,
+						top: 50,
+						fill: 'yellow',
+						width: 200,
+						height: 100,
+						objectCaching: false,
+						stroke: 'lightgreen',
+						strokeWidth: 4,
+					});
+
+					canvas.add(rect);
+					canvas.setActiveObject(rect);
+				}
+
+				function renderIcon(icon) {
+					return function renderIcon(ctx, left, top, styleOverride, fabricObject) {
+						var size = this.cornerSize;
+						ctx.save();
+						ctx.translate(left, top);
+						ctx.rotate(fabric.util.degreesToRadians(fabricObject.angle));
+						ctx.drawImage(icon, -size/2, -size/2, size, size);
+						ctx.restore();
+					}
+				}
+
+				fabric.Object.prototype.controls.deleteControl = new fabric.Control({
+					x: 0.5,
+					y: -0.5,
+					offsetY: -16,
+					offsetX: 16,
+					cursorStyle: 'pointer',
+					mouseUpHandler: deleteObject,
+					render: renderIcon(deleteImg),
+					cornerSize: 24
+				});
+
+				fabric.Object.prototype.controls.dataSetControl = new fabric.Control({
+					x: 0.5,
+					y: 0.5,
+					offsetY: 16,
+					offsetX: 16,
+					cursorStyle: 'pointer',
+					mouseUpHandler: imgSetObject,
+					render: renderIcon(dataSetImg),
+					cornerSize: 24
+				});
+
+				fabric.Textbox.prototype.controls.dataSetControl = new fabric.Control({
+					x: 0.5,
+					y: 0.5,
+					offsetY: 16,
+					offsetX: 16,
+					cursorStyle: 'pointer',
+					mouseUpHandler: textSetObject,
+					render: renderIcon(dataSetImg),
+					cornerSize: 24
+				});
+
+				fabric.Textbox.prototype.controls.deleteControl = new fabric.Control({
+					x: 0.5,
+					y: -0.5,
+					offsetY: -16,
+					offsetX: 16,
+					cursorStyle: 'pointer',
+					mouseUpHandler: deleteObject,
+					render: renderIcon(deleteImg),
+					cornerSize: 24
+				});
+
+				fabric.Object.prototype.controls.clone = new fabric.Control({
+					x: -0.5,
+					y: -0.5,
+					offsetY: -16,
+					offsetX: -16,
+					cursorStyle: 'pointer',
+					mouseUpHandler: cloneObject,
+					render: renderIcon(cloneImg),
+					cornerSize: 24
+				});
+
+				fabric.Textbox.prototype.controls.clone = new fabric.Control({
+					x: -0.5,
+					y: -0.5,
+					offsetY: -16,
+					offsetX: -16,
+					cursorStyle: 'pointer',
+					mouseUpHandler: cloneObject,
+					render: renderIcon(cloneImg),
+					cornerSize: 24
+				});
+
+				//Add();
+
+				function deleteObject(eventData, transform) {
+					var target = transform.target;
+					var canvas = target.canvas;
+					canvas.remove(target);
+					canvas.requestRenderAll();
+				}
+
+				function textSetObject (eventData, transform){
+					imgTextType = "text";
+					var target = transform.target;
+					vueObj.dataSet(target,'text')
+					//vueObj.methods.dataSet(target);
+					var json_data = JSON.stringify(canvas.toDatalessJSON());
+
+					//canvas.requestRenderAll();
+					//console.log(target)
+				}
+
+				function imgSetObject (eventData, transform){
+					imgTextType = "img";
+					var target = transform.target;
+					vueObj.dataSet(target,"img")
+					//vueObj.methods.dataSet(target);
+					var json_data = JSON.stringify(canvas.toDatalessJSON());
+
+					//canvas.requestRenderAll();
+					//console.log(target)
+				}
+
+
+				function cloneObject(eventData, transform) {
+					var target = transform.target;
+					var canvas = target.canvas;
+					target.clone(function(cloned) {
+						cloned.left += 10;
+						cloned.top += 10;
+						canvas.add(cloned);
+						canvas.setActiveObject(cloned);
+					});
+				}
+				//소켓 관련
+				let socket = null;
+				let stompClient = null;
+				let gInterval = null;
+				let btnclick = 0;
+
+				function onError2(error) {
+					if (gInterval){
+						clearInterval(gInterval);
+					}
+					gInterval= globalTimeout(() => {
+						console.error('소켓 연결 끊어짐 -> 재연결 요청 중...')
+						if (stompClient){
+							console.warn('@@@@@@@ 웹 소켓 CONNECT 해제 @@@@@@@')
+							stompClient.disconnect();
+							callSocket();
+						}
+					}, 2000)
+				}
+
+				function callSocket(){
+
+					socket = new SockJS('/websocket');
+					stompClient = Stomp.over(socket);
+					stompClient.connect({},onConnected , onError2);
+
+				}
+
+				function onConnected() {
+					// Subscribe to the Public Topic
+					stompClient.subscribe('/topic/info', onMessageReceived);
+				}
+
+				function checktime(){
+
+
+					// if (btnclick > 5 ){
+					//     btnclick = 0;
+					// }
+				}
+
+
+
+				function onMessageReceived(payload) {
+
+
+					message = JSON.parse(payload.body)
+
+					if (btnclick == 0){
+						for(var i= 0 ; i <message.length ;i++){
+							message[i].onoffstatus =message[i].doStatus;
+						}
+					}else{
+						for(var i= 0 ; i <message.length ;i++){
+							message[i].onoffstatus =nowdata[i].onoffstatus
+
+						}
+						btnclick++;
+						if(btnclick > 4){
+							btnclick=0;
+						}
+
+					}
+					//  console.log(message);
+					if (message.length > 0) {
+						$('#userTable').dataTable().fnClearTable();
+						$('#userTable').dataTable().fnAddData(message);
+						table.page(page).draw(false);
+					}
+				}
+
+				/*확대 관련*/
+
+
+				// gif 관련
+				/*
+                var url = 'https://themadcreator.github.io/gifler/assets/gif/run.gif';
+                fabric.Image.fromURL(url, function(img) {
+                  console.log('gif')
+                  img.scaleToWidth(80);
+                  img.scaleToHeight(80);
+                  img.left = 105;
+                  img.top = 30;
+                  gif(url, function(frames, delay) {
+                    var framesIndex = 0,
+                      animInterval;
+                    img.dirty = true;
+                    img._render = function(ctx) {
+                      ctx.drawImage(frames[framesIndex], -this.width / 2, -this.height / 2, this.width, this.height);
+                    }
+                    img.play = function() {
+                      if (typeof(animInterval) === 'undefined') {
+                        animInterval = setInterval(function() {
+                          framesIndex++;
+                          if (framesIndex === frames.length) {
+                            framesIndex = 0;
+                          }
+                        }, delay);
+                      }
+                    }
+                    img.stop = function() {
+                      clearInterval(animInterval);
+                      animInterval = undefined;
+                    }
+                    img.play();
+                    canvas.add(img);
+                  })
+
+                })
+
+
+                function gif(url, callback) {
+                    /*
+                  var tempCanvas = document.createElement('canvas');
+                  var tempCtx = tempCanvas.getContext('2d');
+
+                  var gifCanvas = document.createElement('canvas');
+                  var gifCtx = gifCanvas.getContext('2d');
+
+                  var imgs = [];
+
+
+                  var xhr = new XMLHttpRequest();
+                  xhr.open('get', url, true);
+                  xhr.responseType = 'arraybuffer';
+                  xhr.onload = function() {
+                    var tempBitmap = {};
+                    tempBitmap.url = url;
+                    var arrayBuffer = xhr.response;
+                    if (arrayBuffer) {
+                      var gif = new GIF(arrayBuffer);
+                      var frames = gif.decompressFrames(true);
+                      gifCanvas.width = frames[0].dims.width;
+                      gifCanvas.height = frames[0].dims.height;
+
+                      for (var i = 0; i < frames.length; i++) {
+                        createFrame(frames[i]);
+                      }
+                      callback(imgs, frames[0].delay);
+                    }
+
+                  }
+                  xhr.send(null);
+
+                  var disposalType;
+
+                  function createFrame(frame) {
+                    if (!disposalType) {
+                      disposalType = frame.disposalType;
+                    }
+
+                    var dims = frame.dims;
+
+                    tempCanvas.width = dims.width;
+                    tempCanvas.height = dims.height;
+                    var frameImageData = tempCtx.createImageData(dims.width, dims.height);
+
+                    frameImageData.data.set(frame.patch);
+
+                    if (disposalType !== 1) {
+                      gifCtx.clearRect(0, 0, gifCanvas.width, gifCanvas.height);
+                    }
+
+                    tempCtx.putImageData(frameImageData, 0, 0);
+                    gifCtx.drawImage(tempCanvas, dims.left, dims.top);
+                    var dataURL = gifCanvas.toDataURL('image/png');
+                    var tempImg = fabric.util.createImage();
+                    tempImg.src = dataURL;
+                    imgs.push(tempImg);
+
+                }
+                render()
+
+            }   */
+
+
+
+				function render() {
+
+					if (canvas) {
+						canvas.renderAll();
+					}
+
+					fabric.util.requestAnimFrame(render);
+				}
+			</script>
+			<!-- image copy routine end-->
+
+</body>
+</html>

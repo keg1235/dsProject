@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/layout}">
+
+<div layout:fragment="content">
+		<section class="features-area section-bg">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-3 col-md-6 col-12">
+
+					</div>
+				</div>
+				<br /><br />
+			</div>
+		</section>
+		 
+        <div id="layoutAuthentication">
+            <div id="layoutAuthentication_content">
+                <main>
+                    <div class="container">
+                        <div class="row">
+							<div class="col-12">
+								<div class="blog-comments-form">
+									<div class="con-4 bottom-title">
+										<h2>DCP 등록</h2>
+										 
+									</div>
+									<!-- Comment Form -->
+									<form class="form" method="post" action="setup/dcp.php">
+										<div class="row">
+											<div class="col-4">
+												<div class="form-group">
+													<label>명칭</label>
+													<input type="text" name="name" required="required" placeholder="명칭을 입력해주세요">
+												</div>
+											</div>
+											<div class="col-4">
+												<div class="form-group">
+													<label>설명</label>
+													<input type="text" name="comment" required="required" placeholder="설명을 입력해주세요">
+												</div>
+											</div>
+											 
+											<div class="col-12">
+												<div class="form-group">
+													   <label for="ddc_name" > DDC  선택
+														<select name="ddc_name" >
+														  <option value = "" selected> </option>
+														  <option value = "DDC #1">DDC #1</option>
+														  <option value = "DDC #2">DDC #2</option>
+														  <option value = "DDC #3">DDC #3</option>
+														  <option value = "DDC #4">DDC #4</option>	
+														  <option value = "DDC #5">DDC #5</option>
+														  <option value = "DDC #6">DDC #6</option>
+														  <option value = "DDC #7">DDC #7</option>
+														  <option value = "DDC #8">DDC #8</option>	
+														</select></label> 
+												</div>
+											</div>	
+											<div class="col-12">
+												<div class="form-group">
+													   <label for="ddc_name" > 기 기 종 류
+														<select name="ddc_name" >
+														  <option value = "" selected> </option>
+														  <option value = "DDC #1"> 온  도</option>
+														  <option value = "DDC #2"> 습  도</option>
+														  <option value = "DDC #3"> 수  량</option>
+													 
+														</select></label> 
+												</div>
+											</div>	
+											<div class="col-12">
+												<div class="form-group">
+													   <label for="ddc_name" > PORT  선택
+														<select name="ddc_name" >
+														  <option value = "" selected> </option>
+														  <option value = "DDC #1">PORT #1</option>
+														  <option value = "DDC #2">PORT #2</option>
+														  <option value = "DDC #3">PORT #3</option>
+														  <option value = "DDC #4">PORT #4</option>	
+														  <option value = "DDC #5">PORT #5</option>
+														  <option value = "DDC #6">PORT #6</option>
+														  <option value = "DDC #7">PORT #7</option>
+														  <option value = "DDC #8">PORT #8</option>	
+														</select></label> 
+												</div>
+											</div>
+											<div class="col-4">
+												<div class="form-group">
+													<label>ON Image</label>
+													<input type="file"  name="file_name" required="required" placeholder="ON 버튼 이미지를 선택해주세요">
+												</div>
+											</div>
+											<div class="col-4">
+												<div class="form-group">
+													<label>OFF Image</label>
+													<input type="file"  name="file_name" required="required" placeholder="OFF 버튼 이미지를 선택해주세요">
+												</div>
+											</div>
+											 <div class="col-4">
+												<div class="form-group">
+													<label> </label>
+													 
+												</div>
+											</div>
+											<p style="padding: 10px;"></p>
+											<div class="col-12">
+												<div class="form-group button">	
+													<button type="submit" class="bizwheel-btn primary effect">저장&nbsp;&nbsp; <i class="fa fa-paper-plane"></i></button>
+												</div>
+											</div>
+										</div>
+									</form>
+									<!--/ End Comment Form -->
+								</div>
+							</div>							
+						</div>	
+                    </div>
+                </main>
+            </div>
+          
+        </div>
+	</div>
+</html>

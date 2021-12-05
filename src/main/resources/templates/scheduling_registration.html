@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/layout}">
+<div layout:fragment="content">
+	<section class="features-area section-bg">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-3 col-md-6 col-12">
+				</div>
+			</div>
+			<br /><br />
+		</div>
+	</section>
+
+	<div id="layoutAuthentication">
+		<div id="layoutAuthentication_content">
+			<main>
+
+				<div class="container">
+					<div class="row">
+						<div class="col-12">
+							<div class="blog-comments-form">
+								<div class="con-4 bottom-title">
+									<h2>스케줄 등록</h2>
+								</div>
+								<!-- Comment Form -->
+								<form class="form">
+									<div class="row">
+										<div class="col-4">
+											<div class="form-group">
+												<label>명칭</label>
+												<input type="text" name="name" id="name" required="required" placeholder="명칭을 입력해주세요">
+												<input type="hidden" id="id"/>
+											</div>
+										</div>
+										<div class="col-4">
+											<div class="form-group">
+												<label>설명</label>
+												<input type="text" name="memo" id="memo" required="required" placeholder="설명을 입력해주세요">
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="form-group">
+												<label > 요일선택</label>
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="form-group">
+												<label>일<input type="checkbox" id="sunday" value="true"></label>
+												<label>월<input type="checkbox" id="monday" value="true"></label>
+												<label>화<input type="checkbox" id="tuesday"value="true" ></label>
+												<label>수<input type="checkbox" id="wednesday" ></label>
+												<label>목<input type="checkbox" id="thursday" ></label>
+												<label>금<input type="checkbox" id="friday" ></label>
+												<label>토<input type="checkbox" id="saturday" ></label>
+
+											</div>
+										</div>
+										<div class="col-4">
+											<div class="form-group">
+												<label>시작일</label>
+												<input type="text" id="startDate" name="startDate" required="required" placeholder="시작일">
+
+											</div>
+										</div>
+										<div class="col-4">
+											<div class="form-group">
+												<label>종료일</label>
+												<input type="text" id="endDate" name="endDate" required="required" placeholder="종료일">
+											</div>
+										</div>
+										<div class="col-4">
+											<div class="form-group">
+												<label>시간</label>
+												<input type="text" id="time" name="time" required="required" placeholder="시간">
+											</div>
+										</div>
+										<div class="col-4">
+											<div class="form-group">
+												<label>대기 시간</label>
+												<input type="text" id="waitTime" name="name" required="required" placeholder="대기 시간">
+											</div>
+										</div>
+
+
+										<div class="col-6">
+											<div class="form-group">
+												<label  > ON/OFF 설정 </label>
+												<select id="onOff" name="onOff" style="width: 100%;">
+													<option value = "" selected> </option>
+													<option value = "ON">켜짐</option>
+													<option value = "OFF">꺼짐</option>
+												</select>
+											</div>
+										</div>
+										<div class="col-6">
+											<div class="form-group">
+												<label> 사용여부 </label>
+												<select id="useYn" name="useYn" style="width: 100%;">
+													<option value = "" selected> </option>
+													<option value = "YES">YES</option>
+													<option value = "NO">NO</option>
+												</select>
+											</div>
+										</div>
+
+										<p style="padding: 10px;"></p>
+										<div class="col-12">
+											<div class="form-group button">
+												<button id="saveBtn" type="button" class="bizwheel-btn primary effect"  onclick="save()">저장&nbsp;&nbsp; <i class="fa fa-paper-plane"></i></button>
+												<button onclick="update()" id="updateBtn" type="button" class="bizwheel-btn primary effect">저장&nbsp;&nbsp; <i class="fa fa-paper-plane"></i></button>
+											</div>
+										</div>
+									</div>
+								</form >
+								<!--/ End Comment Form -->
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</main>
+		</div>
+
+	</div>
+	<script type="text/javascript">
+		let formData = new FormData();
+		$(document).ready(function() {
+			var id = "[[${id}]]";
+
+			if(id == ""){
+				$('#updateBtn').hide();
+			}else{
+				init(id);
+				$('#saveBtn').hide();
+			}
+		});
+
+
+
+
+
+
+
+		function save(){
+			console.log($('#startDate').val())
+			var jObject = new Object();
+			jObject.id = $('#id').val();
+			jObject.name = $('#name').val();
+			jObject.memo = $('#memo').val();
+			jObject.waitTime = $('#waitTime').val();
+			jObject.useYn = $('#useYn option:selected').val();
+			jObject.onOff = $("#onOff option:selected").val();
+			jObject.endDate = $('#endDate').val();
+			jObject.time = $('#time').val();
+			jObject.startDate = $('#startDate').val();
+			jObject.sunday = $('input:checkbox[id="sunday"]').is(":checked");
+			jObject.monday = $('input:checkbox[id="monday"]').is(":checked");
+			jObject.tuesday = $('input:checkbox[id="tuesday"]').is(":checked");
+			jObject.wednesday = $('input:checkbox[id="wednesday"]').is(":checked");
+			jObject.thursday = $('input:checkbox[id="thursday"]').is(":checked");
+			jObject.friday = $('input:checkbox[id="friday"]').is(":checked");
+			jObject.saturday = $('input:checkbox[id="saturday"]').is(":checked");
+
+
+			//initInput();
+			var data = JSON.stringify(jObject);
+			console.log(jObject);
+			$.ajax({
+				url:'/scData', //request 보낼 서버의 경로
+				type:'post', // 메소드(get, post, put 등)
+				data: data, //보낼 데이터
+				headers: {'Content-Type': 'application/json'},
+				success: function(data) {
+					alert("저장완료")
+				},
+				error: function(err) {
+					//서버로부터 응답이 정상적으로 처리되지 못햇을 때 실행
+				}
+			});
+
+		}
+
+		function update() {
+
+			var data = {
+				id : $('#id').val(),
+				name : $('#name').val(),
+				memo : $('#memo').val(),
+				waitTime : $('#waitTime').val(),
+				useYn : $('#useYn option:selected').val(),
+				onOff : $("#onOff option:selected").val(),
+				endDate : $('#endDate').val(),
+				time : $('#time').val(),
+				startDate : $('#startDate').val(),
+				sunday : $('input:checkbox[id="sunday"]').is(":checked"),
+				monday : $('input:checkbox[id="monday"]').is(":checked"),
+				tuesday : $('input:checkbox[id="tuesday"]').is(":checked"),
+				wednesday : $('input:checkbox[id="wednesday"]').is(":checked"),
+				thursday : $('input:checkbox[id="thursday"]').is(":checked"),
+				friday : $('input:checkbox[id="friday"]').is(":checked"),
+				saturday : $('input:checkbox[id="saturday"]').is(":checked")
+			}
+
+			console.log(data);
+
+			axios({
+				url: '/scData/' + "[[${id}]]", //request 보낼 서버의 경로
+				method: 'put', // 메소드(get, post, put 등)
+				data: data, //보낼 데이터
+				headers: {'Content-Type': 'application/json'}
+			}).then(function (response) {
+				//성공
+				console.log(response);
+				alert('저장완료');
+				location.href='/settimer_list';
+			}).catch(function (response) {
+				console.log(response);
+				alert(response.message);
+			});
+		}
+
+		function init(num) {
+
+			$.ajax({
+				url:'/scData/'+num, //request 보낼 서버의 경로
+				type:'get', // 메소드(get, post, put 등)
+				headers: {'Content-Type': 'application/json'},
+				success: function(data) {
+
+					const scDatalist = data.data;
+					console.log(scDatalist.id);
+					$('#id').val(scDatalist.id);
+					$('#name').val(scDatalist.name);
+					$('#memo').val(scDatalist.memo);
+					$('#waitTime').val(scDatalist.waitTime);
+					$('#type').val(scDatalist.type);
+					$('#endDate').val(scDatalist.endDate);
+					$('#time').val(scDatalist.time);
+					$('#startDate').val(scDatalist.startDate);
+					$('#useYn').val(scDatalist.useYn);
+					$('#onOff').val(scDatalist.onOff);
+					if (scDatalist.sunday == true){
+						$('input:checkbox[id="sunday"]').attr("checked", true);
+					}else{
+						$('input:checkbox[id="sunday"]').attr("checked", false);
+					}
+					if (scDatalist.monday == true){
+						$('input:checkbox[id="monday"]').attr("checked", true);
+					}else{
+						$('input:checkbox[id="monday"]').attr("checked", false);
+					}
+					if (scDatalist.tuesday == true){
+						$('input:checkbox[id="tuesday"]').attr("checked", true);
+					}else{
+						$('input:checkbox[id="tuesday"]').attr("checked", false);
+					}
+					if (scDatalist.wednesday == true){
+						$('input:checkbox[id="wednesday"]').attr("checked", true);
+					}else{
+						$('input:checkbox[id="wednesday"]').attr("checked", false);
+					}
+					if (scDatalist.thursday == true){
+						$('input:checkbox[id="thursday"]').attr("checked", true);
+					}else{
+						$('input:checkbox[id="thursday"]').attr("checked", false);
+					}
+					if (scDatalist.friday == true){
+						$('input:checkbox[id="friday"]').attr("checked", true);
+					}else{
+						$('input:checkbox[id="friday"]').attr("checked", false);
+					}
+					if (scDatalist.saturday == true){
+						$('input:checkbox[id="saturday"]').attr("checked", true);
+					}else{
+						$('input:checkbox[id="saturday"]').attr("checked", false);
+					}
+
+
+				},
+				error: function(err) {
+					//서버로부터 응답이 정상적으로 처리되지 못햇을 때 실행
+				}
+			});
+		}
+
+	</script>
+</div>
+
+</html>

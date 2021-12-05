@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/layout}">
+
+<div layout:fragment="content">
+	<section class="features-area section-bg">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-3 col-md-6 col-12">
+
+				</div>
+			</div>
+			<br /><br />
+		</div>
+	</section>
+
+	<div id="layoutAuthentication">
+		<div id="layoutAuthentication_content">
+			<main>
+				<div class="container">
+					<div class="row">
+						<div class="col-12">
+							<div class="blog-comments-form">
+								<div class="con-4 bottom-title">
+									<h2>공지사항</h2>
+
+								</div>
+								<!-- Comment Form -->
+								<form class="form">
+									<div class="row">
+										<div class="col-12">
+											<div class="form-group">
+												<label>제목</label>
+												<input type="text" name="title" id="title"  required="required" placeholder="제목">
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="form-group">
+												<label>이메일</label>
+												<input type="text" id="email" required="required" placeholder="이메일">
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="form-group">
+												<label>공지사항</label>
+
+												<textarea></textarea>
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="form-group">
+												<label>답변</label>
+												<textarea id="an"></textarea>
+											</div>
+										</div>
+										<p style="padding: 10px;"></p>
+										<div class="col-12">
+											<div class="form-group button">
+												<button type="button" onclick="save()" class="bizwheel-btn primary effect">저장&nbsp;&nbsp; <i class="fa fa-paper-plane"></i></button>
+											</div>
+										</div>
+									</div>
+								</form>
+								<!--/ End Comment Form -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</main>
+		</div>
+
+	</div>
+	<script type="text/javascript">
+		let formData = new FormData();
+		$(document).ready(function() {
+
+			var id = "[[${id}]]";
+
+			if(id == ""){
+				console.log(1);
+			}else{
+				init(id);
+			}
+		});
+
+		function save(){
+			var jObject = new Object();
+			jObject.email = $('#email').val();
+			jObject.name = $('#name').val();
+			jObject.password = $('#password').val();
+			jObject.passwordYn = $('#passwordYn').val();
+			jObject.poneNum = $('#poneNum').val();
+			jObject.adminYn = $(":input:radio[name=adminYn]:checked").val();
+			jObject.idUseYn = $(":input:radio[name=idUseYn]:checked").val();
+
+			//initInput();
+			var data = JSON.stringify(jObject);
+			console.log(jObject);
+			$.ajax({
+				url:'/user', //request 보낼 서버의 경로
+				type:'post', // 메소드(get, post, put 등)
+				data: data, //보낼 데이터
+				headers: {'Content-Type': 'application/json'},
+				success: function(data) {
+					alert("저장완료");
+				},
+				error: function(err) {
+					alert("저장실패");
+					//서버로부터 응답이 정상적으로 처리되지 못햇을 때 실행
+				}
+			});
+
+		}
+
+		function init(id) {
+			$.ajax({
+				url:'/board/'+id, //request 보낼 서버의 경로
+				type:'get', // 메소드(get, post, put 등)
+				headers: {'Content-Type': 'application/json'},
+				success: function(data) {
+					const userinfo = data.data;
+					console.log(userinfo);
+					$('#title').val(userinfo.title);
+
+
+					$('#memo').val(userinfo.memo);
+					$('#poneNum').val(userinfo.poneNum);
+
+
+				},
+				error: function(err) {
+					//서버로부터 응답이 정상적으로 처리되지 못햇을 때 실행
+				}
+			});
+		}
+
+	</script>
+</div>
+</html>

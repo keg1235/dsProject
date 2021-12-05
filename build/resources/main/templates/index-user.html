@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lagn="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <!-- Meta Tag -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name='copyright' content='pavilan'>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Title Tag  -->
+  <title>디에스이엔(주)</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/favicon.png" th:href="@{assets/vendor/img/favicon.png}">
+
+  <!-- Web Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+          crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <!-- 별도의 연결없이 루트 경로에 `favicon.ico`가 있는 것으로 IE 지원이 가능합니다. -->
+  <!-- <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"> -->
+  <link rel="icon" href="favicon.png" th:href="@{assets/vendor/img/favicon.png}">
+  <link rel="apple-touch-icon" href="favicon.png" th:href="@{assets/vendor/img/favicon.png}">
+
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+  <!-- <link rel="stylesheet" href="css/reset.css"> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css">
+  <link rel="stylesheet" th:href="@{/assets/vendor/css/main.css}">
+  <link rel="stylesheet" media="(max-width: 1024px)"th:href="@{/assets/vendor/css/main_medium.css}">
+  <link rel="stylesheet" media="(max-width: 768px)" th:href="@{/assets/vendor/css/main_small.css}">
+  <script defer th:src="@{/assets/vendor/js/main.js}"></script>
+
+  <th:block layout:fragment="css">
+    <!-- Bizwheel Plugins CSS -->
+    <link rel="stylesheet" th:href="@{/assets/vendor/css/animate.min.css}" >
+    <link rel="stylesheet" th:href="@{/assets/vendor/css/bootstrap.min.css}" >
+    <link rel="stylesheet" th:href="@{/assets/vendor/css/cubeportfolio.min.css}" >
+    <link rel="stylesheet" th:href="@{/assets/vendor/css/font-awesome.css}" >
+    <link rel="stylesheet" th:href="@{/assets/vendor/css/jquery.fancybox.min.css}" >
+    <link rel="stylesheet" th:href="@{/assets/vendor/css/magnific-popup.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/css/owl-carousel.min.css}" >
+    <link rel="stylesheet" th:href="@{/assets/vendor/css/slicknav.min.css}">
+    <!-- Bizwheel Stylesheet -->
+    <link rel="stylesheet" th:href="@{/assets/vendor/css/reset.css}">
+    <link rel="stylesheet" th:href="@{style.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/css/responsive.css}">
+
+    <!-- Bizwheel Colors -->
+    <!--        <link rel="stylesheet" th:href="@{assets/vendor/css/skins/skin-1.css}">-->
+    <!--<link rel="stylesheet" href="css/skins/skin-2.css">-->
+    <!--<link rel="stylesheet" href="css/skins/skin-3.css">-->
+    <!--<link rel="stylesheet" href="css/skins/skin-4.css">-->
+  </th:block>
+
+  <!-- 컨텐츠페이지의 스크립트 영역이 들어감 -->
+
+</head>
+<body id="bg">
+<!-- Boxed Layout -->
+<div id="page" class="site boxed-layout">
+  <!-- Preloader -->
+  <div class="preeloader">
+    <div class="preloader-spinner"></div>
+  </div>
+  <!--/ End Preloader -->
+  <!--HEADER-->
+  <header class="section">
+    <div class="inner clearfix">
+
+      <div class="menu-group float--left" >
+        <div>
+          <a href="#"><img th:src="@{/assets/vendor/img/logo.png}"></a>
+        </div>
+
+      </div>
+
+      <div class="sign-group float--right toggle">
+        <div class="btn-group">
+          <a class="btn btn--primary sign-up" style="color:#fff" id="adminBtn" onclick="adminCheck('YES')">관리자 바로가기</a>
+          <a class="btn btn--primary sign-up" style="color:#fff" id="userBtn" onclick="adminCheck('NO')">사용자 바로가기</a>
+
+        </div>
+        <input type="hidden" id="adminYn" />
+      </div>
+
+
+      <div id="toggle-btn">Header Menu Toggle Button</div>
+
+    </div>
+  </header>
+
+  <!--VISUAL-->
+  <section class="section section--visual">
+    <div class="inner" >
+
+
+      <form id="sign-form">
+        <ul>
+          <li><input class="input--text" id="email" type="text" placeholder="아이디를 입력해주세요"></li>
+          <li><input class="input--text" id="password" type="password" placeholder="비밀번호를 입력해주세요"></li>
+          <li>
+            <input type="checkbox" #user-checkbox><label class="caption"> 아이디저장</label></input>
+<!--            <p class="caption">비밀번호를 잊어버렸나요?</p>-->
+          </li>
+          <li>
+            <button type="button" class="btn btn--primary sign-in" onclick="login()">로그인</button>
+
+          </li>
+        </ul>
+      </form>
+
+    </div>
+  </section>
+
+</div>
+
+
+
+<!-- Footer -->
+<footer class="footer" style="background-image:url('/assets/vendor/img/map.png')">
+  <!-- Footer Top -->
+  <div class="footer-top">
+    <div class="container">
+      <div class="row">
+
+        <div class="col-lg-3 col-md-12 col-12">
+          <!-- Footer Contact -->
+          <div class="single-widget footer_contact widget">
+            <h3 class="widget-title">Contact</h3>
+            <p>DSEN BULDING AUTOMATIC SYSTEM</p>
+            <ul class="address-widget-list">
+              <li class="footer-mobile-number"><i class="fa fa-phone"></i>+(82)032-6212783</li>
+
+
+            </ul>
+          </div>
+          <!--/ End Footer Contact -->
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!-- Copyright -->
+  <div class="copyright">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="copyright-content">
+            <!-- Copyright Text -->
+            <p>© Copyright <a href="#">DSEN Co., Ltd.</a>  [BULDING AUTOMATATIC SYSTEM] <a target="_blank" href="#"> </a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--/ End Copyright -->
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#adminyn').val('NO');
+    $('#userBtn').hide();
+    var userInputId = getCookie("userInputId");//저장된 쿠기값 가져오기
+
+    $("#email").val(userInputId);
+
+    if($("#email").val() != ""){ // 그 전에 ID를 저장해서 처음 페이지 로딩
+      // 아이디 저장하기 체크되어있을 시,
+      $("#user-checkbox").attr("checked", true); // ID 저장하기를 체크 상태로 두기.
+    }
+
+    $("#user-checkbox").change(function(){ // 체크박스에 변화가 발생시
+      if($("#user-checkbox").is(":checked")){ // ID 저장하기 체크했을 때,
+        var userInputId = $("#email").val();
+
+        setCookie("userInputId", userInputId, 7); // 7일 동안 쿠키 보관
+      }else{ // ID 저장하기 체크 해제 시,
+        deleteCookie("userInputId");
+      }
+    });
+
+// ID 저장하기를 체크한 상태에서 ID를 입력하는 경우, 이럴 때도 쿠키 저장.
+    $("#u_Id").keyup(function(){ // ID 입력 칸에 ID를 입력할 때,
+      if($("#user-checkbox").is(":checked")){ // ID 저장하기를 체크한 상태라면,
+        var userInputId = $("#email").val();
+        setCookie("userInputId", userInputId, 7); // 7일 동안 쿠키 보관
+      }
+    });
+  });
+
+  function setCookie(cookieName, value, exdays){
+    var exdate = new Date();
+    exdate.setDate(exdate.getDate() + exdays);
+    var cookieValue = escape(value) + ((exdays==null) ? "" : "; expires=" + exdate.toGMTString());
+    document.cookie = cookieName + "=" + cookieValue;
+  }
+
+  function deleteCookie(cookieName){
+    var expireDate = new Date();
+    expireDate.setDate(expireDate.getDate() - 1);
+    document.cookie = cookieName + "= " + "; expires=" + expireDate.toGMTString();
+  }
+
+  function getCookie(cookieName) {
+    cookieName = cookieName + '=';
+    var cookieData = document.cookie;
+    var start = cookieData.indexOf(cookieName);
+    var cookieValue = '';
+    if(start != -1){
+      start += cookieName.length;
+      var end = cookieData.indexOf(';', start);
+      if(end == -1)end = cookieData.length;
+      cookieValue = cookieData.substring(start, end);
+    }
+    return unescape(cookieValue);
+  }
+  function logincheck(){
+    //document.loginform.submit();
+  }
+
+  function adminCheck(adminyn){
+    if (adminyn == 'YES'){
+      $('#userBtn').show();
+      $('#adminBtn').hide();
+    }else{
+      $('#userBtn').hide();
+      $('#adminBtn').show();
+
+    }
+    $('#adminCheck').val(adminyn);
+  }
+
+  function login() {
+    const data = {
+      "email": $('#email').val(),
+      "userPwd": $('#password').val(),
+      "adminYn": $('#adminYn').val()
+    }
+    console.log(data);
+
+    axios({
+      method: 'post',
+// url: `http://localhost:8080/fileUpload/updateFiles?targetDirectory=${$('.file-path-input').val()}`,
+      url: "/user/login",
+      data: data,
+      headers: {'Content-Type': 'application/json'}
+    })
+            .then(function (response) {
+
+              console.log(response.data.data.loginFlg);
+              if(response.data.data.loginFlg){
+                location.href="/main"
+              }else{
+                alert("로그인 실패 암호또는 아이디를 확인해주세요")
+              }
+            })
+            .catch(function (response) {
+              alert("login 실패");
+              console.log(response);
+            });
+  }
+</script>
+</body>
+
+</div>
+<th:block layout:fragment="script">
+  <!-- Jquery JS -->
+  <script th:src="@{/assets/vendor/js/jquery.min.js}"></script>
+  <script th:src="@{/assets/vendor/js/jquery-migrate-3.0.0.js}"></script>
+  <!-- Popper JS -->
+  <script th:src="@{/assets/vendor/js/popper.min.js}"></script>
+  <!-- Bootstrap JS -->
+  <script th:src="@{/assets/vendor/js/bootstrap.min.js}"></script>
+  <!-- Modernizr JS -->
+  <script th:src="@{/assets/vendor/js/modernizr.min.js}"></script>
+  <!-- ScrollUp JS -->
+  <script th:src="@{/assets/vendor/js/scrollup.js}"></script>
+  <!-- FacnyBox JS -->
+  <script th:src="@{/assets/vendor/js/jquery-fancybox.min.js}"></script>
+  <!-- Cube Portfolio JS -->
+  <script th:src="@{/assets/vendor/js/cubeportfolio.min.js}"></script>
+  <!-- Slick Nav JS -->
+  <script th:src="@{/assets/vendor/js/slicknav.min.js}"></script>
+  <!-- Slick Nav JS -->
+  <script th:src="@{/assets/vendor/js/slicknav.min.js}"></script>
+  <!-- Slick Slider JS -->
+  <script th:src="@{/assets/vendor/js/owl-carousel.min.js}"></script>
+  <!-- Easing JS -->
+  <script th:src="@{/assets/vendor/js/easing.js}"></script>
+  <!-- Magnipic Popup JS -->
+  <script th:src="@{/assets/vendor/js/magnific-popup.min.js}"></script>
+  <!-- Active JS -->
+  <script th:src="@{/assets/vendor/js/active.js}"></script>
+</th:block>
+</html>
+
+</div>
+</html>

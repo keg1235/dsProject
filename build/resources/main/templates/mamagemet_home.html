@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<div layout:fragment="content">
+    <div class="container" style="padding-top:10px;">
+
+        <section class="features-area section-bg"   style="padding-top:50px;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 col-12">
+                        기기목록
+                    </div>
+                </div>
+            </div>
+        </section>
+        <table id="userTable" class="table table-bordered table-hover text-center" style="color: #FFF;  ">
+            <thead>
+            <tr style="vertical-align:middle">
+                <th>기기명</th>
+                <th>위치</th>
+                <th>DI</th>
+                <th>DO</th>
+                <th>Device ID</th>
+                <th>전원 ON</th>
+                <th>전원 OFF</th>
+                <th>DO상태</th>
+                <th>DI상태</th>
+                <th>문자발송여부</th>
+            </tr>
+            </thead>
+            <tbody id="ddc-tb">
+
+            </tbody>
+        </table>
+        <!--        <nav class="text-center">-->
+        <!--            <ul class="pagination ">-->
+        <!--                <li>-->
+        <!--                    <a href="#" aria-label="Previous">-->
+        <!--                        <span aria-hidden="true">&laquo;</span>-->
+        <!--                    </a>-->
+        <!--                </li>-->
+        <!--                <li><a href="#">1</a></li>-->
+        <!--                <li><a href="#">2</a></li>-->
+        <!--                <li><a href="#">3</a></li>-->
+        <!--                <li><a href="#">4</a></li>-->
+        <!--                <li><a href="#">5</a></li>-->
+        <!--                <li>-->
+        <!--                    <a href="#" aria-label="Next">-->
+        <!--                        <span aria-hidden="true">&raquo;</span>-->
+        <!--                    </a>-->
+        <!--                </li>-->
+        <!--            </ul>-->
+        <!--        </nav>-->
+        <br />
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-6 col-12">
+                <!-- Footer Contact -->
+                <div class="single-widget footer_contact widget" >
+                    <button class="btn btn-success" type="button" style="font-size: 1em">최근알람 +더보기</button>
+                    <ul class="address-widget-list" style="background-color: #eee;padding: 5px;border: 1px solid #999;border-radius: 5px;">
+                        <li class="footer-mobile-number">자료없음</li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="col-lg-4 col-md-6 col-12">
+                <!-- Footer Contact -->
+                <div class="single-widget footer_contact widget">
+                    <button class="btn btn-info" type="button" style="font-size: 1em">공지사항 +더보기</button>
+                    <ul class="address-widget-list" style="background-color: #eee;padding: 5px;border: 1px solid #999;border-radius: 5px;">
+                        <li class="footer-mobile-number">자료없음</li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="col-lg-4 col-md-6 col-12">
+                <!-- Footer Contact -->
+                <div class="single-widget footer_contact widget">
+                    <button class="btn btn-warning" type="button" style="font-size: 1em">Q & A +더보기</button>
+                    <ul class="address-widget-list" style="background-color: #eee;padding: 5px;border: 1px solid #999;border-radius: 5px;">
+                        <li class="footer-mobile-number">자료없음</li>
+                    </ul>
+                </div>
+
+            </div>
+            <script type="text/javascript">
+                let formData = new FormData();
+                function initddc(){
+                    $.ajax({
+                        url: '/ddc', //request 보낼 서버의 경로
+                        type: 'get', // 메소드(get, post, put 등)
+                        headers: {'Content-Type': 'application/json'},
+                        success: function (data) {
+                            const ddclist = data.data;
+                            console.log(ddclist);
+                            for ( i in ddclist){
+                                var my_tbody = document.getElementById('ddc-tb');
+                                var row = my_tbody.insertRow(my_tbody.rows.length);
+                                row.insertCell(0).innerHTML = ddclist[i].id;
+                                row.insertCell(1).innerHTML = ddclist[i].name;
+                                row.insertCell(2).innerHTML = ddclist[i].location;
+                                row.insertCell(3).innerHTML = ddclist[i].di;
+                                row.insertCell(4).innerHTML = ddclist[i].ddc;
+                                row.insertCell(5).innerHTML = '<input type="checkbox" data-toggle="toggle" onchange="statusSave('+ddclist[i].id+')" data-onstyle="'+ddclist[i].color+'">'
+                                row.insertCell(6).innerHTML = '<input type="checkbox" data-toggle="toggle" onchange="save('+ddclist[i].id+')" data-on="예" data-off="아니오" data-onstyle="success">'
+                                //row.insertCell(7).innerHTML = '<a onclick="ddcDel(' + ddclist[i].id + ')" class="btn btn-danger">삭제</a> <a href="/ddc_registration/'+ddclist[i].id +'" class="btn btn-danger">수정</a>'
+                            }
+
+                        },
+                        error: function (err) {
+                            //서버로부터 응답이 정상적으로 처리되지 못햇을 때 실행
+                        }
+                    });
+                }
+                $(document).ready(function() {
+                    // initddc();
+
+                    let table1 = $('#userTable').dataTable({
+                        pageLength: 10,
+                        bPaginate: true,
+                        bLengthChange: true,
+                        responsive: true,
+                        language: {
+                            "emptyTable": "데이터가 없어요.",
+                            "lengthMenu": "페이지당 _MENU_ 개씩 보기",
+                            "info": "현재 _START_ - _END_ / _TOTAL_건",
+                            "infoEmpty": "데이터 없음",
+                            "infoFiltered": "( _MAX_건의 데이터에서 필터링됨 )",
+                            "search": "에서 검색: ",
+                            "zeroRecords": "일치하는 데이터가 없어요.",
+                            "loadingRecords": "로딩중...",
+                            "processing": "잠시만 기다려 주세요...",
+                            "paginate": {
+                                "next": "다음",
+                                "previous": "이전"
+                            }
+                        },
+                        bAutoWidth: false,
+                        processing: true,
+                        ordering: true,
+                        serverSide: false,
+                        searching: true,
+                        ajax : {
+                            "url": "/ddc",
+                            "data": function (d) {
+
+                            }
+                        },
+                        columns: [
+                            {data: "id"},
+                            {data: "name"},
+                            {data: "location"},
+                            {data: "di"},
+                            {data: "doId"},
+                            {data: "ddc"},
+                            {
+                                "mData": null,
+                                "bSortable": false,
+                                "mRender": function (o) {
+                                    var btn;
+                                    if(o.doStatus == 1){
+                                        btn = '<input type="button" onclick="btnon('+o.doId+')"  class="btn-success btn-font" value="ON">'
+                                    }else if(o.doStatus == 0){
+
+                                        btn = '<input type="button" onclick="btnon('+o.doId+')" class="btn-secondary btn-font" value="ON">'
+
+                                    }else if(o.doStatus == null){
+                                        btn = '<input type="button" class="btn-dark btn-font" value="통신불가">'
+                                    }
+                                    return btn;
+
+                                }
+                            },
+                            {
+                                "mData": null,
+                                "bSortable": false,
+                                "mRender": function (o) {
+                                    var btn;
+                                    if(o.doStatus == 1){
+                                        btn = '<input type="button" onclick="btnon('+o.doId+')"  class="btn-success btn-font" value="OFF">'
+                                    }else if(o.doStatus == 0){
+
+                                        btn = '<input type="button" onclick="btnon('+o.doId+')" class="btn-secondary btn-font" value="OFF">'
+
+                                    }else if(o.doStatus == null){
+                                        btn = '<input type="button" class="btn-dark btn-font" value="통신불가">'
+                                    }
+                                    return btn;
+
+                                }
+                            },
+                            {
+                                "mData": null,
+                                "bSortable": false,
+                                "mRender": function (o) {
+                                    var btn;
+                                    if(o.status == 1){
+                                        btn = '<input type="button"  class="btn-success btn-font" value="켜짐">'
+                                    }else if(o.status == 0){
+
+                                        btn = '<input type="button" class="btn-secondary btn-font" value="꺼짐">'
+
+                                    }else if(o.status == null){
+                                        btn = '<input type="button" class="btn-dark btn-font" value="통신불가">'
+                                    }
+                                    return btn;
+
+                                }
+                            },
+                            {
+                                "mData": null,
+                                "bSortable": false,
+                                "mRender": function (o) {
+                                    var btn;
+                                    if(o.status == 1){
+                                        btn = '<input type="button"  class="'+o.color+' btn-font" value="켜짐">'
+                                    }else if(o.status == 0){
+
+                                        btn = '<input type="button" class="btn-secondary btn-font" value="꺼짐">'
+
+                                    }else if(o.status == null){
+                                        btn = '<input type="button" class="btn-dark btn-font" value="통신불가">'
+                                    }
+                                    return btn;
+
+                                }
+                            },
+                            {
+                                "mData": null,
+                                "bSortable": false,
+                                "mRender": function (o) {
+                                    console.log(o.use)
+                                    var btn;
+                                    if(o.use == "YES"){
+                                        btn = '<input type="button"  class="btn-success btn-font" value="ON">';
+                                    }else{
+
+                                        btn = '<input type="button" class="btn-secondary btn-font" value="OFF">';
+
+                                    }
+                                    return  btn;
+
+                                }
+                            }
+
+
+                        ], columnDefs: [
+                            {
+                                "targets": [0, 1, 2, 3, 4 ],
+                                "className": "text-left",
+                                "width": "10%"
+                            },
+                            {
+                                "targets": [5, 6, 7, 8, 9],
+                                "className": "text-center",
+                                "width": "10%"
+                            }
+                        ]
+
+
+                    });
+
+                    var table = $('#userTable').DataTable();
+                    $('#userTable_filter').prepend('<select id="searchSelect"></select>');
+                    $('#userTable > thead > tr').children().each(function (indexInArray, valueOfElement) {
+                        $('#searchSelect').append('<option>' + valueOfElement.innerHTML + '</option>');
+                    });
+                    $('.dataTables_filter input').unbind().bind('keyup', function () {
+                        var colIndex = document.querySelector('#searchSelect').selectedIndex;
+                        table.search('').columns().search('').draw();
+                        table.column(colIndex).search(this.value).draw();
+                    });
+
+
+                    setInterval(function() {
+                        $('#userTable').DataTable().ajax.reload();
+                    },10000)
+
+
+                });
+                /*
+                                $(document).on('click', '#userTable tbody tr td', function(event) {
+
+                                    if ($(this).is('td')){
+                                        if ($(this).attr("class")=='text-right sorting_1'){
+
+                                        }else{
+                                            var table = $('#userTable').DataTable().rows(this).data();
+                                            detailview(table[0].id);
+
+                                        }
+                                    }
+
+
+                                });
+                                function detailview(idNum){
+                                    location.href="member_registration/"+idNum;
+                                }
+                */
+                function save(num){
+
+                    var jObject = new Object();
+                    jObject.email = $('#email').val();
+                    jObject.name = $('#name').val();
+                    jObject.password = $('#password').val();
+                    jObject.passwordYn = $('#passwordYn').val();
+                    jObject.poneNum = $('#poneNum').val();
+                    jObject.adminYn = $(":input:radio[name=adminYn]:checked").val();
+                    jObject.idUseYn = $(":input:radio[name=idUseYn]:checked").val();
+
+                    //initInput();
+                    var data = JSON.stringify(jObject);
+                    console.log(jObject);
+                    $.ajax({
+                        url:'/user', //request 보낼 서버의 경로
+                        type:'post', // 메소드(get, post, put 등)
+                        data: data, //보낼 데이터
+                        headers: {'Content-Type': 'application/json'},
+                        success: function(data) {
+                            alert("저장완료");
+                        },
+                        error: function(err) {
+                            alert("저장실패");
+                            //서버로부터 응답이 정상적으로 처리되지 못햇을 때 실행
+                        }
+                    });
+
+                }
+
+                function init(id) {
+                    $.ajax({
+                        url:'/messageList',
+                        type:'get', // 메소드(get, post, put 등)
+                        headers: {'Content-Type': 'application/json'},
+                        success: function(data) {
+                            const userinfo = data.data;
+                            console.log(userinfo);
+                            /*
+                            seq : document.getElementById('my-tbody').children[i].children[0].innerText,
+                            di : $('#di_'+num).val(),
+                            name : $('#name_'+num).val(),
+                            use : $('input:radio[name=use_'+num+']').val(),
+                            color
+                            ddc : $('#ddc').val(),
+                            location : $('#location').val()
+*/
+                            $('#email').val(userinfo.email);
+                            //$(":input:radio[name=adminYn]").val(userinfo.adminYn);
+                            $(":input:radio[name=adminYn]:radio[value='"+userinfo.adminYn+"']").prop('checked', true);
+                            $('#name').val(userinfo.name);
+                            $('#poneNum').val(userinfo.poneNum);
+                            //$(":input:radio[name=idUseYn]").val(userinfo.idUseYn);
+                            $(":input:radio[name=idUseYn]:radio[value='"+userinfo.idUseYn+"']").prop('checked', true);
+                        },
+                        error: function(err) {
+                            //서버로부터 응답이 정상적으로 처리되지 못햇을 때 실행
+                        }
+                    });
+                }
+
+            </script>
+            <style>
+                .btn-font{
+                    color : white !important;
+                }
+
+            </style>
+        </div>
+
+    </div>
+
+</div>
+
+</html>

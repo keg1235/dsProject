@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lagn="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <!-- Meta Tag -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name='copyright' content='pavilan'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script
+            src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous"></script>
+
+
+    <!--폰트어섬추가 -->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Title Tag  -->
+    <title>디에스이엔(주)</title>
+    <!-- Favicon -->
+    <link rel="icon" type="/image/favicon.png" th:href="@{assets/vendor/img/favicon.png}">
+    <!-- 컨텐츠페이지의 CSS 영역이 들어감 -->
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <th:block layout:fragment="css">
+        <!-- Bizwheel Plugins CSS -->
+        <link rel="stylesheet" th:href="@{/assets/vendor/css/animate.min.css}" >
+        <link rel="stylesheet" th:href="@{/assets/vendor/css/bootstrap.min.css}" >
+        <link rel="stylesheet" th:href="@{/assets/vendor/css/cubeportfolio.min.css}" >
+        <link rel="stylesheet" th:href="@{/assets/vendor/css/font-awesome.css}" >
+        <link rel="stylesheet" th:href="@{/assets/vendor/css/jquery.fancybox.min.css}" >
+        <link rel="stylesheet" th:href="@{/assets/vendor/css/magnific-popup.min.css}">
+        <link rel="stylesheet" th:href="@{/assets/vendor/css/owl-carousel.min.css}" >
+        <link rel="stylesheet" th:href="@{/assets/vendor/css/slicknav.min.css}">
+        <!-- Bizwheel Stylesheet -->
+       <link rel="stylesheet" th:href="@{/assets/vendor/css/reset.css}">
+        <link rel="stylesheet" th:href="@{../style.css}">
+        <link rel="stylesheet" th:href="@{/assets/vendor/css/responsive.css}">
+<!--        <link rel="stylesheet" type="text/css" th:href="@{/assets/vendor/js/jquery.jqGrid-4.4.3/css/jquery-ui.css}">-->
+
+        <link rel="stylesheet" type="text/css" th:href="@{/assets/vendor/css/dataTables.bootstrap4.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/assets/vendor/css/TabMenuSelectTransform.css}">
+
+        <!-- Bizwheel Colors -->
+        <!--        <link rel="stylesheet" th:href="@{assets/vendor/css/skins/skin-1.css}">-->
+        <!--<link rel="stylesheet" href="css/skins/skin-2.css">-->
+        <!--<link rel="stylesheet" href="css/skins/skin-3.css">-->
+        <!--<link rel="stylesheet" href="css/skins/skin-4.css">-->
+
+<!--        <link rel="stylesheet" th:href="@{/assets/vendor/css/rever/responsive.bootstrap.css}" >-->
+<!--        <link rel="stylesheet" th:href="@{/assets/vendor/css/rever/responsive.bootstrap4.css}" >-->
+<!--        <link rel="stylesheet" th:href="@{/assets/vendor/css/rever/responsive.dataTables.css}" >-->
+<!--        <link rel="stylesheet" th:href="@{/assets/vendor/css/rever/responsive.foundation.css}" >-->
+<!--        <link rel="stylesheet" th:href="@{/assets/vendor/css/rever/responsive.jqueryui.css}" >-->
+<!--        <link rel="stylesheet" th:href="@{/assets/vendor/css/rever/responsive.semanticui.css}" >-->
+
+
+<!--        <link th:href="@{/assets/vendor/css/sb-admin-2.min.css}" rel="stylesheet">-->
+
+<!--        &lt;!&ndash; Bootstrap Core Css &ndash;&gt;-->
+<!--        <link th:href="@{/assets/vendor/plugins/bootstrap/css/bootstrap.css}" rel="stylesheet">-->
+
+<!--        &lt;!&ndash; Waves Effect Css &ndash;&gt;-->
+<!--        <link th:href="@{/assets/vendor/plugins/node-waves/waves.css}" rel="stylesheet" />-->
+
+<!--        &lt;!&ndash; Animation Css &ndash;&gt;-->
+<!--        <link th:href="@{/assets/vendor/plugins/animate-css/animate.css}" rel="stylesheet" />-->
+
+<!--        &lt;!&ndash; Morris Chart Css&ndash;&gt;-->
+<!--        <link th:href="@{/assets/vendor/plugins/morrisjs/morris.css}" rel="stylesheet" />-->
+
+<!--        &lt;!&ndash; Custom Css수정 내용 확인 메뉴글자 작아짐 &ndash;&gt;-->
+<!--        <link th:href="@{/assets/vendor/css/style.css}" rel="stylesheet">-->
+<!--        <link th:href="@{/assets/vendor/css/styles.css}" rel="stylesheet">-->
+
+<!--        &lt;!&ndash; AdminBSB Themes. You can choose a theme from css/themes instead of get all themes &ndash;&gt;-->
+<!--        <link th:href="@{/assets/vendor/css/themes/all-themes.css}" rel="stylesheet" />-->
+
+    </th:block>
+
+    <!-- 컨텐츠페이지의 스크립트 영역이 들어감 -->
+
+</head>
+<body id="bg">
+
+<!-- Boxed Layout -->
+<div id="page" class="site boxed-layout">
+    <!-- Preloader -->
+    <div class="preeloader">
+        <div class="preloader-spinner"></div>
+    </div>
+    <header th:replace="fragments/header :: headerFragment"></header>
+
+    <br/>
+<div layout:fragment="content"></div>
+<footer th:replace="fragments/footer :: footerFragment"></footer>
+</div>
+<th:block layout:fragment="script">
+
+    <!-- Jquery JS -->
+    <script th:src="@{/assets/vendor/js/jquery.min.js}"></script>
+    <script th:src="@{/assets/vendor/js/jquery-migrate-3.0.0.js}"></script>
+    <!-- Popper JS -->
+    <script th:src="@{/assets/vendor/js/popper.min.js}"></script>
+    <!-- Bootstrap JS -->
+    <script th:src="@{/assets/vendor/js/bootstrap.min.js}"></script>
+    <!-- Modernizr JS -->
+    <script th:src="@{/assets/vendor/js/modernizr.min.js}"></script>
+    <!-- ScrollUp JS -->
+    <script th:src="@{/assets/vendor/js/scrollup.js}"></script>
+    <!-- FacnyBox JS -->
+    <script th:src="@{/assets/vendor/js/jquery-fancybox.min.js}"></script>
+    <!-- Cube Portfolio JS -->
+    <script th:src="@{/assets/vendor/js/cubeportfolio.min.js}"></script>
+    <!-- Slick Nav JS -->
+    <script th:src="@{/assets/vendor/js/slicknav.min.js}"></script>
+    <!-- Slick Nav JS -->
+    <script th:src="@{/assets/vendor/js/slicknav.min.js}"></script>
+    <!-- Slick Slider JS -->
+    <script th:src="@{/assets/vendor/js/owl-carousel.min.js}"></script>
+    <!-- Easing JS -->
+    <script th:src="@{/assets/vendor/js/easing.js}"></script>
+    <!-- Magnipic Popup JS -->
+    <script th:src="@{/assets/vendor/js/magnific-popup.min.js}"></script>
+    <!-- Active JS -->
+    <script th:src="@{/assets/vendor/js/active.js}"></script>
+    <!-- JQGrid JS -->
+    <script th:src="@{/assets/vendor/js/data-table.js}"></script>
+    <script th:src="@{/assets/vendor/js/jquery.dataTables.js}"></script>
+
+
+    <!-- Select Plugin Js -->
+    <script th:src="@{/assets/vendor/plugins/bootstrap-select/js/bootstrap-select.js}"></script>
+
+    <!-- Slimscroll Plugin Js -->
+    <script th:src="@{/assets/vendor/plugins/jquery-slimscroll/jquery.slimscroll.js}"></script>
+
+    <!-- Waves Effect Plugin Js -->
+    <script th:src="@{/assets/vendor/plugins/node-waves/waves.js}"></script>
+
+    <!-- Jquery CountTo Plugin Js -->
+    <script th:src="@{/assets/vendor/plugins/jquery-countto/jquery.countTo.js}"></script>
+
+    <!-- Morris Plugin Js -->
+    <script th:src="@{/assets/vendor/plugins/raphael/raphael.min.js}"></script>
+    <script th:src="@{/assets/vendor/plugins/morrisjs/morris.js}"></script>
+
+    <!-- ChartJs -->
+    <script th:src="@{/assets/vendor/plugins/chartjs/Chart.bundle.js}"></script>
+
+    <!-- Flot Charts Plugin Js -->
+    <script th:src="@{/assets/vendor/plugins/flot-charts/jquery.flot.js}"></script>
+    <script th:src="@{/assets/vendor/plugins/flot-charts/jquery.flot.resize.js}"></script>
+    <script th:src="@{/assets/vendor/plugins/flot-charts/jquery.flot.pie.js}"></script>
+    <script th:src="@{/assets/vendor/plugins/flot-charts/jquery.flot.categories.js}"></script>
+    <script th:src="@{/assets/vendor/plugins/flot-charts/jquery.flot.time.js}"></script>
+
+    <!-- Sparkline Chart Plugin Js -->
+    <script th:src="@{/assets/vendor/plugins/jquery-sparkline/jquery.sparkline.js}"></script>
+    <script th:src="@{/assets/vendor/plugins/node-waves/waves.js}"></script>
+
+    <!-- Custom Js -->
+    <script th:src="@{/assets/vendor/js/admin.js}"></script>
+<!--    <script th:src="@{/assets/vendor/js/pages/index.js}"></script>-->
+
+
+    <!-- Jquery Core Js -->
+    <script th:src="@{plugins/jquery/jquery.min.js}"></script>
+
+    <!-- Bootstrap Core Js -->
+    <script th:src="@{plugins/bootstrap/js/bootstrap.js}"></script>
+
+<!--   fabric 그림 관련 -->
+<!--    <script th:src="@{/assets/vendor/js/fabric/fabric.js}"></script>-->
+<!--    <script th:src="@{/assets/vendor/js/fabric/gif.min.js}"></script>-->
+<!--    <script th:src="@{/assets/vendor/js/fabric/script.js}"></script>-->
+
+
+</th:block>
+</body>
+</html>

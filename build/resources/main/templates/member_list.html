@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/layout}">
+
+<div layout:fragment="content">
+<section class="features-area section-bg"   style="padding-top:50px;">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-3 col-md-6 col-12">
+					회원목록
+					</div>
+				</div>
+			</div>
+		</section>
+		   <div class="container" style="padding-top:10px;">
+        <table id="userTable" class="table table-bordered table-hover text-center" style="color: #FFF;  ">
+            <thead>
+            <tr style="vertical-align:middle">
+                <th>번호</th>
+                <th>아이디</th>
+                <th>이름</th>
+                <th>연락처</th>
+                <th>등록 관리자</th>
+                <th>관리</th>
+            </tr>
+            </thead>
+        </table>
+        <br />
+    </div>
+    <script>
+        $(document).ready(function() {
+
+            let table1 = $('#userTable').dataTable({
+                pageLength: 10,
+                bPaginate: true,
+                bLengthChange: true,
+                responsive: true,
+                language: {
+                    "emptyTable": "데이터가 없어요.",
+                    "lengthMenu": "페이지당 _MENU_ 개씩 보기",
+                    "info": "현재 _START_ - _END_ / _TOTAL_건",
+                    "infoEmpty": "데이터 없음",
+                    "infoFiltered": "( _MAX_건의 데이터에서 필터링됨 )",
+                    "search": "에서 검색: ",
+                    "zeroRecords": "일치하는 데이터가 없어요.",
+                    "loadingRecords": "로딩중...",
+                    "processing": "잠시만 기다려 주세요...",
+                    "paginate": {
+                        "next": "다음",
+                        "previous": "이전"
+                    }
+                },
+                bAutoWidth: false,
+                processing: true,
+                ordering: true,
+                serverSide: false,
+                searching: true,
+                ajax : {
+                    "url": "/user",
+                    "data": function (d) {
+
+                    }
+                },
+                columns: [
+                    {data: "id"},
+                    {data: "email"},
+                    {data: "name"},
+                    {data: "poneNum"},
+                    {data: "adminYn"},
+                    {data: "idUseYn"}
+                ], columnDefs: [
+                    {
+                        "targets": [0, 1,2, 3, 4,5],
+                        "className": "text-left",
+                        "width": "10%"
+                    },
+                    {
+                        "targets": [3, 4,5],
+                        "className": "text-center",
+                        "width": "10%"
+                    }
+                ]
+
+
+            });
+
+            var table = $('#userTable').DataTable();
+            $('#userTable_filter').prepend('<select id="searchSelect"></select>');
+            $('#userTable > thead > tr').children().each(function (indexInArray, valueOfElement) {
+                $('#searchSelect').append('<option>' + valueOfElement.innerHTML + '</option>');
+            });
+            $('.dataTables_filter input').unbind().bind('keyup', function () {
+                var colIndex = document.querySelector('#searchSelect').selectedIndex;
+                table.search('').columns().search('').draw();
+                table.column(colIndex).search(this.value).draw();
+            });
+        });
+
+        $(document).on('click', '#userTable tbody tr td', function(event) {
+
+            if ($(this).is('td')){
+                if ($(this).attr("class")=='text-right sorting_1'){
+
+                }else{
+                    var table = $('#userTable').DataTable().rows(this).data();
+                    detailview(table[0].id);
+
+                }
+            }
+
+
+        });
+        function detailview(idNum){
+            location.href="member_registration/"+idNum;
+        }
+    </script>
+</div>
+</html>

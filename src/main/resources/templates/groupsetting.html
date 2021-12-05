@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/layout}">
+
+<div layout:fragment="content">
+	 	  <section class="features-area section-bg"   style="padding-top:50px;">
+			<div class="container">
+				<div class="row"> 
+                    <div class="col-lg-4 col-md-6 col-12"  > 
+					 <button class="btn btn-primary" id="companyName" type="button" style="font-size: 1em">현장명 : 한국 알프스</button>
+					</div> 
+				</div>
+			</div>
+		</section>
+
+	<div id="layoutAuthentication">
+		<div id="layoutAuthentication_content">
+			<main>
+				<div class="container">
+					<div class="row">
+						<div class="col-12">
+							<div class="blog-comments-form">
+								<div class="con-4 bottom-title">
+									<h2>그룹 등록</h2>
+
+								</div>
+								<!-- Comment Form -->
+								<form class="form">
+									<div class="row">
+										<div class="col-6">
+											<div class="form-group">
+												<label>그룹 명</label>
+												<input type="text" name="group_name" id="group_name"  required="required" placeholder="2차 단지">
+												<input type="hidden" id="group_id">
+											</div>
+										</div>
+										<div class="col-6">
+											<div class="form-group">
+												<label>정렬 순서</label>
+												<input type="text" id="sort" required="required" placeholder="숫자를 입력해 주세요">
+											</div>
+										</div>
+										<div class="col-6">
+											<div class="form-group">
+												<label>예약 시스템 선택</label>
+												<select name="type" id="type" onchange="commoncode()">
+													<option value = "null" selected> 선택안함 </option>
+													<option value = "1"> DCP</option>
+													<option value = "2"> 예약</option>
+												</select></label>
+											</div>
+										</div>
+										<div class="col-6" id="dcpGroup">
+											<div class="form-group">
+												<label>DCP 선택</label>
+												<select name="dcp_id" id="dcp_id" >
+													<option value = "null" selected> </option>
+												</select></label>
+											</div>
+										</div>
+										<div class="col-6" id="scdataGroup">
+											<div class="form-group">
+												<label>예약 선택</label>
+												<select name="scdata_id" id="scdata_id">
+													<option value = "null" selected> </option>
+												</select></label>
+											</div>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="col-6">
+											<div class="single-service">
+												<div class="service-content">
+													<h4><a >그룹</a></h4>
+													<div class="area" id="grouplist" ondrop="ddd(event)" ondragover="zzz(event)">
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<div class="col-6">
+											<div class="single-service">
+												<div class="service-content">
+													<h4><a >DI 리스트</a></h4>
+													<div class="area" id="dilist" ondrop="ddd(event)" ondragover="zzz(event)">
+													</div>
+												</div>
+												</div>
+
+											</div>
+										</div>
+									<p style="padding: 10px;"></p>
+
+											<div class="col-12">
+												<div class="form-group button">
+													<button type="button" onclick="save()" class="bizwheel-btn primary effect">저장&nbsp;&nbsp; <i class="fa fa-paper-plane"></i></button>
+												</div>
+											</div>
+
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</main>
+		</div>
+	</div>
+		<!-- Services -->
+		<!--<section class="services section-bg section-space">
+			<div class="container">
+			 
+				<div class="row">
+					<div class="col-lg-3 col-md-3 col-12">
+						&lt;!&ndash; Single Service &ndash;&gt;
+						<div class="service-content">
+							<div class="col-12">
+
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-3 col-md-3 col-12">
+						<div class="single-service">
+							<div class="service-content">
+								<h4><a >그룹</a></h4>
+									&lt;!&ndash;								<p>메세지 보낼 회원을 추가해 주세요 </p>&ndash;&gt;
+								<div class="area" id="grouplist" ondrop="ddd(event)" ondragover="zzz(event)">
+								</div>
+							</div>
+						</div>
+					</div>
+						&lt;!&ndash;/ End Single Service &ndash;&gt;
+					<div class="col-lg-3 col-md-3 col-12">
+						&lt;!&ndash; Single Service &ndash;&gt;
+						<div class="single-service">
+							<div class="service-content">
+								<h4><a >DI 리스트</a></h4>
+								<div class="area" id="dilist" ondrop="ddd(event)" ondragover="zzz(event)">
+								</div>
+									&lt;!&ndash;								<div class="alert alert-dismissible alert-danger ">&ndash;&gt;
+									&lt;!&ndash;								  <button class="close" type="button" don data-dismiss="alert">&times;</button>&ndash;&gt;
+									&lt;!&ndash;								  <strong>Oh snap!</strong> <a class="alert-link" href="#">Change a few things up</a> and try submitting again.&ndash;&gt;
+							</div>
+						</div>
+
+					</div>
+						&lt;!&ndash;/ End Single Service &ndash;&gt;
+
+					</div>
+				<div class="row">
+					<div class="col-12">
+						<div class="form-group button">
+							<button type="button" onclick="save()" class="bizwheel-btn primary effect">저장&nbsp;&nbsp; <i class="fa fa-paper-plane"></i></button>
+						</div>
+					</div>
+				</div>
+				</div>
+
+		</section>-->
+		<!--/ End Services -->    
+		 <script>
+			 $(document).ready(function(){
+				 //init();
+
+				 var companyName = '[[${companyName}]]';
+				 console.log(companyName);
+			 	 $('#companyName').text(companyName);
+				 var id = "[[${id}]]";
+				 initschedul();
+				 initdcp();
+				 $('#scdataGroup').hide();
+				 $('#dcpGroup').hide();
+
+				 if(id == ""){
+
+					 $('#updateBtn').hide();
+					 calllist(0);
+				 }else{
+					 calllist(id);
+					 $('#saveBtn').hide();
+				 }
+			 });
+			 function initdcp() {
+				 $.ajax({
+					 url: '/dcp', //request 보낼 서버의 경로
+					 type: 'get', // 메소드(get, post, put 등)
+					 headers: {'Content-Type': 'application/json'},
+					 success: function (data) {
+						 console.log(data);
+						 console.log(data.data);
+
+						 for (var prop in data.data) {
+							 console.log(+data.data[prop]);
+							 $('#dcp_id').append("<option value='" + data.data[prop].id + "'>" + data.data[prop].name + "</option>");
+						 }
+
+					 }
+
+				 })
+			 }
+
+			 function initschedul(){
+				 $.ajax({
+					 url: '/scData', //request 보낼 서버의 경로
+					 type: 'get', // 메소드(get, post, put 등)
+					 headers: {'Content-Type': 'application/json'},
+					 success: function (data) {
+						 console.log(data);
+						 console.log(data.data);
+
+						 for (var prop in data.data) {
+							 console.log(+data.data[prop]);
+							 $('#scdata_id').append("<option value='" + data.data[prop].id + "'>" + data.data[prop].name + "</option>");
+						 }
+
+					 }
+
+				 })
+
+			 }
+
+			 function commoncode(){
+			 	console.log($("#type option:selected").val())
+				 if($("#type option:selected").val() == 1){
+
+					 $('#dcpGroup').show();
+					 $('#scdataGroup').hide();
+				 }else if($("#type option:selected").val() == 2){
+
+					 $('#dcpGroup').hide();
+					 $('#scdataGroup').show();
+				 }
+
+
+			 }
+
+
+			 function save(){
+				 var body = document.getElementById('grouplist').getElementsByTagName("div");
+
+				 const data = [];
+
+				 console.log(body);
+				 for (var i = 0; i < body.length; i++) {
+					 console.log(i);
+					 console.log(body[i].id);
+					 var service = {
+						 name : $('#group_name').val( ),
+						 groupId : $('#group_id').val(),
+						 dcpid :  $("#type option:selected").val() == 1 ? $("#dcp_id option:selected").val() : null,
+						 scdataid :  $("#type option:selected").val() == 2 ? $("#scdata_id option:selected").val() : null,
+						 sort : $('#sort').val(),
+						 ddcId: body[i].id
+					 }
+					 console.log(service);
+					 data[i] = service;
+				 }
+				 console.log(data);
+				 if(data.length > 0) {
+					 axios({
+						 url: '/datagroup', //request 보낼 서버의 경로
+						 method: 'post', // 메소드(get, post, put 등)
+						 data: data, //보낼 데이터
+						 headers: {'Content-Type': 'application/json'},
+					 }).then(function (response) {
+						 //성공
+						 console.log(response);
+						 alert('저장완료');
+						 location.reload();
+					 }).catch(function (response) {
+						 console.log(response);
+						 alert(response.message);
+					 });
+				 }else{
+					 axios({
+						 url: '/ddcmessage/'+$("#di option:selected").val(), //request 보낼 서버의 경로
+						 method: 'delete', // 메소드(get, post, put 등)
+						 headers: {'Content-Type': 'application/json'},
+					 }).then(function (response) {
+						 //성공
+						 console.log(response);
+						 alert('저장완료');
+						 location.reload();
+					 }).catch(function (response) {
+						 console.log(response);
+						 alert(response.message);
+					 });
+				 }
+			 }
+
+
+			 function calllist (num){
+
+					 $.ajax({
+						 url: '/datagroup/getddc/'+num,
+						 type: 'get', // 메소드(get, post, put 등)
+						 headers: {'Content-Type': 'application/json'},
+						 success: function (data) {
+							 console.log(data);
+							 console.log(data.data);
+							 $('#dilist').children('div').remove();
+							 $('#grouplist').children('div').remove();
+							 for (var prop in data.data.ddc) {
+								 var count = 0;
+								 for (var pp in data.data.datasave) {
+									 if (data.data.datasave[pp].ddcId == data.data.ddc[prop].id) {
+										 count++;
+									 }
+								 }
+								 console.log(data.data.ddc[prop].id);
+								 if (count == 0) {
+									 $('#dilist').append('<div onclick="move(this)" ondragstart="ccc(event)"  draggable="true" id="' + data.data.ddc[prop].id + '">' + data.data.ddc[prop].name + '</div>');
+								 }
+
+							 }
+							 for (var prop in data.data.datasave) {
+								 $('#grouplist').append('<div onclick="move(this)" ondragstart="ccc(event)"  draggable="true" id="' + data.data.datasave[prop].ddcId + '">' + data.data.datasave[prop].ddcname+'</div>');
+								 $('#group_name').val( data.data.datasave[prop].name);
+								 $('#group_id').val(data.data.datasave[prop].groupId);
+								 if (data.data.datasave[prop].dcpId != null){
+									 $('#dcpGroup').show();
+									 $("#type").val(1);
+									 $('#dcp_id').val(data.data.datasave[prop].dcpId);
+								 }
+								 if (data.data.datasave[prop].scdataId != null){
+									 $('#scdataGroup').show();
+									 $("#type").val(2);
+									 $('#scdata_id').val(data.data.datasave[prop].scdataId);
+								 }
+
+
+								 $('#sort').val(data.data.datasave[prop].sort);
+
+							 }
+
+
+						 },
+						 error: function (err) {
+
+						 }
+					 });
+			 }
+
+
+			 function ccc(ee) {
+				 ee.dataTransfer.setData("Text", ee.target.id);
+				 console.log(ee.target.id)
+			 }
+			 function move(e) {
+				 var data = $(e).attr('id');
+			 	console.log($(e).parent().attr('id'));
+				 if ($(e).parent().attr('id') == "dilist") {
+					 console.log($("#grouplist"));
+					 $("#grouplist").prepend(document.getElementById(data));
+				 }else if ($(e).parent().attr('id') == "grouplist"){
+					 var data =  $(e).attr('id');
+					 console.log($("#dilist"));
+					 $("#dilist").prepend(document.getElementById(data));
+					 //$("#dilist").appendChild(document.getElementById(data));
+				 }
+			 }
+
+
+
+			 function ggg(ee) {
+				// document.getElementById("demo").innerHTML = "드래그하고 있습니다!";
+			 }
+
+			 function zzz(ee) {
+				 ee.preventDefault();
+			 }
+
+			 function ddd(ee) {
+				 console.log(ee.target.id == "dilist"+ee.target.id == "grouplist" );
+				 ee.preventDefault();
+				 var data = ee.dataTransfer.getData("Text");
+				 if (ee.target.id == "dilist" ||ee.target.id == "grouplist"){
+					 ee.target.appendChild(document.getElementById(data));
+				 }
+
+
+
+				// document.getElementById("demo").innerHTML = "드롭되었습니다.";
+			 }
+		 </script>
+			<style>
+				.area {
+					float: left;
+					width: 100%;
+					min-height: 40px;
+					height: 100%;
+					padding-bottom: 10px;
+					margin-bottom: 20px;
+					padding: 1px;
+					border: 1px solid #000000;
+				}
+				span{
+					margin: 5px !important;
+					background-color: #3C6FBB;
+					color : white;
+				}
+
+			</style>
+			</div>
+</html>

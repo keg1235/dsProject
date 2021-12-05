@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/layout}">
+<div layout:fragment="content">
+	<section class="features-area section-bg">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-3 col-md-6 col-12">
+				</div>
+			</div>
+			<br /><br />
+		</div>
+	</section>
+
+	<div id="layoutAuthentication">
+		<div id="layoutAuthentication_content">
+			<main>
+				<div class="container">
+					<div class="row">
+						<div class="col-12">
+							<div class="blog-comments-form">
+								<div class="con-4 bottom-title">
+									<h2>DCP 등록</h2>
+
+								</div>
+								<!-- Comment Form -->
+								<form class="form">
+									<div class="row">
+										<div class="col-4">
+											<div class="form-group">
+												<label>Gateway 선택</label>
+												<select id="gateway_id" name="gateway_id" >
+												</select>
+												<input type="hidden" id="id"/>
+											</div>
+										</div>
+										<div class="col-6">
+											<div class="form-group">
+												<label>명칭</label>
+												<input type="text" name="name" id="name" required="required" placeholder="명칭을 입력해주세요">
+											</div>
+										</div>
+										<div class="col-6">
+											<div class="form-group">
+												<label>설명</label>
+												<input type="text" name="memo" id="memo" required="required" placeholder="설명을 입력해주세요">
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="form-group">
+												<label>기기번호</label>
+												<input type="text" name="ddc" id="ddc" required="required" placeholder="기기 번호 입력해주세요">
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="form-group">
+												<label>딜레이 타이머</label>
+												<input type="text" name="delayTimer" id="delayTimer" required="required" placeholder="초단위로 입력해 주세요">
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="form-group">
+												<label>Main 여부</label>
+												<input type="radio" name="mainYn" id="mainY" placeholder="radio" style="width: 16px; vertical-align: middle;padding-left: 3px;" value="YES"> YES
+												<input type="radio" name="mainYn" id="mainN" placeholder="radio" style="width: 16px; vertical-align: middle;padding-left: 3px;" value="NO" checked> NO
+											</div>
+											<div class="form-group">
+												<label>사용여부</label>
+												<input type="radio" name="useYn" id="usey" placeholder="radio" style="width: 16px; vertical-align: middle;padding-left: 3px;" value="YES"> YES
+												<input type="radio" name="useYn" id="usen" placeholder="radio" style="width: 16px; vertical-align: middle;padding-left: 3px;" value="NO" checked> NO
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="form-group">
+												<label> 기 기 종 류
+													<select id="type" name="type" >
+														<option value = "" selected> </option>
+														<option value = "1"> 전  기</option>
+														<option value = "2"> 온  도</option>
+<!--														-->
+<!--														<option value = "2"> 습  도</option>-->
+<!--														<option value = "3"> 수  량</option>-->
+													</select></label>
+											</div>
+										</div>
+										<div class="col-6">
+											<div class="form-group">
+												<label>on설정</label>
+												<input type="text" name="onSuggest" id="onSuggest" required="required" placeholder="on때 값을 입력하세요">
+												<select name="onType" id="onType" >
+													<option value = "" selected> </option>
+													<option value = "big"> 크  게</option>
+													<option value = "small"> 작  게</option>
+												</select></label>
+											</div>
+										</div>
+
+										<div class="col-6">
+											<div class="form-group">
+												<label>off설정</label>
+												<input type="text" name="offSuggest" id="offSuggest" required="required" placeholder="off시 값을 입력하세요">
+												<select name="offType" id="offType" >
+													<option value = "" selected> </option>
+													<option value = "big"> 크  게</option>
+													<option value = "small"> 작  게</option>
+												</select></label>
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="form-group">
+												<label>누적값</label>
+												<input type="text" name="saveValue" id="saveValue" required="required" placeholder="누적값 존재시 넣어주세요">
+											</div>
+										</div>
+										<p style="padding: 10px;"></p>
+										<div class="col-12">
+											<div class="form-group button">
+												<button id="saveBtn" type="button" class="bizwheel-btn primary effect"  onclick="save()">저장&nbsp;&nbsp; <i class="fa fa-paper-plane"></i></button>
+												<button onclick="update()" id="updateBtn" type="button" class="bizwheel-btn primary effect">저장&nbsp;&nbsp; <i class="fa fa-paper-plane"></i></button>
+											</div>
+										</div>
+									</div>
+								</form>
+								<!--/ End Comment Form -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</main>
+		</div>
+
+	</div>
+	<script type="text/javascript">
+		let formData = new FormData();
+		$(document).ready(function() {
+			var id = "[[${id}]]";
+			commoncode();
+			if(id == ""){
+				$('#updateBtn').hide();
+			}else{
+				init(id);
+				$('#saveBtn').hide();
+			}
+
+		});
+
+
+		function commoncode(){
+			$.ajax({
+				url:'/gateway', //request 보낼 서버의 경로
+				type:'get', // 메소드(get, post, put 등)
+				headers: {'Content-Type': 'application/json'},
+				success: function(data) {
+					console.log(data);
+					console.log(data.data);
+
+					for (var prop in data.data){
+						console.log(+data.data[prop]);
+						$('#gateway_id').append("<option value='"+data.data[prop].id+"'>"+data.data[prop].ipAddress+"</option>");
+					}
+
+
+				},
+				error: function(err) {
+
+				}
+			});
+
+		}
+
+
+		function save(){
+
+			var jObject = new Object();
+			jObject.id = $('#id').val();
+			jObject.name = $('#name').val();
+			jObject.location = $('#location').val();
+			jObject.gateway_id =  $("#gateway_id option:selected").val();
+			jObject.memo = $('#memo').val();
+			jObject.delayTimer = $('#delayTimer').val();
+			jObject.useYn = $('input[name="useYn"]:checked').val();
+			jObject.type = $("#type option:selected").val();
+			jObject.ddc = $('#ddc').val();
+			jObject.onSuggest = $('#onSuggest').val();
+			jObject.offSuggest = $('#offSuggest').val();
+			jObject.onType = $("#onType option:selected").val();
+			jObject.offType = $("#offType option:selected").val();
+			jObject.saveValue = $('#saveValue').val() == "" ? 0 : $('#saveValue').val();
+			jObject.mainYn = $('input[name="mainYn"]:checked').val();
+			//initInput();
+			var data = JSON.stringify(jObject);
+			console.log(jObject);
+			$.ajax({
+				url:'/dcp', //request 보낼 서버의 경로
+				type:'post', // 메소드(get, post, put 등)
+				data: data, //보낼 데이터
+				headers: {'Content-Type': 'application/json'},
+				success: function(data) {
+					alert("저장완료")
+				},
+				error: function(err) {
+					//서버로부터 응답이 정상적으로 처리되지 못햇을 때 실행
+				}
+			});
+
+		}
+
+		function update() {
+
+			var data = {
+				id : $('#id').val(),
+				name : $('#name').val(),
+				location : $('#location').val(),
+				gateway_id :  $("#gateway_id option:selected").val(),
+				memo : $('#memo').val(),
+				delayTimer : $('#delayTimer').val(),
+				useYn : $('input[name="useYn"]:checked').val(),
+				type : $("#type option:selected").val(),
+				ddc : $('#ddc').val(),
+				onSuggest : $('#onSuggest').val(),
+				offSuggest : $('#offSuggest').val(),
+				onType : $("#onType option:selected").val(),
+				offType : $("#offType option:selected").val(),
+				saveValue : $('#saveValue').val() == "" ? 0 : $('#saveValue').val(),
+				mainYn : $('input[name="mainYn"]:checked').val(),
+			}
+
+			console.log(data);
+
+			axios({
+				url: '/dcp/' + "[[${id}]]", //request 보낼 서버의 경로
+				method: 'put', // 메소드(get, post, put 등)
+				data: data, //보낼 데이터
+				headers: {'Content-Type': 'application/json'}
+			}).then(function (response) {
+				//성공
+				console.log(response);
+				alert('저장완료');
+				location.href='/settimer_list';
+			}).catch(function (response) {
+				console.log(response);
+				alert(response.message);
+			});
+		}
+
+		function init(num) {
+
+			$.ajax({
+				url:'/dcp/'+num, //request 보낼 서버의 경로
+				type:'get', // 메소드(get, post, put 등)
+				headers: {'Content-Type': 'application/json'},
+				success: function(data) {
+
+					const dcplist = data.data;
+					console.log(dcplist.id);
+					$('#id').val(dcplist.id);
+					$('#name').val(dcplist.name);
+					$('#location').val(dcplist.location);
+					$('#memo').val(dcplist.memo);
+					$('#delayTimer').val(dcplist.delayTimer);
+					$('#type').val(dcplist.type);
+					$('#ddc').val(dcplist.ddc);
+					$('#onSuggest').val(dcplist.onSuggest);
+					$('#offSuggest').val(dcplist.offSuggest);
+					$('#gateway_id').val(dcplist.gateway_id);
+					$('#onType').val(dcplist.onType);
+					$('#offType').val(dcplist.offType);
+					$('#saveValue').val(dcplist.saveValue);
+
+					if(dcplist.mainYn == "YES"){
+						$("#mainY").prop('checked', true);
+					}else{
+						$("#mainN").prop('checked', true);
+					}
+
+					if(dcplist.useYn == "YES"){
+						$("#usey").prop('checked', true);
+					}else{
+						$("#usen").prop('checked', true);
+					}
+
+				},
+				error: function(err) {
+					//서버로부터 응답이 정상적으로 처리되지 못햇을 때 실행
+				}
+			});
+		}
+
+	</script>
+</div>
+
+</html>

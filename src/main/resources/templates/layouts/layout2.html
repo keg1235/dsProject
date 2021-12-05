@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lagn="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <!-- Meta Tag -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name='copyright' content='pavilan'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Title Tag  -->
+    <title>디에스이엔(주)</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/favicon.png" th:href="@{assets/vendor/img/favicon.png}">
+
+    <!-- Web Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!-- 별도의 연결없이 루트 경로에 `favicon.ico`가 있는 것으로 IE 지원이 가능합니다. -->
+    <!-- <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"> -->
+    <link rel="icon" href="favicon.png" th:href="@{assets/vendor/img/favicon.png}">
+    <link rel="apple-touch-icon" href="favicon.png" th:href="@{assets/vendor/img/favicon.png}">
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="css/reset.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css">
+    <link rel="stylesheet" th:href="@{/assets/vendor/css/main.css}">
+    <link rel="stylesheet" media="(max-width: 1024px)"th:href="@{/assets/vendor/css/main_medium.css}">
+    <link rel="stylesheet" media="(max-width: 768px)" th:href="@{/assets/vendor/css/main_small.css}">
+    <script defer th:src="@{/assets/vendor/js/main.js}"></script>
+
+    <th:block layout:fragment="css">
+        <!-- Bizwheel Plugins CSS -->
+        <link rel="stylesheet" th:href="@{/assets/vendor/css/animate.min.css}" >
+        <link rel="stylesheet" th:href="@{/assets/vendor/css/bootstrap.min.css}" >
+        <link rel="stylesheet" th:href="@{/assets/vendor/css/cubeportfolio.min.css}" >
+        <link rel="stylesheet" th:href="@{/assets/vendor/css/font-awesome.css}" >
+        <link rel="stylesheet" th:href="@{/assets/vendor/css/jquery.fancybox.min.css}" >
+        <link rel="stylesheet" th:href="@{/assets/vendor/css/magnific-popup.min.css}">
+        <link rel="stylesheet" th:href="@{/assets/vendor/css/owl-carousel.min.css}" >
+        <link rel="stylesheet" th:href="@{/assets/vendor/css/slicknav.min.css}">
+        <!-- Bizwheel Stylesheet -->
+        <link rel="stylesheet" th:href="@{/assets/vendor/css/reset.css}">
+        <link rel="stylesheet" th:href="@{style.css}">
+        <link rel="stylesheet" th:href="@{/assets/vendor/css/responsive.css}">
+
+        <!-- Bizwheel Colors -->
+        <!--        <link rel="stylesheet" th:href="@{assets/vendor/css/skins/skin-1.css}">-->
+        <!--<link rel="stylesheet" href="css/skins/skin-2.css">-->
+        <!--<link rel="stylesheet" href="css/skins/skin-3.css">-->
+        <!--<link rel="stylesheet" href="css/skins/skin-4.css">-->
+    </th:block>
+
+    <!-- 컨텐츠페이지의 스크립트 영역이 들어감 -->
+
+</head>
+<div layout:fragment="content">
+
+</div>
+<th:block layout:fragment="script">
+    <!-- Jquery JS -->
+    <script th:src="@{/assets/vendor/js/jquery.min.js}"></script>
+    <script th:src="@{/assets/vendor/js/jquery-migrate-3.0.0.js}"></script>
+    <!-- Popper JS -->
+    <script th:src="@{/assets/vendor/js/popper.min.js}"></script>
+    <!-- Bootstrap JS -->
+    <script th:src="@{/assets/vendor/js/bootstrap.min.js}"></script>
+    <!-- Modernizr JS -->
+    <script th:src="@{/assets/vendor/js/modernizr.min.js}"></script>
+    <!-- ScrollUp JS -->
+    <script th:src="@{/assets/vendor/js/scrollup.js}"></script>
+    <!-- FacnyBox JS -->
+    <script th:src="@{/assets/vendor/js/jquery-fancybox.min.js}"></script>
+    <!-- Cube Portfolio JS -->
+    <script th:src="@{/assets/vendor/js/cubeportfolio.min.js}"></script>
+    <!-- Slick Nav JS -->
+    <script th:src="@{/assets/vendor/js/slicknav.min.js}"></script>
+    <!-- Slick Nav JS -->
+    <script th:src="@{/assets/vendor/js/slicknav.min.js}"></script>
+    <!-- Slick Slider JS -->
+    <script th:src="@{/assets/vendor/js/owl-carousel.min.js}"></script>
+    <!-- Easing JS -->
+    <script th:src="@{/assets/vendor/js/easing.js}"></script>
+    <!-- Magnipic Popup JS -->
+    <script th:src="@{/assets/vendor/js/magnific-popup.min.js}"></script>
+    <!-- Active JS -->
+    <script th:src="@{/assets/vendor/js/active.js}"></script>
+</th:block>
+</html>

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/layout}">
+
+<div layout:fragment="content">
+    <div class="container" style="padding-top:10px;">
+        <div class="container" style="padding-top:10px;">
+            <section >
+                <div class="container-fluid">
+                    <div class="block-header">
+                        <h2> </h2>
+                    </div>
+                    <br>
+                </div>
+
+
+
+
+                <!-- Begin Page Content -->
+                <div class="row clearfix">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                        <div class="card shadow mb-2">
+                            <div class="card-body">
+
+                                <div class="row"   >
+                                    <div class="col-xs-4 col-sm-3" style="float: right;padding: 2px">
+                                        <input id="std_date" type="date"   placeholder="날짜선택">   </div>
+
+                                    <div class="col-xs-4 col-sm-3"  style="float: right;padding: 2px">
+                                        <input id="end_date" type="date"   placeholder="날짜선택"></div>
+                                    <div class="col-xs-4 col-sm-3" style="float: right;padding: 3px">
+                                        <a onclick="find()" class="btn btn-primary btn-user btn-block">
+                                            검색
+                                        </a>
+                                    </div>
+                                    <div class="col-xs-4 col-sm-3" style="float: right;padding: 3px">
+                                        <a onclick="excel_download()" class="btn btn-primary btn-user btn-block">
+                                            엑셀다운로드
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+        <br />
+        <table id="excelTable" style="display: none ">
+            <thead>
+            <tr style="vertical-align:middle">
+                <th>날짜</th>
+                <th>기기 번호</th>
+                <th>기기 명칭</th>
+                <th>방식</th>
+                <th>저장값</th>
+                <th>게이트웨이</th>
+            </tr>
+            </thead>
+            <tbody id="excel_Table">
+
+            </tbody>
+
+        </table>
+        <table id="userTable" class="table table-bordered table-hover text-center" style="color: #FFF;  ">
+            <thead>
+            <tr style="vertical-align:middle">
+                <th>날짜</th>
+                <th>기기 번호</th>
+                <th>기기 명칭</th>
+                <th>방식</th>
+                <th>저장값</th>
+                <th>게이트웨이</th>
+            </tr>
+            </thead>
+        </table>
+
+<!--        <nav  class="text-center" >-->
+<!--            <ul class="pagination" >-->
+<!--                <li>-->
+<!--                    <a href="#" aria-label="Previous">-->
+<!--                        <span aria-hidden="true">&laquo;</span>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--                <li><a href="#">1</a></li>-->
+<!--                <li><a href="#">2</a></li>-->
+<!--                <li><a href="#">3</a></li>-->
+<!--                <li><a href="#">4</a></li>-->
+<!--                <li><a href="#">5</a></li>-->
+<!--                <li>-->
+<!--                    <a href="#" aria-label="Next">-->
+<!--                        <span aria-hidden="true">&raquo;</span>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </nav>-->
+
+    </div>
+    <div class="container">
+
+            <th:block layout:fragment="script">
+
+                <!-- Jquery JS -->
+                <script th:src="@{/assets/vendor/js/jquery.min.js}"></script>
+                <script th:src="@{/assets/vendor/js/jquery-migrate-3.0.0.js}"></script>
+                <!-- Popper JS -->
+                <script th:src="@{/assets/vendor/js/popper.min.js}"></script>
+                <!-- Bootstrap JS -->
+                <script th:src="@{/assets/vendor/js/bootstrap.min.js}"></script>
+                <!-- Modernizr JS -->
+                <script th:src="@{/assets/vendor/js/modernizr.min.js}"></script>
+                <!-- ScrollUp JS -->
+                <script th:src="@{/assets/vendor/js/scrollup.js}"></script>
+                <!-- FacnyBox JS -->
+                <script th:src="@{/assets/vendor/js/jquery-fancybox.min.js}"></script>
+                <!-- Cube Portfolio JS -->
+                <script th:src="@{/assets/vendor/js/cubeportfolio.min.js}"></script>
+                <!-- Slick Nav JS -->
+                <script th:src="@{/assets/vendor/js/slicknav.min.js}"></script>
+                <!-- Slick Nav JS -->
+                <script th:src="@{/assets/vendor/js/slicknav.min.js}"></script>
+                <!-- Slick Slider JS -->
+                <script th:src="@{/assets/vendor/js/owl-carousel.min.js}"></script>
+                <!-- Easing JS -->
+                <script th:src="@{/assets/vendor/js/easing.js}"></script>
+                <!-- Magnipic Popup JS -->
+                <script th:src="@{/assets/vendor/js/magnific-popup.min.js}"></script>
+                <!-- Active JS -->
+                <script th:src="@{/assets/vendor/js/active.js}"></script>
+                <!-- JQGrid JS -->
+                <script th:src="@{/assets/vendor/js/data-table.js}"></script>
+                <script th:src="@{/assets/vendor/js/jquery.dataTables.js}"></script>
+
+
+                <!-- Select Plugin Js -->
+                <script th:src="@{/assets/vendor/plugins/bootstrap-select/js/bootstrap-select.js}"></script>
+
+                <!-- Slimscroll Plugin Js -->
+                <script th:src="@{/assets/vendor/plugins/jquery-slimscroll/jquery.slimscroll.js}"></script>
+
+                <!-- Waves Effect Plugin Js -->
+                <script th:src="@{/assets/vendor/plugins/node-waves/waves.js}"></script>
+
+                <!-- Jquery CountTo Plugin Js -->
+                <script th:src="@{/assets/vendor/plugins/jquery-countto/jquery.countTo.js}"></script>
+
+                <!-- Morris Plugin Js -->
+                <script th:src="@{/assets/vendor/plugins/raphael/raphael.min.js}"></script>
+                <script th:src="@{/assets/vendor/plugins/morrisjs/morris.js}"></script>
+
+                <!-- ChartJs -->
+                <script th:src="@{/assets/vendor/plugins/chartjs/Chart.bundle.js}"></script>
+
+                <!-- Flot Charts Plugin Js -->
+                <script th:src="@{/assets/vendor/plugins/flot-charts/jquery.flot.js}"></script>
+                <script th:src="@{/assets/vendor/plugins/flot-charts/jquery.flot.resize.js}"></script>
+                <script th:src="@{/assets/vendor/plugins/flot-charts/jquery.flot.pie.js}"></script>
+                <script th:src="@{/assets/vendor/plugins/flot-charts/jquery.flot.categories.js}"></script>
+                <script th:src="@{/assets/vendor/plugins/flot-charts/jquery.flot.time.js}"></script>
+
+                <!-- Sparkline Chart Plugin Js -->
+                <script th:src="@{/assets/vendor/plugins/jquery-sparkline/jquery.sparkline.js}"></script>
+                <script th:src="@{/assets/vendor/plugins/node-waves/waves.js}"></script>
+
+                <!-- Custom Js -->
+               <script th:src="@{/assets/vendor/js/admin.js}"></script>
+<!--              <script th:src="@{/assets/vendor/js/pages/index.js}"></script>-->
+
+             <script th:src="@{/assets/vendor/js/demo.js}"></script>
+                <script th:src="@{/assets/vendor/js/demo/chart-bar-demo.js}"></script>
+
+                <!-- Jquery Core Js -->
+                <script th:src="@{/assets/vendor/plugins/jquery/jquery.min.js}"></script>
+
+                <!-- Bootstrap Core Js -->
+                <script th:src="@{/assets/vendor/plugins/bootstrap/js/bootstrap.js}"></script>
+
+            </th:block>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+            <script type="text/javascript">
+                function getTimeStamp() {
+
+                    var d = new Date();
+                    var s =
+                        leadingZeros(d.getFullYear(), 4) + '-' +
+                        leadingZeros(d.getMonth() + 1, 2) + '-' +
+                        leadingZeros(d.getDate(), 2);
+
+                    return s;
+                }
+                function find(){
+
+                 $.ajax({
+                        url: '/dcpReport/'+$('#std_date').val()+'/'+$('#end_date').val(),
+                        type: 'get', // 메소드(get, post, put 등)
+                        headers: {'Content-Type': 'application/json'},
+                        success: function (res) {
+
+                            if (res.data.length > 0) {
+                                $('#userTable').dataTable().fnClearTable();
+                                $('#excel_Table').empty();
+                                $('#userTable').dataTable().fnAddData(res.data);
+                                for(var prop in res.data){
+                                    var my_tbody = document.getElementById('excel_Table');
+                                    var row = my_tbody.insertRow(my_tbody.rows.length);
+                                    row.insertCell(0).innerHTML = res.data[prop].inDate;
+                                    row.insertCell(1).innerHTML = res.data[prop].dcpNum;
+                                    row.insertCell(2).innerHTML = res.data[prop].name;
+                                    row.insertCell(3).innerHTML = res.data[prop].inType;
+                                    row.insertCell(4).innerHTML = res.data[prop].inValue;
+                                    row.insertCell(5).innerHTML = res.data[prop].ipAddress;
+
+                                }
+                            }
+                        }
+                     })
+
+                }
+                function leadingZeros(n, digits) {
+
+                    var zero = '';
+                    n = n.toString();
+
+                    if (n.length < digits) {
+                        for (i = 0; i < digits - n.length; i++)
+                            zero += '0';
+                    }
+                    return zero + n;
+                }
+                $(document).ready(function() {
+
+                	 $('#std_date').val(getTimeStamp())
+                	 $('#end_date').val(getTimeStamp())
+                     find();
+                    //setInterval(checktime, 1000);
+
+                    let table1 = $('#userTable').dataTable({
+                        pageLength: 10,
+                        bPaginate: true,
+                        bLengthChange: true,
+                        responsive: true,
+                        language: {
+                            "emptyTable": "데이터가 없어요.",
+                            "lengthMenu": "페이지당 _MENU_ 개씩 보기",
+                            "info": "현재 _START_ - _END_ / _TOTAL_건",
+                            "infoEmpty": "데이터 없음",
+                            "infoFiltered": "( _MAX_건의 데이터에서 필터링됨 )",
+                            "search": "에서 검색: ",
+                            "zeroRecords": "일치하는 데이터가 없어요.",
+                            "loadingRecords": "로딩중...",
+                            "processing": "잠시만 기다려 주세요...",
+                            "paginate": {
+                                "next": "다음",
+                                "previous": "이전"
+                            }
+                        },
+                        bAutoWidth: false,
+                        processing: true,
+                        ordering: false,
+                        serverSide: false,
+                        searching: true,
+                        columns: [
+                            {data: "inDate"},
+                            {data: "dcpNum"},
+                            {data: "name"},
+                            {data:"inType"},
+                            {data: "inValue"},
+                            {data: "ipAddress"}
+                        ], columnDefs: [
+                            {
+                                "targets": [0, 1,2, 3],
+                                "className": "text-center",
+                                "width": "10%"
+                            }
+                        ]
+
+
+                    });
+
+                    var table = $('#userTable').DataTable();
+                    $('#userTable_filter').prepend('<select id="searchSelect"></select>');
+                    $('#userTable > thead > tr').children().each(function (indexInArray, valueOfElement) {
+                        $('#searchSelect').append('<option>' + valueOfElement.innerHTML + '</option>');
+                    });
+                    $('.dataTables_filter input').unbind().bind('keyup', function () {
+                        var colIndex = document.querySelector('#searchSelect').selectedIndex;
+                        table.search('').columns().search('').draw();
+                        table.column(colIndex).search(this.value).draw();
+                    });
+
+
+
+                });
+
+     function excel_download() {
+		let tab_text = '<html xmlns:x="urn:schemas-microsoft-com:office:excel">';
+		tab_text += '<head><meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8">';
+		tab_text += '<xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet>'
+		tab_text += '<x:Name>Sheet</x:Name>';
+		tab_text += '<x:WorksheetOptions><x:Panes></x:Panes></x:WorksheetOptions></x:ExcelWorksheet>';
+		tab_text += '</x:ExcelWorksheets></x:ExcelWorkbook></xml></head><body>';
+		tab_text += "<table border='1px'>";
+
+		let exportTable = $('#excelTable').clone();
+		exportTable.find('input').each(function (index, elem) {
+			$(elem).remove();
+		});
+		tab_text += exportTable.html();
+		tab_text += '</table></body></html>';
+
+		let data_type = 'data:application/vnd.ms-excel';
+		let ua = window.navigator.userAgent;
+		let msie = ua.indexOf("MSIE ");
+		let fileName = 'dcp변동내역.xls';
+
+		// IE 환경 설정
+		if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
+			if (window.navigator.msSaveBlob) {
+				let blob = new Blob([tab_text], {
+				type: "application/csv;charset=utf-8;"
+				});
+				navigator.msSaveBlob(blob, fileName);
+			}
+		} else {
+			let blob2 = new Blob([tab_text], {
+				type: "application/csv;charset=utf-8;"
+			});
+			let filename = fileName;
+			let elem = window.document.createElement('a');
+			elem.href = window.URL.createObjectURL(blob2);
+			elem.download = filename;
+			document.body.appendChild(elem);
+			elem.click();
+			document.body.removeChild(elem);
+		}
+	}
+
+
+
+
+
+            </script>
+            <style>
+                .btn-font{
+                    color : white !important;
+                }
+
+            </style>
+        </div>
+
+    </div>
+
+</div>
+
+</html>

@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>update</title>
+  <style>
+      body {
+          font-family: sans-serif;
+          background-color: #323a47;
+      }
+
+      .file-upload {
+          background-color: #323a47;
+          width: 600px;
+          margin: 0 auto;
+          padding: 20px;
+      }
+
+      .file-upload-btn {
+          width: 100%;
+          margin: 0;
+          color: #fff;
+          background: #0084ff;
+          border: none;
+          padding: 10px;
+          border-radius: 4px;
+          border-bottom: 4px solid #006fe6;
+          transition: all .2s ease;
+          outline: none;
+          text-transform: uppercase;
+          font-weight: bold;
+      }
+
+      .file-upload-btn:hover {
+          background: #0090ff;
+          color: #ffffff;
+          transition: all .2s ease;
+          cursor: pointer;
+      }
+
+      .file-upload-btn:active {
+          border: 0;
+          transition: all .2s ease;
+      }
+
+      .file-upload-content {
+          display: none;
+          text-align: center;
+          background-color: #fff;
+      }
+
+      .file-upload-input {
+          position: absolute;
+          margin: 0;
+          padding: 0;
+          width: 100%;
+          height: 100%;
+          outline: none;
+          opacity: 0;
+          cursor: pointer;
+      }
+
+      .image-upload-wrap {
+          margin-top: 20px;
+          border: 4px dashed #0084ff;
+          position: relative;
+          background-color: #fff;
+      }
+
+      .image-dropping,
+      .image-upload-wrap:hover {
+          background-color: #0084ff;
+          border: 4px dashed #ffffff;
+      }
+
+      .image-title-wrap {
+          padding: 0 15px 15px 15px;
+          color: #222;
+      }
+
+      .drag-text {
+          text-align: center;
+      }
+
+      .drag-text h3 {
+          text-transform: uppercase;
+          color: #006fe6;
+          padding: 60px 0;
+          font-weight: bold;
+      }
+
+      .file-upload-name {
+          max-height: 200px;
+          max-width: 200px;
+          margin: auto;
+          padding: 20px;
+      }
+
+      .remove-image {
+          width: 100%;
+          margin: 0;
+          color: #fff;
+          background: #cd4535;
+          border: none;
+          padding: 10px;
+          border-radius: 4px;
+          border-bottom: 4px solid #b02818;
+          transition: all .2s ease;
+          outline: none;
+          text-transform: uppercase;
+          font-weight: 700;
+      }
+
+      .remove-image:hover {
+          background: #c13b2a;
+          color: #ffffff;
+          transition: all .2s ease;
+          cursor: pointer;
+      }
+
+      .remove-image:active {
+          border: 0;
+          transition: all .2s ease;
+      }
+
+      .file-path-content {
+          margin-top: 20px;
+          border: 4px solid #0084ff;
+          position: relative;
+          background-color: #fff;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding-bottom: 20px;
+      }
+
+      .file-path-name{
+          text-transform: uppercase;
+          color: #006fe6;
+          padding: 10px 0;
+          font-weight: bold;
+          text-align: center;
+      }
+
+      .file-path-input{
+          padding: 10px;
+          width: 80%;
+          margin-bottom: 10px;
+      }
+
+      .file-send-content{
+          width: 100%;
+          display: flex;
+          justify-content: center;
+      }
+
+      .file-send{
+          display: none;
+          width: calc(100% - 30px);
+          margin: 0;
+          background: #1FB264;
+          border: none;
+          padding: 10px;
+          color: #ffffff;
+          border-radius: 4px;
+          border-bottom: 4px solid #15824B;
+          transition: all .2s ease;
+          outline: none;
+          text-transform: uppercase;
+          font-weight: 700;
+      }
+      }
+  </style>
+</head>
+<body>
+  <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <div class="file-upload">
+    <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add File</button>
+
+    <div class="image-upload-wrap">
+      <input class="file-upload-input" type='file' onchange="readURL(this);" />
+      <div class="drag-text">
+        <h3>Drag and drop a file or select add file</h3>
+      </div>
+    </div>
+    <div class="file-upload-content">
+      <div class="file-upload-name"></div>
+      <div class="image-title-wrap">
+        <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded File</span></button>
+      </div>
+    </div>
+    <div class="file-path-content">
+      <label class="file-path-name">
+        File Path
+      </label>
+      <input class="file-path-input" type="text" />
+      <div class="file-send-content">
+        <button type="button" onclick="fileSend()" class="file-send">File Send</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let formData = new FormData();
+
+    //파일 추가
+    function readURL(input) {
+      if (input.files && input.files[0]) {
+        let reader = new FileReader();
+
+        reader.onload = function(e) {
+          $('.image-upload-wrap').hide();
+
+          console.log('input.files[0]', input.files[0])
+          console.log('input.files', input.files)
+
+          $('.file-upload-name').text(input.files[0].name);
+          $('.file-upload-content').show();
+          if($('.file-path-input').val()){
+            $('.file-send').show();
+          }
+
+          $('.image-title').html(input.files[0].name);
+        };
+
+        reader.readAsDataURL(input.files[0]);
+
+
+        formData.append('file', input.files[0]);
+      } else {
+        removeUpload();
+      }
+    }
+
+    //파일삭제
+    function removeUpload() {
+      $('.file-upload-input').replaceWith($('.file-upload-input').clone());
+      $('.file-upload-content').hide();
+      $('.file-send').hide();
+
+      $('.image-upload-wrap').show();
+    }
+    $('.image-upload-wrap').bind('dragover', function () {
+      $('.image-upload-wrap').addClass('image-dropping');
+    });
+    $('.image-upload-wrap').bind('dragleave', function () {
+      $('.image-upload-wrap').removeClass('image-dropping');
+    });
+
+    //FILE SEND 버튼 보이기
+    $('.file-path-input').on('keyup', function () { //PATH 입력 시
+      if($(this).context.value && $('.file-upload-content').is(':visible')){ // PATH값이 있고 업로드할 파일이 있으면
+        $('.file-send').show();
+      } else {
+        $('.file-send').hide();
+      }
+    })
+
+    function fileSend() {
+      //파일 전송
+      axios({
+        method: 'post',
+        url: `http://localhost:8080/fileUpload/updateFiles?targetDirectory=${$('.file-path-input').val()}`,
+        data: formData,
+        headers: {'Content-Type': 'application/json'}
+        //headers: {'Content-Type': 'multipart/form-data' }
+      })
+        .then(function (response) {
+          //성공
+          console.log(response);
+        })
+        .catch(function (response) {
+          //실패
+          console.log(response);
+        });
+    }
+
+  </script>
+</body>
+</html>

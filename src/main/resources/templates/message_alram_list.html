@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/layout}">
+
+<div layout:fragment="content">
+		 <section class="features-area section-bg"   style="padding-top:50px;">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-3 col-md-6 col-12">
+					메세지 발생내역
+					</div>
+				</div>
+			</div>
+		</section>
+		   <div class="container" style="padding-top:10px;">
+               <table id="userTable" class="table table-bordered table-hover text-center" style="color: #FFF;  ">
+                   <thead>
+                   <tr style="vertical-align:middle">
+                       <th>번호</th>
+                       <th>GATEWAY</th>
+                       <th>DDC</th>
+                       <th>기기번호</th>
+                       <th>메세지</th>
+                       <th>번호</th>
+                       <th>알람발생 일시</th>
+                   </tr>
+                   </thead>
+               </table>
+           </div>
+            <script>
+                $(document).ready(function() {
+
+                    let table1 = $('#userTable').dataTable({
+                        pageLength: 10,
+                        bPaginate: true,
+                        bLengthChange: true,
+                        responsive: true,
+                        language: {
+                            "emptyTable": "데이터가 없어요.",
+                            "lengthMenu": "페이지당 _MENU_ 개씩 보기",
+                            "info": "현재 _START_ - _END_ / _TOTAL_건",
+                            "infoEmpty": "데이터 없음",
+                            "infoFiltered": "( _MAX_건의 데이터에서 필터링됨 )",
+                            "search": "에서 검색: ",
+                            "zeroRecords": "일치하는 데이터가 없어요.",
+                            "loadingRecords": "로딩중...",
+                            "processing": "잠시만 기다려 주세요...",
+                            "paginate": {
+                                "next": "다음",
+                                "previous": "이전"
+                            }
+                        },
+                        bAutoWidth: false,
+                        processing: true,
+                        ordering: true,
+                        serverSide: false,
+                        searching: true,
+                        ajax : {
+                            "url": "/message",
+                            "data": function (d) {
+
+                            }
+                        },
+                        columns: [
+                            {data: "id"},
+                            {data: "gateWay"},
+                            {data: "ddcNum"},
+                            {data: "di"},
+                            {data: "message"},
+                            {data: "phone"},
+                            {data: "createDate"}
+                        ], columnDefs: [
+                            {
+                                "targets": [0, 1, 2, 3, 4, 5, 6],
+                                "className": "text-left",
+                                "width": "10%"
+                            }
+                        ]
+
+
+                    });
+
+                    var table = $('#userTable').DataTable();
+                    $('#userTable_filter').prepend('<select id="searchSelect"></select>');
+                    $('#userTable > thead > tr').children().each(function (indexInArray, valueOfElement) {
+                        $('#searchSelect').append('<option>' + valueOfElement.innerHTML + '</option>');
+                    });
+                    $('.dataTables_filter input').unbind().bind('keyup', function () {
+                        var colIndex = document.querySelector('#searchSelect').selectedIndex;
+                        table.search('').columns().search('').draw();
+                        table.column(colIndex).search(this.value).draw();
+                    });
+                });
+
+                $(document).on('click', '#userTable tbody tr td', function(event) {
+
+                    if ($(this).is('td')){
+                        if ($(this).attr("class")=='text-right sorting_1'){
+
+                        }else{
+                            var table = $('#userTable').DataTable().rows(this).data();
+                            detailview(table[0].id);
+
+                        }
+                    }
+
+
+                });
+                function detailview(idNum){
+                    //location.href="member_registration/"+idNum;
+                }
+            </script>
+		</div>
+
+</html>

@@ -1,0 +1,29 @@
+
+header { font-family: "Roboto", sans; }
+
+footer { font-size: 0.8em; }
+
+#board {
+  height: 30em;
+  border: solid black 2px;
+  border-radius: 5px;
+  background-color: #096cba;
+}
+
+.note {
+  font-family:맑은고딕, Arial, Helvetica, sans-serif ; 
+  font-weight: bold;   
+  font-size: 1em;
+  text-align: center;
+  border: solid #000 1px;
+  color: #fff;
+  border-radius: 0.35em;
+  height: 0.5in;  
+  width: 1.5in;
+  position: absolute;
+  background-color: #3c4650;
+  padding: 0.5em;
+  box-shadow: 0.05em 0.05em 0.1em black;
+}
+
+.note.raised { box-shadow: 0.2em 0.2em 0.5em black; }

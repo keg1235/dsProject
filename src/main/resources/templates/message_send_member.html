@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/layout}">
+
+<div layout:fragment="content">
+	 	  <section class="features-area section-bg"   style="padding-top:50px;">
+			<div class="container">
+				<div class="row"> 
+                    <div class="col-lg-4 col-md-6 col-12"  > 
+					 <button class="btn btn-primary" id="companyName" type="button" style="font-size: 1em">현장명 : 한국 알프스</button>
+					</div> 
+				</div>
+			</div>
+		</section>
+       
+		<!-- Services -->
+		<section class="services section-bg section-space">
+			<div class="container">
+			 
+				<div class="row">
+					<div class="col-lg-3 col-md-3 col-12">
+						<!-- Single Service -->
+						<div class="single-service">
+						 
+							<div class="service-content">
+							 
+								   <div class="form-group" style="font-size: 1em;">
+									  <label for="ddc">Ddc 선택</label>
+									  <select class="form-control" id="ddc" style="font-size: 0.8em;line-height: 5px;">
+										  <option>DDC를 선택하세요</option>
+									  </select>
+									</div>
+								 
+							</div>
+						</div>
+						<!--/ End Single Service -->
+					</div>
+						<div class="col-lg-3 col-md-3 col-12">
+						<!-- Single Service -->
+						<div class="single-service">
+						 
+							<div class="service-content">
+								  <div class="form-group" style="font-size: 1em;">
+									  <label for="di">Di 선택</label>
+									  <select class="form-control" id="di" style="font-size: 0.8em;line-height: 5px;">
+										  <option>Di를 선택하세요</option>
+									  </select>
+									</div>
+								 
+							</div>
+						</div>
+						<!--/ End Single Service -->
+					</div>
+					<div class="col-lg-3 col-md-3 col-12">
+						<!-- Single Service -->
+						<div class="single-service">
+						 
+							<div class="service-content bucket">
+								<h4>메세지 보낼 회원</h4>
+<!--								<p>메세지 보낼 회원을 추가해 주세요 </p>-->
+								<div class="area" id="messageSend" ondrop="ddd(event)" ondragover="zzz(event)">
+								</div>
+							</div>
+						</div>
+						<!--/ End Single Service -->
+					</div>
+					<div class="col-lg-3 col-md-3 col-12">
+						<!-- Single Service -->
+						<div class="single-service">
+						 
+							<div class="service-content">
+								<h4><a >회원명</a></h4>
+								<div class="area" id="userlist" ondrop="ddd(event)" ondragover="zzz(event)">
+								</div>
+<!--								<div class="alert alert-dismissible alert-danger ">-->
+<!--								  <button class="close" type="button" don data-dismiss="alert">&times;</button>-->
+<!--								  <strong>Oh snap!</strong> <a class="alert-link" href="#">Change a few things up</a> and try submitting again.-->
+							</div>
+						</div>
+						<!--/ End Single Service -->
+					</div>
+					<div class="col-12">
+						<div class="form-group button">
+							<button type="button" onclick="save()" class="bizwheel-btn primary effect">저장&nbsp;&nbsp; <i class="fa fa-paper-plane"></i></button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!--/ End Services -->    
+		 <script>
+			 $(document).ready(function(){
+				 //init();
+				 var companyName = '[[${companyName}]]';
+				console.log(companyName);
+			 	$('#companyName').text(companyName);
+				 commoncode();
+			 });
+
+
+			 function save(){
+				 var body = document.getElementById('messageSend').getElementsByTagName("div");
+
+				 const data = [];
+
+				 console.log(body);
+				 for (var i = 0; i < body.length; i++) {
+					 console.log(i);
+					 console.log(body[i].id);
+					 var service = {
+						 ddcId:  $("#di option:selected").val(),
+						 email: body[i].id
+					 }
+
+					 console.log(service);
+					 data[i] = service;
+				 }
+				 console.log(data);
+				 if(data.length > 0) {
+					 axios({
+						 url: '/ddcmessage', //request 보낼 서버의 경로
+						 method: 'post', // 메소드(get, post, put 등)
+						 data: data, //보낼 데이터
+						 headers: {'Content-Type': 'application/json'},
+					 }).then(function (response) {
+						 //성공
+						 console.log(response);
+						 alert('저장완료');
+						 location.reload();
+					 }).catch(function (response) {
+						 console.log(response);
+						 alert(response.message);
+					 });
+				 }else{
+					 axios({
+						 url: '/ddcmessage/'+$("#di option:selected").val(), //request 보낼 서버의 경로
+						 method: 'delete', // 메소드(get, post, put 등)
+						 headers: {'Content-Type': 'application/json'},
+					 }).then(function (response) {
+						 //성공
+						 console.log(response);
+						 alert('저장완료');
+						 location.reload();
+					 }).catch(function (response) {
+						 console.log(response);
+						 alert(response.message);
+					 });
+				 }
+			 }
+
+			 $("#ddc").change(function() {
+				 console.log($(this).val());
+				 console.log($(this).children("option:selected").val());
+				 if ($(this).children("option:selected").val() != null){
+					 $.ajax({
+						 url:'/ddc/getDi/'+$(this).children("option:selected").val(), //request 보낼 서버의 경로
+						 type:'get', // 메소드(get, post, put 등)
+						 headers: {'Content-Type': 'application/json'},
+						 success: function(data) {
+							 console.log(data);
+							 console.log(data.data);
+							 $('#di').children('option').remove();
+							 $('#di').append("<option>DI를 선택하세요</option>");
+							 for (var prop in data.data){
+								 $('#di').append("<option value='"+data.data[prop].id+"'>"+data.data[prop].name+ "</option>");
+							 }
+
+						 },
+						 error: function(err) {
+
+						 }
+					 });
+				 }
+
+
+
+			 });
+
+			 $("#di").change(function() {
+				 console.log($(this).val());
+				 console.log($(this).children("option:selected").val());
+				 if ($(this).children("option:selected").val() != null) {
+					 $.ajax({
+						 url: '/ddcmessage/getUser/' + $(this).children("option:selected").val(), //request 보낼 서버의 경로
+						 type: 'get', // 메소드(get, post, put 등)
+						 headers: {'Content-Type': 'application/json'},
+						 success: function (data) {
+							 console.log(data);
+							 console.log(data.data);
+							 $('#userlist').children('div').remove();
+							 $('#messageSend').children('div').remove();
+							 for (var prop in data.data.user) {
+								 var count = 0;
+								 for (var pp in data.data.ddcMessage) {
+									 if (data.data.ddcMessage[pp].email == data.data.user[prop].email) {
+										 count++;
+									 }
+								 }
+								 if (count == 0) {
+									 $('#userlist').append('<div onclick="move(this)" ondragstart="ccc(event)"  draggable="true" id="' + data.data.user[prop].email + '">' + data.data.user[prop].name + '</div>');
+								 }
+
+							 }
+							 for (var prop in data.data.ddcMessage) {
+								 $('#messageSend').append('<div onclick="move(this)" ondragstart="ccc(event)"  draggable="true" id="' + data.data.ddcMessage[prop].email + '">' + data.data.ddcMessage[prop].name + '</div>');
+							 }
+
+
+						 },
+						 error: function (err) {
+
+						 }
+					 });
+				 }
+			 });
+
+			 function ccc(ee) {
+				 ee.dataTransfer.setData("Text", ee.target.id);
+				 console.log(ee.target.id)
+			 }
+			 function move(e) {
+				 var data = $(e).attr('id');
+			 	console.log($(e).parent().attr('id'));
+				 if ($(e).parent().attr('id') == "userlist") {
+					 console.log($("#messageSend"));
+					 $("#messageSend").prepend(document.getElementById(data));
+				 }else if ($(e).parent().attr('id') == "messageSend"){
+					 var data =  $(e).attr('id');
+					 console.log($("#userlist"));
+					 $("#userlist").prepend(document.getElementById(data));
+					 //$("#userlist").appendChild(document.getElementById(data));
+				 }
+			 }
+
+			 function commoncode(){
+				 $.ajax({
+					 url:'/ddc/group', //request 보낼 서버의 경로
+					 type:'get', // 메소드(get, post, put 등)
+					 headers: {'Content-Type': 'application/json'},
+					 success: function(data) {
+						 console.log(data);
+						 console.log(data.data);
+						 for (var prop in data.data){
+							 $('#ddc').append("<option value='"+data.data[prop].id+"'>DDC:"+data.data[prop].name+"</option>");
+						 }
+
+					 },
+					 error: function(err) {
+
+					 }
+				 });
+
+			 }
+
+
+			 function ggg(ee) {
+				// document.getElementById("demo").innerHTML = "드래그하고 있습니다!";
+			 }
+
+			 function zzz(ee) {
+				 ee.preventDefault();
+			 }
+
+			 function ddd(ee) {
+				 console.log(ee.target.id == "userlist"+ee.target.id == "messageSend" );
+				 ee.preventDefault();
+				 var data = ee.dataTransfer.getData("Text");
+				 if (ee.target.id == "userlist" ||ee.target.id == "messageSend"){
+					 ee.target.appendChild(document.getElementById(data));
+				 }
+
+
+
+				// document.getElementById("demo").innerHTML = "드롭되었습니다.";
+			 }
+		 </script>
+			<style>
+				.area {
+					float: left;
+					width: 100%;
+					min-height: 40px;
+					height: 100%;
+					padding-bottom: 10px;
+					margin-bottom: 20px;
+					padding: 1px;
+					border: 1px solid #000000;
+				}
+				span{
+					margin: 5px !important;
+					background-color: #3C6FBB;
+					color : white;
+				}
+
+			</style>
+			</div>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name='copyright' content='pavilan'>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	 
+        <script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="modal draggable" style="position: absolute; left: 0; top:0; z-index: 999;">
+     <div style="height: 20px;" background:skyblue; opacity: .7 border-radius: 20px 20px 0 0; border-bottom:10px;>
+        <div style="width: 100%; height: 40px; line-height: 40px; font-size: 11pt; text-align: right;background: #444;">
+          <div class="modal_btn" onclick="$('.modal').hide();">닫기 x</div>  
+         <div class="modal_btn modal_today" style= "" onclick="$('.modal').hide()">오늘 하루 보지 않기 x</div>         </div>
+         <style>
+             .modal_btn { height: 100%; float: right; margin:0 10px; cursor: pointer;}
+         </style>
+         <script>
+            $(".draggable").draggable();
+                $(".modal .modal_today").click(function(){
+                    setCookie("todayCookie"), "done", 1);
+                    $(".modal").hide();
+                });
+            function setCookie(name, value, expiredays){
+                var todayDate = new Date();
+                todayDate.setDate(todayDate.getDate() + expiredays);
+                document.cookie = name + "=" + excape(value) + "; path=/" + todayDate.toGMTString();
+                
+            }
+            function getCookie(){
+                var cookiedate = document.cookie;
+                if(cookiedata.indexOf("todayCookie=done") < 0){
+                    $(".modal").show();
+                }
+                else {
+                    $(".modal").hide();
+                }
+            }
+             getCookie();
+         </script>
+        </div>
+    
+    </div>
+</body>
+</html>

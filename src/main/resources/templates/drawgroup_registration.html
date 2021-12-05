@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/layout}">
+
+<div layout:fragment="content">
+		<!--/ End Header -->
+		<section class="features-area section-bg">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-3 col-md-6 col-12">
+
+					</div>
+				</div>
+				<br /><br />
+			</div>
+		</section>
+		 
+        <div id="layoutAuthentication">
+            <div id="layoutAuthentication_content">
+                <main>
+                    <div class="container">
+                        <div class="row">
+							<div class="col-12">
+								<div class="blog-comments-form">
+									<div class="con-4 bottom-title">
+										<h2>모니터링 등록</h2>
+										 
+									</div>
+									<!-- Comment Form -->
+									<form class="form" >
+										<div class="row">
+											<div class="col-12">
+												<div class="form-group">
+													<label>모니터링 명</label>
+													<input type="text" id="name" name="name" required="required" placeholder="모니터링 명을 입력해주세요">
+												</div>
+											</div>
+										  <div class="col-6">
+											    <div class="form-group">
+										 
+													<label>사용여부</label>
+													<input type="radio" name="use" id="useY" placeholder="radio" style="width: 16px; vertical-align: middle;padding-left: 3px;" value="YES"> YES
+													<input type="radio" name="use" id="useN" placeholder="radio" style="width: 16px; vertical-align: middle;padding-left: 3px;" value="NO"> NO
+											  </div> 
+											</div>
+											<p style="padding: 10px;"></p>
+											<div class="col-12">
+												<div class="form-group button">
+													<input type="hidden" id="id">
+													<button onclick="save()" id="saveBtn" type="button" class="bizwheel-btn primary effect">저장&nbsp;&nbsp; <i class="fa fa-paper-plane"></i></button>
+													<button onclick="update()" id="updateBtn" type="button" class="bizwheel-btn primary effect">저장&nbsp;&nbsp; <i class="fa fa-paper-plane"></i></button>
+												</div>
+											</div>
+										</div>
+									</form>
+									<!--/ End Comment Form -->
+								</div>
+							</div>							
+						</div>	
+                    </div>
+                </main>
+            </div>
+			<script>
+				$(document).ready(function(){
+					var id = "[[${id}]]";
+					if(id == ""){
+
+						$('#updateBtn').hide();
+					}else{
+						init(id);
+						$('#saveBtn').hide();
+					}
+
+				});
+				function init(id){
+					$.ajax({
+						url:'/drawData/drawGroup/'+id, //request 보낼 서버의 경로
+						type:'get', // 메소드(get, post, put 등)
+						headers: {'Content-Type': 'application/json'},
+						success: function(data) {
+							const ddcinfo = data.data;
+
+							$('#name').val(ddcinfo.name);
+							$('#id').val(ddcinfo.id);
+							if(ddcinfo.use == "YES"){
+								$("#useY").prop('checked', true);
+							}else{
+								$("#useN").prop('checked', true);
+							}
+
+						},
+						error: function(err) {
+							//서버로부터 응답이 정상적으로 처리되지 못햇을 때 실행
+						}
+					});
+				}
+
+				function save() {
+
+					const data = {
+						name : $('#name').val(),
+						useYn : $('input:radio[name=use]').val(),
+					};
+
+					console.log(data);
+					axios({
+						url:'/drawData/drawGroup', //request 보낼 서버의 경로
+						method:'post', // 메소드(get, post, put 등)
+						data: data, //보낼 데이터
+						headers: {'Content-Type': 'application/json'},
+					}).then(function (response) {
+						//성공
+						console.log(response);
+						alert('저장완료');
+						location.href='/drawgroup_list';
+					}).catch(function (response) {
+						console.log(response);
+						alert("중복된 내역이 있는지 확인부탁드립니다.");
+					});
+				}
+
+				function update() {
+
+					const data = {
+						id : $('#id').val(),
+						name : $('#name').val(),
+						useYn : $('input:radio[name=use]').val(),
+					};
+
+					console.log(data);
+					axios({
+						url:'/drawData/drawGroup', //request 보낼 서버의 경로
+						method:'put', // 메소드(get, post, put 등)
+						data: data, //보낼 데이터
+						headers: {'Content-Type': 'application/json'},
+
+					}).then(function (response) {
+						//성공
+						console.log(response);
+						alert('저장완료');
+						location.href='/drawgroup_list';
+					}).catch(function (response) {
+						console.log(response);
+						alert("중복된 내역이 있는지 확인부탁드립니다.");
+					});
+				}
+
+			</script>
+        </div>
+</div>
+</html>

@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/layout}">
+
+<div layout:fragment="content">
+		<th:block layout:fragment="css">
+			<!-- Bizwheel Plugins CSS -->
+			<link rel="stylesheet" th:href="@{/assets/vendor/css/animate.min.css}" >
+			<link rel="stylesheet" th:href="@{/assets/vendor/css/bootstrap.min.css}" >
+			<link rel="stylesheet" th:href="@{/assets/vendor/css/cubeportfolio.min.css}" >
+			<link rel="stylesheet" th:href="@{/assets/vendor/css/font-awesome.css}" >
+			<link rel="stylesheet" th:href="@{/assets/vendor/css/jquery.fancybox.min.css}" >
+			<link rel="stylesheet" th:href="@{/assets/vendor/css/magnific-popup.min.css}">
+			<link rel="stylesheet" th:href="@{/assets/vendor/css/owl-carousel.min.css}" >
+			<link rel="stylesheet" th:href="@{/assets/vendor/css/slicknav.min.css}">
+			<link rel="stylesheet" th:href="@{/assets/vendor/css/partner.css}">
+			<!-- Bizwheel Stylesheet -->
+			<link rel="stylesheet" th:href="@{/assets/vendor/css/reset.css}">
+			<link rel="stylesheet" th:href="@{../style.css}">
+			<link rel="stylesheet" th:href="@{/assets/vendor/css/responsive.css}">
+			<!--        <link rel="stylesheet" type="text/css" th:href="@{/assets/vendor/js/jquery.jqGrid-4.4.3/css/jquery-ui.css}">-->
+
+			<link rel="stylesheet" type="text/css" th:href="@{/assets/vendor/css/dataTables.bootstrap4.css}">
+
+			<!-- Bizwheel Colors -->
+			<!--        <link rel="stylesheet" th:href="@{assets/vendor/css/skins/skin-1.css}">-->
+			<!--<link rel="stylesheet" href="css/skins/skin-2.css">-->
+			<!--<link rel="stylesheet" href="css/skins/skin-3.css">-->
+			<!--<link rel="stylesheet" href="css/skins/skin-4.css">-->
+
+			<link rel="stylesheet" th:href="@{/assets/vendor/css/rever/responsive.bootstrap.css}" >
+			<link rel="stylesheet" th:href="@{/assets/vendor/css/rever/responsive.bootstrap4.css}" >
+			<link rel="stylesheet" th:href="@{/assets/vendor/css/rever/responsive.dataTables.css}" >
+			<link rel="stylesheet" th:href="@{/assets/vendor/css/rever/responsive.foundation.css}" >
+			<link rel="stylesheet" th:href="@{/assets/vendor/css/rever/responsive.jqueryui.css}" >
+			<link rel="stylesheet" th:href="@{/assets/vendor/css/rever/responsive.semanticui.css}" >
+
+
+			<link th:href="@{/assets/vendor/css/sb-admin-2.min.css}" rel="stylesheet">
+
+			<!-- Bootstrap Core Css -->
+			<link th:href="@{/assets/vendor/plugins/bootstrap/css/bootstrap.css}" rel="stylesheet">
+
+			<!-- Waves Effect Css -->
+			<link th:href="@{/assets/vendor/plugins/node-waves/waves.css}" rel="stylesheet" />
+
+			<!-- Animation Css -->
+			<link th:href="@{/assets/vendor/plugins/animate-css/animate.css}" rel="stylesheet" />
+
+			<!-- Morris Chart Css-->
+			<link th:href="@{/assets/vendor/plugins/morrisjs/morris.css}" rel="stylesheet" />
+
+			<!-- Custom Css수정 내용 확인 메뉴글자 작아짐 -->
+			<link th:href="@{/assets/vendor/css/style.css}" rel="stylesheet">
+			<link th:href="@{/assets/vendor/css/styles.css}" rel="stylesheet">
+
+			<!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
+			<link th:href="@{/assets/vendor/css/themes/all-themes.css}" rel="stylesheet" />
+
+		</th:block>
+	 	  <section class="features-area section-bg"   style="padding-top:50px;">
+			<div class="container">
+				<div class="row">
+
+                    <div class="col-lg-12 col-md-12 col-12"  >
+					 <button class="btn btn-primary" id="companyName" type="button" style="font-size: 1em">현장명 : 한국 알프스</button>
+
+					</div>
+					<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+						<div class="card" id="graphCard">
+							<div class="header sticky">
+								<div class="row clearfix">
+									<div class="col-xs-12 col-sm-6">
+
+									</div>
+									<div class="col-xs-12 col-sm-6 align-right">
+										<h2 id="totalElectron">적산전력: 0</h2>
+										<a href="/graph_home/1">상세 내역 이동</a>
+<!--										<div class="switch panel-switch-btn">-->
+<!--											<span class="m-r-10 font-12">실시간</span>-->
+<!--											<label>OFF<input type="checkbox" id="realtime" checked=""><span class="lever switch-col-cyan"></span>ON</label>-->
+<!--										</div>-->
+									</div>
+								</div>
+
+							</div>
+							<div class="body">
+								<div id="real_time_chart" class="dashboard-flot-chart" style="padding: 0px; position: relative;"><canvas class="flot-base" width="1038" height="275" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 1038px; height: 275px;"></canvas><div class="flot-text" style="position: absolute; inset: 0px; font-size: smaller; color: rgb(84, 84, 84);"><div class="flot-x-axis flot-x1-axis xAxis x1Axis" style="position: absolute; inset: 0px; display: block;"><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 94px; top: 257px; left: 22px; text-align: center;">0</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 94px; top: 257px; left: 119px; text-align: center;">10</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 94px; top: 257px; left: 219px; text-align: center;">20</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 94px; top: 257px; left: 319px; text-align: center;">30</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 94px; top: 257px; left: 420px; text-align: center;">40</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 94px; top: 257px; left: 520px; text-align: center;">50</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 94px; top: 257px; left: 620px; text-align: center;">60</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 94px; top: 257px; left: 721px; text-align: center;">70</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 94px; top: 257px; left: 821px; text-align: center;">80</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 94px; top: 257px; left: 921px; text-align: center;">90</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 94px; top: 257px; left: 1019px; text-align: center;">100</div></div><div class="flot-y-axis flot-y1-axis yAxis y1Axis" style="position: absolute; inset: 0px; display: block;"><div class="flot-tick-label tickLabel" style="position: absolute; top: 244px; left: 14px; text-align: right;">0</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 195px; left: 7px; text-align: right;">20</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 146px; left: 7px; text-align: right;">40</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 98px; left: 7px; text-align: right;">60</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 49px; left: 7px; text-align: right;">80</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 1px; left: 1px; text-align: right;">100</div></div></div><canvas class="flot-overlay" width="1038" height="275" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 1038px; height: 275px;"></canvas></div>
+								<div class="row clearfix">
+									<div class="col-xs-12 col-sm-6" style="float:right;">
+										<h4>시간</h4>
+									</div>
+
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<div class="col-xs-4 align-right">
+						<table class="table table-bordered text-center aram-table"  style="font-size: 15px; color: #fff;">
+							<tr style="vertical-align:middle">
+								<th class="text-center">알림명</th>
+								<th class="text-center">안정값</th>
+								<th class="text-center">경보값</th>
+								<th class="text-center">사용여부</th>
+							</tr>
+							<tr  style="vertical-align:middle">
+								<td>1번 알람</td>
+								<td><input style="width: 70px; height:25px;"  id="aram1min" type="number" value=""></td>
+								<td><input style="width: 70px; height:25px;" id="aram1max" type="number" value=""></td>
+								<td><input class="checkOk" type="checkbox" id="aram1check" value=""></td>
+							</tr>
+							<tr  style="vertical-align:middle">
+								<td>2번 알람</td>
+								<td><input style="width: 70px; height:25px;" id="aram2min" type="number" value=""></td>
+								<td><input style="width: 70px; height:25px;" id="aram2max" type="number" value=""></td>
+								<td><input class="checkOk" type="checkbox" id="aram2check" value=""></td>
+							</tr>
+							<tr  style="vertical-align:middle">
+								<td>3번 알람</td>
+								<td><input style="width: 70px; height:25px;" id="aram3min" type="number" value=""></td>
+								<td><input style="width: 70px; height:25px;" id="aram3max" type="number" value=""></td>
+								<td><input class="checkOk" type="checkbox" id="aram3check" value=""></td>
+							</tr>
+						</table>
+						<a class="btn btn-danger" onclick="excel_download()">경보내역다운로드</a>
+						<input type="button" value="현재상태 저장" class="btn success" onclick="saveAram()">
+					</div>
+				</div>
+<!--				peek 발생 모달-->
+				<div class="partner">
+
+				</div>
+				<div class="clear"></div>
+
+				<div id="partner_up"  >
+					<div class="body">
+						<br />
+						<div  style="color: white; background-color: red;text-align: center">
+							에너지 PEEK 발생현황
+						</div>
+
+
+						<div class="container" style="padding-top:10px; ">
+							<table class="table table-bordered table-hover text-center" style="color: #000;  ">
+								<tr style="vertical-align:middle">
+									<th>번호</th>
+									<th>일시</th>
+									<th>품목</th>
+									<th>상태</th>
+								</tr>
+								<tbody id="aramList">
+
+								</tbody>
+							</table>
+
+							<a class="btn btn-danger" onclick="excel_download()">엑셀다운로드</a>
+
+
+							<br />
+						</div>
+						<table id="excelTable" style="display: none ">
+							<thead>
+							<tr style="vertical-align:middle">
+								<th>번호</th>
+								<th>일시</th>
+								<th>품목</th>
+								<th>상태</th>
+							</tr>
+							</thead>
+							<tbody id="excel_Table">
+
+							</tbody>
+
+						</table>
+						<div class="button"><br>
+							<button type="button" id="btn-close" onclick="closeModal()">닫기</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			  <th:block layout:fragment="script">
+
+				  <!-- Jquery JS -->
+				  <script th:src="@{/assets/vendor/js/jquery.min.js}"></script>
+				  <script th:src="@{/assets/vendor/js/jquery-migrate-3.0.0.js}"></script>
+				  <!-- Popper JS -->
+				  <script th:src="@{/assets/vendor/js/popper.min.js}"></script>
+				  <!-- Bootstrap JS -->
+				  <script th:src="@{/assets/vendor/js/bootstrap.min.js}"></script>
+				  <!-- Modernizr JS -->
+				  <script th:src="@{/assets/vendor/js/modernizr.min.js}"></script>
+				  <!-- ScrollUp JS -->
+				  <script th:src="@{/assets/vendor/js/scrollup.js}"></script>
+				  <!-- FacnyBox JS -->
+				  <script th:src="@{/assets/vendor/js/jquery-fancybox.min.js}"></script>
+				  <!-- Cube Portfolio JS -->
+				  <script th:src="@{/assets/vendor/js/cubeportfolio.min.js}"></script>
+				  <!-- Slick Nav JS -->
+				  <script th:src="@{/assets/vendor/js/slicknav.min.js}"></script>
+				  <!-- Slick Nav JS -->
+				  <script th:src="@{/assets/vendor/js/slicknav.min.js}"></script>
+				  <!-- Slick Slider JS -->
+				  <script th:src="@{/assets/vendor/js/owl-carousel.min.js}"></script>
+				  <!-- Easing JS -->
+				  <script th:src="@{/assets/vendor/js/easing.js}"></script>
+				  <!-- Magnipic Popup JS -->
+				  <script th:src="@{/assets/vendor/js/magnific-popup.min.js}"></script>
+				  <!-- Active JS -->
+				  <script th:src="@{/assets/vendor/js/active.js}"></script>
+				  <!-- JQGrid JS -->
+				  <script th:src="@{/assets/vendor/js/data-table.js}"></script>
+				  <script th:src="@{/assets/vendor/js/jquery.dataTables.js}"></script>
+
+
+				  <!-- Select Plugin Js -->
+				  <script th:src="@{/assets/vendor/plugins/bootstrap-select/js/bootstrap-select.js}"></script>
+
+				  <!-- Slimscroll Plugin Js -->
+				  <script th:src="@{/assets/vendor/plugins/jquery-slimscroll/jquery.slimscroll.js}"></script>
+
+				  <!-- Waves Effect Plugin Js -->
+				  <script th:src="@{/assets/vendor/plugins/node-waves/waves.js}"></script>
+
+				  <!-- Jquery CountTo Plugin Js -->
+				  <script th:src="@{/assets/vendor/plugins/jquery-countto/jquery.countTo.js}"></script>
+
+				  <!-- Morris Plugin Js -->
+				  <script th:src="@{/assets/vendor/plugins/raphael/raphael.min.js}"></script>
+				  <script th:src="@{/assets/vendor/plugins/morrisjs/morris.js}"></script>
+
+				  <!-- ChartJs -->
+				  <script th:src="@{/assets/vendor/plugins/chartjs/Chart.bundle.js}"></script>
+
+				  <!-- Flot Charts Plugin Js -->
+				  <script th:src="@{/assets/vendor/plugins/flot-charts/jquery.flot.js}"></script>
+				  <script th:src="@{/assets/vendor/plugins/flot-charts/jquery.flot.resize.js}"></script>
+				  <script th:src="@{/assets/vendor/plugins/flot-charts/jquery.flot.pie.js}"></script>
+				  <script th:src="@{/assets/vendor/plugins/flot-charts/jquery.flot.categories.js}"></script>
+				  <script th:src="@{/assets/vendor/plugins/flot-charts/jquery.flot.time.js}"></script>
+
+				  <!-- Sparkline Chart Plugin Js -->
+				  <script th:src="@{/assets/vendor/plugins/jquery-sparkline/jquery.sparkline.js}"></script>
+				  <script th:src="@{/assets/vendor/plugins/node-waves/waves.js}"></script>
+
+				  <!-- Custom Js -->
+				  <script th:src="@{/assets/vendor/js/admin.js}"></script>
+<!--				  <script th:src="@{/assets/vendor/js/pages/index.js}"></script>-->
+
+
+				  <!-- Jquery Core Js -->
+				  <script th:src="@{plugins/jquery/jquery.min.js}"></script>
+
+				  <!-- Bootstrap Core Js -->
+				  <script th:src="@{plugins/bootstrap/js/bootstrap.js}"></script>
+			  </th:block>
+		</section>
+       
+		<!-- Services -->
+		<section class="services section-bg section-space">
+			<div class="container">
+			 
+				<div class="row" id="group">
+
+				</div>
+			</div>
+		</section>
+		<!--/ End Services -->    
+		 <script>
+		 	var audio = new Audio("응급차 싸이렌 소리.mp3");
+  			audio.loop = true; // 반복재생하지 않음
+  			audio.volume = 0.5; // 음량 설정
+
+
+			 $(document).ready(function(){
+			    $(".partner img").click(function (){
+				  $("#partner_up").addClass("active");
+			   });
+			   $("#partner_up button").click(function (){
+				  $("#partner_up").removeClass("active");
+			   });
+			 	var companyName = '[[${companyName}]]';
+				console.log(companyName);
+			 	$('#companyName').text(companyName);
+				 init();
+				 getAram();
+				 //commoncode();
+			 });
+
+$(function () {
+    //Widgets count
+    $('.count-to').countTo();
+
+    //Sales count to
+    $('.sales-count-to').countTo({
+        formatter: function (value, options) {
+            return '$' + value.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, ' ').replace('.', ',');
+        }
+    });
+
+    initRealTimeChart();
+    //initDonutChart();
+    initSparkline();
+});
+var plot;
+var realtime = 'on';
+var graphDay = '[[${graphDay}]]';
+var graphMin = '[[${graphMin}]]';
+var graphMax = '[[${graphMax}]]';
+var aramFlag1 = false;
+var aramFlag2 = false;
+var aramFlag3 = false;
+
+
+var minDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()- Number(graphDay)).getTime();
+var maxDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()+ 1).getTime();
+function initRealTimeChart() {
+    //Real time ==========================================================================================
+        plot = $.plot('#real_time_chart', [getRandomData()], {
+        series: {
+            shadowSize: 0,
+            color: 'rgb(0, 188, 212)'
+        },
+        grid: {
+            borderColor: '#f3f3f3',
+            borderWidth: 1,
+            tickColor: '#f3f3f3',
+    		hoverable: true,
+      		mouseActiveRadius: 10
+        },
+        lines: {
+            fill: true,
+            show: true
+        },
+        points: {
+
+    		show: false,
+    		radius: 4
+		},
+        yaxis: {
+            min: Number(graphMin),
+            max: Number(graphMax)
+        },
+        xaxis: {
+       		 mode: "time",
+       		 minTickSize: [1, "day"],
+			 timeformat:"%y/%m/%d",
+             min: minDate,
+             max: minDate
+
+        }
+    });
+
+function showTooltip(x, y, contents) {
+        $('<div id="tooltip">' + contents + '</div>').css({
+            position: 'absolute',
+            display: 'none',
+            top: y - 40,
+            left: x - 10,
+            border: '1px solid #fdd',
+            padding: '2px',
+            'background-color': '#eee',
+            opacity: 0.80
+        }).appendTo("body").fadeIn(200);
+    }
+
+
+
+    var previousPoint = null;
+    $("#real_time_chart").on("plothover", function(event, pos, item) {
+        $("#x").text(pos.x.toFixed(2));
+        $("#y").text(pos.y.toFixed(2));
+        if (item) {
+
+            if (previousPoint != item.dataIndex) {
+
+                previousPoint = item.dataIndex;
+
+                $("#tooltip").remove();
+                var x = item.datapoint[0]-1;
+                var y = item.datapoint[1];
+				var dateResult = new Date(x);
+
+				var dateResult2 = dateResult.getFullYear()+"-"+(dateResult.getMonth()+1)+"-"+dateResult.getDate()+" "+dateResult.getHours()+":"+dateResult.getMinutes()
+
+                showTooltip(item.pageX, item.pageY,
+                               dateResult2 + "- " + y);
+
+            }
+        }
+        else {
+            $("#tooltip").remove();
+            previousPoint = null;
+        }
+
+     });
+
+    function updateRealTime() {
+
+        plot.setData([getRandomData()]);
+        console.log(plot.getOptions().xaxes[0])
+		console.log(minDate);
+		console.log(maxDate);
+		plot.getOptions().xaxes[0].min = new Date(new Date().getFullYear(), new Date().getMonth() , new Date().getDate()-Number(graphDay)).getTime();
+		plot.getOptions().xaxes[0].max = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()+ 1).getTime();
+
+
+		//plot.getOptions().xaxis[0].tickSize = 5;
+        plot.setupGrid();
+        plot.draw();
+       var timeout = setTimeout(updateRealTime, 5000);
+
+    }
+
+    updateRealTime();
+
+    $('#realtime').on('change', function () {
+        realtime = this.checked ? 'on' : 'off';
+        updateRealTime();
+    });
+    //====================================================================================================
+}
+
+function initSparkline() {
+    $(".sparkline").each(function () {
+        var $this = $(this);
+        $this.sparkline('html', $this.data());
+    });
+}
+
+function initDonutChart() {
+    Morris.Donut({
+        element: 'donut_chart',
+        data: [{
+            label: 'Chrome',
+            value: 37
+        }, {
+            label: 'Firefox',
+            value: 30
+        }, {
+            label: 'Safari',
+            value: 18
+        }, {
+            label: 'Opera',
+            value: 12
+        },
+        {
+            label: 'Other',
+            value: 3
+        }],
+        colors: ['rgb(233, 30, 99)', 'rgb(0, 188, 212)', 'rgb(255, 152, 0)', 'rgb(0, 150, 136)', 'rgb(96, 125, 139)'],
+        formatter: function (y) {
+            return y + '%'
+        }
+    });
+}
+
+var data = [], totalPoints = 110;var dateList = [];  var graphResult =[];
+var aramExecl =[];
+
+function addAram(id,name,status){
+		console.log(name);
+
+		var jObject = new Object();
+			jObject.name = name;
+			jObject.status = status;
+			jObject.eletronId = id;
+
+
+			var data = JSON.stringify(jObject);
+			console.log(jObject);
+			$.ajax({
+				url:'/aram', //request 보낼 서버의 경로
+				type:'post', // 메소드(get, post, put 등)
+				data: data, //보낼 데이터
+				headers: {'Content-Type': 'application/json'},
+				success: function(data) {
+					initModal();
+
+				},
+				error: function(err) {
+					//서버로부터 응답이 정상적으로 처리되지 못햇을 때 실행
+				}
+			});
+
+
+}
+
+ function initModal() {
+            $.ajax({
+                url: '/aram/excel', //request 보낼 서버의 경로
+                type: 'get', // 메소드(get, post, put 등)
+                headers: {'Content-Type': 'application/json'},
+                success: function (data) {
+                    aramExecl = data.data;
+                    var count = 1;
+                    $('#excel_Table').empty();
+                     $('#aramList').empty();
+
+                     for(var prop in aramExecl){
+                         var my_tbody = document.getElementById('excel_Table');
+                         var row = my_tbody.insertRow(my_tbody.rows.length);
+                         row.insertCell(0).innerHTML = aramExecl[prop].id;
+                         row.insertCell(1).innerHTML = aramExecl[prop].inDate;
+                         row.insertCell(2).innerHTML = aramExecl[prop].name;
+                         row.insertCell(3).innerHTML = aramExecl[prop].status == 'ON' ? '경보' : '복귀';
+                     }
+                     for(var prop in aramExecl){
+                         var my_tbody = document.getElementById('aramList');
+                         var row = my_tbody.insertRow(my_tbody.rows.length);
+                         if(aramExecl[prop].confirmYn == 'N'){
+
+                             row.insertCell(0).innerHTML = count;
+							 row.insertCell(1).innerHTML = aramExecl[prop].inDate;
+							 row.insertCell(2).innerHTML = aramExecl[prop].name;
+							 row.insertCell(3).innerHTML = aramExecl[prop].status == 'ON' ? '<a href="#" class="btn btn-danger">경보</a>' : '<a href="#" class="btn btn-success">복귀</a>';
+							 count++;
+							 if(aramExecl[prop].status == 'ON'){
+							 	audio.play();
+							 }else{
+							     audio.pause();
+							 }
+                         }
+
+                     }
+                     $("#partner_up").addClass("active");
+                },
+                error: function (err) {
+                    //서버로부터 응답이 정상적으로 처리되지 못햇을 때 실행
+                }
+            });
+        }
+
+
+function excel_download() {
+
+		      $.ajax({
+                url: '/aram/excel', //request 보낼 서버의 경로
+                type: 'get', // 메소드(get, post, put 등)
+                headers: {'Content-Type': 'application/json'},
+                success: function (data) {
+                    var excelData = data.data;
+
+                    $('#excel_Table').empty();
+
+
+                     for(var prop in excelData){
+                         var my_tbody = document.getElementById('excel_Table');
+                         var row = my_tbody.insertRow(my_tbody.rows.length);
+                         row.insertCell(0).innerHTML = excelData[prop].id;
+                         row.insertCell(1).innerHTML = excelData[prop].inDate;
+                         row.insertCell(2).innerHTML = excelData[prop].name;
+                         row.insertCell(3).innerHTML = excelData[prop].status == 'ON' ? '경보' : '복귀';
+                     }
+                   	let tab_text = '<html xmlns:x="urn:schemas-microsoft-com:office:excel">';
+						tab_text += '<head><meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8">';
+						tab_text += '<xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet>'
+						tab_text += '<x:Name>Sheet</x:Name>';
+						tab_text += '<x:WorksheetOptions><x:Panes></x:Panes></x:WorksheetOptions></x:ExcelWorksheet>';
+						tab_text += '</x:ExcelWorksheets></x:ExcelWorkbook></xml></head><body>';
+						tab_text += "<table border='1px'>";
+
+						let exportTable = $('#excelTable').clone();
+						exportTable.find('input').each(function (index, elem) {
+							$(elem).remove();
+						});
+						tab_text += exportTable.html();
+						tab_text += '</table></body></html>';
+
+						let data_type = 'data:application/vnd.ms-excel';
+						let ua = window.navigator.userAgent;
+						let msie = ua.indexOf("MSIE ");
+						let fileName = '피크타임내역.xls';
+
+						// IE 환경 설정
+						if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
+							if (window.navigator.msSaveBlob) {
+								let blob = new Blob([tab_text], {
+								type: "application/csv;charset=utf-8;"
+								});
+								navigator.msSaveBlob(blob, fileName);
+							}
+						} else {
+							let blob2 = new Blob([tab_text], {
+								type: "application/csv;charset=utf-8;"
+							});
+							let filename = fileName;
+							let elem = window.document.createElement('a');
+							elem.href = window.URL.createObjectURL(blob2);
+							elem.download = filename;
+							document.body.appendChild(elem);
+							elem.click();
+							document.body.removeChild(elem);
+						}
+                },
+                error: function (err) {
+                    //서버로부터 응답이 정상적으로 처리되지 못햇을 때 실행
+                }
+            });
+
+
+
+	}
+
+
+function getRandomData() {
+
+
+    $.ajax({
+        url:'/electron?page=0&size=10', //request 보낼 서버의 경로
+        type:'get', // 메소드(get, post, put 등)
+        headers: {'Content-Type': 'application/json'},
+        success: function(res) {
+			var graphlist = [];
+			var dateInList = [];
+            for (var prop in res.data){
+
+               // console.log(res.data[prop].inDate)
+                graphlist.push(res.data[prop].inValue);
+                dateInList.push(res.data[prop].milliseconds);
+                if ( Number(prop)+1 == res.data.length){
+
+					if(res.data[prop].total == null){
+					  $('#totalElectron').text("실시간 전력:"+res.data[prop].inValue+"   적산전력:"+res.data[Number(prop)-1].total)
+
+					}else{
+					   $('#totalElectron').text("실시간 전력:"+res.data[prop].inValue+"   적산전력:"+res.data[prop].total)
+					}
+					const result = aramExecl.find(element => element.eletronId === res.data[prop].id);
+
+					console.log($('#aram1check').is(':checked'))
+					console.log(result)
+					if($('#aram1check').is(':checked')){
+					  if(res.data[prop].inValue > $('#aram1max').val() && !aramFlag1){
+
+					  if(result === undefined){
+
+					  	  addAram(res.data[prop].id,'경보발생1','ON')
+						  aramFlag1 = true;
+
+					  }
+
+					  }
+					}
+
+					if($('#aram2check').is(':checked')){
+					  if(res.data[prop].inValue > $('#aram2max').val() && !aramFlag2){
+
+					    if(result === undefined){
+					      addAram(res.data[prop].id,'경보발생2','ON')
+						  aramFlag2 = true;
+
+					  	}
+					  }
+					}
+					if($('#aram3check').is(':checked')){
+					  if(res.data[prop].inValue > $('#aram3max').val() && !aramFlag3){
+					  	if(result === undefined){
+					  	  addAram(res.data[prop].id,'경보발생3','ON')
+						  aramFlag3 = true;
+
+					  	}
+					  }
+					}
+					if($('#aram1check').is(':checked')){
+					  if(res.data[prop].inValue < $('#aram1min').val() && !aramFlag1){
+
+					  if(result === undefined){
+
+					  	  addAram(res.data[prop].id,'경보발생1','OFF')
+						  aramFlag1 = true;
+
+					  }
+
+					  }
+					}
+
+					if($('#aram2check').is(':checked')){
+					  if(res.data[prop].inValue < $('#aram2min').val() && !aramFlag2){
+
+					    if(result === undefined){
+					      addAram(res.data[prop].id,'경보발생2','OFF')
+						  aramFlag2 = true;
+
+					  	}
+					  }
+					}
+					if($('#aram3check').is(':checked')){
+					  if(res.data[prop].inValue < $('#aram3min').val() && !aramFlag3){
+					  	if(result === undefined){
+					  	  addAram(res.data[prop].id,'경보발생3','OFF')
+						  aramFlag3 = true;
+
+					  	}
+					  }
+					}
+
+				}
+            }
+//            if (graphlist.length > 100){
+//            data = graphlist.slice(graphlist.length-100,graphlist.length);
+//            dateList = dateInList.slice(dateInList.length-100,dateInList.length);
+
+//            }else{
+
+           // }
+  			 data = graphlist;
+			 dateList= dateInList;
+
+            //console.log(dateList)
+        },
+        error: function(err) {
+
+        }
+    });
+
+     graphResult = [];
+    //res = data;
+
+    for (var i = 0; i < data.length; ++i) {
+		//console.log(dateList[i])
+        graphResult.push([dateList[i], data[i]]);
+    }
+    //console.log(res)
+    return graphResult;
+}
+	function init() {
+
+		var graphSet = '[[${graphSet}]]';
+		if(graphSet == 'NO'){
+			$('#graphCard').hide();
+		}
+		$.ajax({
+			url: '/datagroup/card',
+			type: 'get', // 메소드(get, post, put 등)
+			headers: {'Content-Type': 'application/json'},
+			success: function (data) {
+				$('#group').children('option').remove();
+
+				for (var prop in data.data) {
+					if(data.data[prop].scdataid != null) {
+
+						if (data.data[prop].useYn == "YES") {
+							useTag = '<a onclick="scdataUpdate(' + data.data[prop].scdataId + ',0)" class="btn success">사용</a>';
+						} else {
+							useTag = '<a onclick="scdataUpdate(' + data.data[prop].scdataId+ ',1)" class="btn danger">사용안함</a>';
+						}
+
+						$('#group').append("<div class=\"col-lg-3 col-md-3 col-12\" >" +
+								"<div class=\"single-service\">" +
+								"<div class=\"service-content\">" +
+								"   <div class=\"form-group\" style=\"font-size: 1em;\">" +
+								"<a id='+prop+' href='/user_main/"+ data.data[prop].groupId+"'><h4>"+data.data[prop].name+"</h4></a>"+
+								"<label>예약동작여부:</label>"+useTag+ ' <a href="/scheduling_registration/'+data.data[prop].scdataId+'" class="btn danger">수정</a>'+
+								"</div>" +
+								"</div>" +
+								"</div>" +
+								"</div>");
+
+					}else if(data.data[prop].dcpId != null) {
+
+						if (data.data[prop].useYn == "YES") {
+							useTag = '<a onclick="dcpUpdate(' + data.data[prop].dcpId + ',0)" class="btn success">사용</a>';
+						} else {
+							useTag = '<a onclick="dcpUpdate(' + data.data[prop].dcpId + ',1)" class="btn danger">사용안함</a>';
+						}
+						$('#group').append("<div class=\"col-lg-3 col-md-3 col-12\" >" +
+								"<div class=\"single-service\">" +
+								"<div class=\"service-content\">" +
+								"   <div class=\"form-group\" style=\"font-size: 1em;\">" +
+								"<a id='prop1' href='/user_main/"+ data.data[prop].groupId+"'><h4>"+data.data[prop].name+"</h4></a>"+
+								"<label>DCP동작여부:</label>"+useTag+' <a href=\"/dcp_registration/'+data.data[prop].dcpId+'\" class=\"btn danger\">수정</a>'+
+								"</div>" +
+								"</div>" +
+								"</div>" +
+								"</div>");
+					}else{
+						$('#group').append("<div class=\"col-lg-3 col-md-3 col-12\" >" +
+								"<div class=\"single-service\">" +
+								"<div class=\"service-content\">" +
+								"   <div class=\"form-group\" style=\"font-size: 1em;\">" +
+								"<a id='prop3' href='/user_main/"+ data.data[prop].groupId+"'><h4>"+data.data[prop].name+"</h4></a>"+
+								"<label>예약내역없음</label>"+
+								"</div>" +
+								"</div>" +
+								"</div>" +
+								"</div>");
+					}
+
+
+				}
+
+			},
+			error: function (err) {
+
+			}
+		});
+
+
+		}
+
+		function saveAram(){
+
+			var jObject = new Object();
+			jObject.aramMinOne = $('#aram1min').val();
+			jObject.aramMaxOne = $('#aram1max').val();
+			jObject.aramUseOne = $('#aram1check').is(':checked');
+			jObject.aramMinTwo = $('#aram2min').val();
+			jObject.aramMaxTwo = $('#aram2max').val();
+			jObject.aramUseTwo = $('#aram2check').is(':checked');
+			jObject.aramMinThree = $('#aram3min').val();
+			jObject.aramMaxThree = $('#aram3max').val();
+			jObject.aramUseThree = $('#aram3check').is(':checked');
+
+			var data = JSON.stringify(jObject);
+			console.log(jObject);
+			$.ajax({
+				url:'/aram/set', //request 보낼 서버의 경로
+				type:'post', // 메소드(get, post, put 등)
+				data: data, //보낼 데이터
+				headers: {'Content-Type': 'application/json'},
+				success: function(data) {
+					alert("저장완료")
+				},
+				error: function(err) {
+					//서버로부터 응답이 정상적으로 처리되지 못햇을 때 실행
+				}
+			});
+
+		}
+		function getAram(){
+
+			$.ajax({
+				url:'/aram/set', //request 보낼 서버의 경로
+				type:'get', // 메소드(get, post, put 등)
+				headers: {'Content-Type': 'application/json'},
+				success: function(res) {
+					console.log(res.data);
+				$('#aram1min').val(res.data.aramMinOne)
+				$('#aram1max').val(res.data.aramMaxOne);
+				document.getElementById('aram1check').checked=res.data.aramUseOne
+				$('#aram2min').val(res.data.aramMinTwo)
+				$('#aram2max').val(res.data.aramMaxTwo);
+				document.getElementById('aram2check').checked=res.data.aramUseTwo
+				$('#aram3min').val(res.data.aramMinThree)
+				$('#aram3max').val(res.data.aramMaxThree);
+				document.getElementById('aram3check').checked =res.data.aramUseThree
+
+				},
+				error: function(err) {
+					//서버로부터 응답이 정상적으로 처리되지 못햇을 때 실행
+				}
+			});
+
+		}
+
+
+		function closeModal(){
+
+			var jObject = new Object();
+			var data = JSON.stringify(jObject);
+			console.log(jObject);
+			$.ajax({
+				url:'/aram/confirm', //request 보낼 서버의 경로
+				type:'post', // 메소드(get, post, put 등)
+				data: data, //보낼 데이터
+				headers: {'Content-Type': 'application/json'},
+				success: function(data) {
+					$("#partner_up").removeClass("active");
+					aramFlag1 = false;
+					aramFlag2 = false;
+					aramFlag3 = false;
+					audio.pause();
+
+				},
+				error: function(err) {
+					//서버로부터 응답이 정상적으로 처리되지 못햇을 때 실행
+				}
+			});
+
+		}
+			 function dcpUpdate(num,state) {
+				 //console.log(state);
+				 $.ajax({
+					 url:'/dcp/'+num, //request 보낼 서버의 경로
+					 type:'get', // 메소드(get, post, put 등)
+					 headers: {'Content-Type': 'application/json'},
+					 success: function(data) {
+
+						 const dcplist = data.data;
+						 dcplist.useYn = state == 1 ? "YES" : "NO"
+						 axios({
+							 url: '/dcp/' + num, //request 보낼 서버의 경로
+							 method: 'put', // 메소드(get, post, put 등)
+							 data: dcplist, //보낼 데이터
+							 headers: {'Content-Type': 'application/json'}
+						 }).then(function (response) {
+							 //성공
+							 //console.log(response);
+							 alert('변경완료');
+							 location.reload();
+						 }).catch(function (response) {
+							 //console.log(response);
+							 alert(response.message);
+						 });
+					 },
+					 error: function(err) {
+						 //서버로부터 응답이 정상적으로 처리되지 못햇을 때 실행
+					 }
+				 });
+			 }
+
+			 function scdataUpdate(num,state) {
+				 //console.log(state);
+				 $.ajax({
+					 url:'/scData/'+num, //request 보낼 서버의 경로
+					 type:'get', // 메소드(get, post, put 등)
+					 headers: {'Content-Type': 'application/json'},
+					 success: function(data) {
+
+						 const sclist = data.data;
+						 sclist.useYn = state == 1 ? "YES" : "NO"
+						 //console.log(sclist);
+						 axios({
+							 url: '/scData/' + num, //request 보낼 서버의 경로
+							 method: 'put', // 메소드(get, post, put 등)
+							 data: sclist, //보낼 데이터
+							 headers: {'Content-Type': 'application/json'}
+						 }).then(function (response) {
+							 //성공
+							 //console.log(response);
+							 alert('변경완료');
+							 location.reload();
+						 }).catch(function (response) {
+							 //console.log(response);
+							 alert(response.message);
+						 });
+					 },
+					 error: function(err) {
+						 //서버로부터 응답이 정상적으로 처리되지 못햇을 때 실행
+					 }
+				 });
+			 }
+			 function link() {
+				 location.href ="/user_main"
+			 }
+
+		 </script>
+			<style>
+				.area {
+					float: left;
+					width: 100%;
+					min-height: 40px;
+					height: 100%;
+					padding-bottom: 10px;
+					margin-bottom: 20px;
+					padding: 1px;
+					border: 1px solid #000000;
+				}
+				span{
+					margin: 5px !important;
+					background-color: #3C6FBB;
+					color : white;
+				}
+				.danger {
+					margin-top: 0px !important;
+					color: #fff !important;
+					background-color: #dc3545 !important;
+					border-color: #dc3545 !important
+				}
+				.success{
+					margin-top: 0px !important;
+					color: #fff !important;
+					background-color: #28a745 !important;
+					border-color: #28a745 !important;
+				}
+
+				.aram-table{
+					height: 100px;
+				}
+				.section-space{
+					padding-top: 0px !important;
+
+				}
+			</style>
+			</div>
+</html>
